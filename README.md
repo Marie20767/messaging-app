@@ -1,5 +1,7 @@
 # React Template by Marie Impens
 
+Personal template used to create new React apps quickly.
+
 ## Available Scripts
 
 In the project directory, you can run:
