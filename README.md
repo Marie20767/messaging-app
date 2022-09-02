@@ -1,6 +1,6 @@
-# React Template by Marie Impens
+# React Messaging App by Marie Impens
 
-Personal template used to create new React apps quickly.
+WORK IN PROGRESS. Messaging App communicating with back end.
 
 ## Available Scripts
 
