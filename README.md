@@ -1,6 +1,6 @@
 # React Messaging App by Marie Impens
 
-WORK IN PROGRESS. Messaging App communicating with back end.
+WORK IN PROGRESS. Messaging App communicating with back end through RESTful API.
 
 ## Available Scripts
 
