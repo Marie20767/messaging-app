@@ -1,11 +1,27 @@
 import { useState } from 'react';
+import styled from 'styled-components';
 
-const User = ({ name, email, id, editedUserId, setEditedUserId, onClickSaveEditedUser, onClickDeleteUser }) => {
+const User = ({
+  name,
+  email,
+  id,
+  editedUserId,
+  setEditedUserId,
+  activeUserId,
+  setActiveUserId,
+  onClickSaveEditedUser,
+  onClickDeleteUser,
+}) => {
   const [userName, setUserName] = useState(name);
   const [userEmail, setUserEmail] = useState(email);
 
+  const userContainerClassName = activeUserId === id ? 'active-user' : 'non-active-user';
+
+  console.log('>>> activeUserId: ', activeUserId);
+  console.log('>>> id: ', id);
+
   return (
-    <div>
+    <StyledUserContainer onClick={() => setActiveUserId(id)} className={userContainerClassName}>
       {editedUserId === id
         ? (
           <div>
@@ -23,8 +39,19 @@ const User = ({ name, email, id, editedUserId, setEditedUserId, onClickSaveEdite
         )
       }
       <button type="button" onClick={() => onClickDeleteUser(id)}>Delete user</button>
-    </div>
+    </StyledUserContainer>
   );
 };
 
+const StyledUserContainer = styled.div`
+  &.active-user {
+    background-color: #e9e9e9;;
+  }
+
+  &.non-active-user {
+    background-color: transparent;
+  }
+`;
+
 export default User;
+
