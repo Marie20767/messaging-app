@@ -16,7 +16,7 @@ h2 {
   margin-bottom: 25px;
 }
 
-h3, p, button {
+h3, p, button, input {
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
 }
@@ -28,7 +28,7 @@ h3 {
 
 button {
   font-size: 20px;
-  background-color: #9dbbf8;
+  background-color: #ea738dff;
   color: white;
   cursor: pointer;
   border: none;
@@ -38,6 +38,11 @@ button {
 
 p {
   font-size: 15px;
+}
+
+a {
+  color: #ea738dff;
+  font-weight: bold;
 }
 
 .card-container {

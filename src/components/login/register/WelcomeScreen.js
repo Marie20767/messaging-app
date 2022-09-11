@@ -32,7 +32,7 @@ const StyledWelcomeScreenCard = styled.div`
   }
 
   .login-button {
-    margin-right: 30px;
+    margin-right: 15px;
   }
 `;
 

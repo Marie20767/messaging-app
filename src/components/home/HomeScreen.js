@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import User from './User';
-import AddNewUser from './AddNewUser';
 import SearchBox from './SearchBox';
 
 const HomeScreen = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState('');
-  const [editedUserId, setEditedUserId] = useState(0);
-  const [isAddingUser, setIsAddingUser] = useState(false);
-  const [newUsername, setNewUsername] = useState('');
-  const [newUserEmail, setNewUserEmail] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -37,18 +31,6 @@ const HomeScreen = () => {
     setError('Something went wrong with your request');
   };
 
-  const onClickSaveNewUser = async (name, email) => {
-    try {
-      await fetch('http://localhost:3001/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email }),
-      });
-    } catch (e) {
-      handleErrorMessage(e);
-    }
-  };
-
   const onClickDeleteUser = async (id) => {
     try {
       await fetch(`http://localhost:3001/users/${id}`, { method: 'DELETE' });
@@ -61,26 +43,12 @@ const HomeScreen = () => {
     }
   };
 
-  const onClickSaveEditedUser = async (name, email, id) => {
-    setEditedUserId(0);
-
-    try {
-      await fetch(`http://localhost:3001/users/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email }),
-      });
-    } catch (e) {
-      handleErrorMessage(e);
-    }
-  };
-
   const onChangeSearchInputGetSearchResults = (e) => {
     setIsSearching(true);
     setSearchInput(e.target.value);
 
     const usersMatchingSearchInput = users.filter((user) => {
-      if (user.name.toLowerCase().includes(e.target.value.toLowerCase())) {
+      if (user.username.toLowerCase().includes(e.target.value.toLowerCase())) {
         return user;
       }
 
@@ -112,13 +80,9 @@ const HomeScreen = () => {
           <User
             key={user.id}
             id={user.id}
-            name={user.name}
-            email={user.email}
-            editedUserId={editedUserId}
-            setEditedUserId={setEditedUserId}
+            name={user.username}
             activeUserId={activeUserId}
             setActiveUserId={setActiveUserId}
-            onClickSaveEditedUser={onClickSaveEditedUser}
             onClickDeleteUser={onClickDeleteUser} />
         );
       })}
@@ -127,26 +91,8 @@ const HomeScreen = () => {
         ? <p>{`No result for '${searchInput}'`}</p>
         : null
       }
-
-      <StyledAddUserContainer>
-        {isAddingUser
-          ? (
-            <AddNewUser
-              newUsername={newUsername}
-              newUserEmail={newUserEmail}
-              setNewUsername={setNewUsername}
-              setNewUserEmail={setNewUserEmail}
-              onClickSaveNewUser={onClickSaveNewUser} />
-          )
-          : <button type="button" onClick={() => setIsAddingUser(true)}>Add user</button>
-        }
-      </StyledAddUserContainer>
     </div>
   );
 };
-
-const StyledAddUserContainer = styled.div`
-  margin-top: 50px;
-`;
 
 export default HomeScreen;

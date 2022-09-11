@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import Dog from '../images/dog-avatar.png';
 import Cat from '../images/cat-avatar.png';
 import Bear from '../images/bear-avatar.png';
@@ -11,35 +10,35 @@ import Rabbit from '../images/rabbit-avatar.png';
 const avatars = [
   {
     animal: Dog,
-    id: uuid(),
+    id: 'dog-id',
   },
   {
     animal: Cat,
-    id: uuid(),
+    id: 'cat-id',
   },
   {
     animal: Bear,
-    id: uuid(),
+    id: 'bear-id',
   },
   {
     animal: Fish,
-    id: uuid(),
+    id: 'fish-id',
   },
   {
     animal: Fox,
-    id: uuid(),
+    id: 'fox-id',
   },
   {
     animal: Giraffe,
-    id: uuid(),
+    id: 'giraffe-id',
   },
   {
     animal: Panda,
-    id: uuid(),
+    id: 'panda-id',
   },
   {
     animal: Rabbit,
-    id: uuid(),
+    id: 'rabbit-id',
   },
 ];
 
