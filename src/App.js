@@ -1,5 +1,6 @@
-import styled from 'styled-components';
 import { useState } from 'react';
+import styled from 'styled-components';
+import { Routes, Route } from 'react-router-dom';
 import WelcomeScreen from './components/login/register/WelcomeScreen';
 import './App.css';
 import HomeScreen from './components/home/HomeScreen';
@@ -8,19 +9,24 @@ import RegistrationScreen from './components/login/register/RegistrationScreen';
 // Command to set up the database again:
 // psql -h localhost -p 5432 -U marieimpens -d react_message_app -f db/init.sql (in the api)
 
-// TODO: use React Router for smoother page transitions?
-// Write the front end functions so when you create a user it sends the info to the backend
+// TODO:
 // Make a log in screen
 
 const App = () => {
-  const [hasLocalStorageData, setHasLocalStorageData] = useState(true);
+  const [error, setError] = useState('');
+
+  const handleErrorMessage = (e) => {
+    console.log(e);
+    setError('Something went wrong with your request');
+  };
 
   return (
     <StyledAppContainer>
-      {!hasLocalStorageData
-        ? <RegistrationScreen />
-        : <HomeScreen />
-      }
+      <Routes>
+        <Route exact path="/" element={<WelcomeScreen error={error} handleErrorMessage={handleErrorMessage} />} />
+        <Route exact path="/register" element={<RegistrationScreen error={error} handleErrorMessage={handleErrorMessage} />} />
+        <Route exact path="/home" element={<HomeScreen error={error} handleErrorMessage={handleErrorMessage} />} />
+      </Routes>
     </StyledAppContainer>
   );
 };

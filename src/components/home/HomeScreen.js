@@ -1,14 +1,17 @@
+/* eslint-disable radix */
 import React, { useEffect, useState } from 'react';
 import User from './User';
 import SearchBox from './SearchBox';
 
-const HomeScreen = () => {
+// TODO: style the error page
+
+const HomeScreen = ({ error, handleErrorMessage }) => {
   const [users, setUsers] = useState([]);
-  const [error, setError] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [activeUserId, setActiveUserId] = useState(null);
+  const [currentUserIdString] = useState(localStorage.getItem(('current-user-id')));
 
   useEffect(() => {
     const getUserData = async () => {
@@ -16,20 +19,17 @@ const HomeScreen = () => {
         const response = await fetch('http://localhost:3001/users');
         const userResults = await response.json();
 
-        setUsers(userResults);
+        const currentUserId = parseInt(currentUserIdString);
+        const allUsersMinusNewRegisteredUser = userResults.filter((user) => user.id !== currentUserId);
+
+        setUsers(allUsersMinusNewRegisteredUser);
       } catch (e) {
-        console.log(e);
-        setError('Something went wrong with your request');
+        handleErrorMessage(e);
       }
     };
 
     getUserData();
   }, []);
-
-  const handleErrorMessage = (e) => {
-    console.log(e);
-    setError('Something went wrong with your request');
-  };
 
   const onClickDeleteUser = async (id) => {
     try {
@@ -48,7 +48,7 @@ const HomeScreen = () => {
     setSearchInput(e.target.value);
 
     const usersMatchingSearchInput = users.filter((user) => {
-      if (user.username.toLowerCase().includes(e.target.value.toLowerCase())) {
+      if (user.name.toLowerCase().includes(e.target.value.toLowerCase())) {
         return user;
       }
 
@@ -80,7 +80,7 @@ const HomeScreen = () => {
           <User
             key={user.id}
             id={user.id}
-            name={user.username}
+            name={user.name}
             activeUserId={activeUserId}
             setActiveUserId={setActiveUserId}
             onClickDeleteUser={onClickDeleteUser} />

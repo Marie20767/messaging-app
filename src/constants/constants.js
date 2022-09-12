@@ -6,6 +6,16 @@ import Fox from '../images/fox-avatar.png';
 import Giraffe from '../images/giraffe-avatar.png';
 import Panda from '../images/panda-avatar.png';
 import Rabbit from '../images/rabbit-avatar.png';
+import Weasel from '../images/weasel-avatar.png';
+import Seal from '../images/seal-avatar.png';
+import Deer2 from '../images/deer2-avatar.png';
+import Rabbit2 from '../images/rabbit2-avatar.png';
+import Meerkat from '../images/meerkat-avatar.png';
+import Koala from '../images/koala-avatar.png';
+import Fox2 from '../images/fox2-avatar.png';
+import Deer from '../images/deer-avatar.png';
+import Chicken from '../images/chicken-avatar.png';
+import Snake from '../images/snake-avatar.png';
 
 const avatars = [
   {
@@ -42,4 +52,47 @@ const avatars = [
   },
 ];
 
-export { avatars };
+const demoUsersAvatars = [
+  {
+    animal: Weasel,
+    id: 'weasel-id',
+  },
+  {
+    animal: Seal,
+    id: 'seal-id',
+  },
+  {
+    animal: Deer2,
+    id: 'deer2-id',
+  },
+  {
+    animal: Koala,
+    id: 'koala-id',
+  },
+  {
+    animal: Rabbit2,
+    id: 'rabbit2-id',
+  },
+  {
+    animal: Meerkat,
+    id: 'meerkat-id',
+  },
+  {
+    animal: Fox2,
+    id: 'fox2-id',
+  },
+  {
+    animal: Deer,
+    id: 'deer-id',
+  },
+  {
+    animal: Snake,
+    id: 'snake-id',
+  },
+  {
+    animal: Chicken,
+    id: 'chicken-id',
+  },
+];
+
+export { avatars, demoUsersAvatars };
