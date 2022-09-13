@@ -26,6 +26,10 @@ h3, p {
   color:  #919190;
 }
 
+input {
+  font-size: 16px;
+}
+
 button {
   font-size: 18px;
   background-color: #ea738dff;
@@ -51,4 +55,8 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.error-message {
+  color: #dd3a08;
 }

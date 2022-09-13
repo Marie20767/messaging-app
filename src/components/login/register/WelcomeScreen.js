@@ -2,8 +2,6 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import messageIcon from '../../../images/message-icon.png';
 
-// TODO: Add line underneath h2 title
-
 const WelcomeScreen = () => {
   return (
     <div className="card-container">
@@ -12,7 +10,9 @@ const WelcomeScreen = () => {
         <h3>The instant messaging app that keeps you connected</h3>
         <img src={messageIcon} alt="Waving dog with a cape" />
         <StyledButtonContainer>
-          <button type="button" className="login-button">Log in</button>
+          <button type="button" className="login-button">
+            <Link to="/login">Log in</Link>
+          </button>
           <button type="button">
             <Link to="/register">Register</Link>
           </button>
@@ -30,19 +30,11 @@ const StyledWelcomeScreenCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-
-  h2 {
-    margin-bottom: 10px;
-  }
-
-  h3 {
-    margin-bottom: 15px;
-  }
+  justify-content: space-around;
+  padding: 30px 0;
 
   img {
     height: 100px;
-    margin-bottom: 20px;
   }
 
   .login-button {
