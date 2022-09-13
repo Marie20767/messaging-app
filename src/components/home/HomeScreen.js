@@ -11,7 +11,7 @@ const HomeScreen = ({ error, handleErrorMessage }) => {
   const [searchResult, setSearchResult] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [activeUserId, setActiveUserId] = useState(null);
-  const [currentUserIdString] = useState(localStorage.getItem(('current-user-id')));
+  const [currentUserId] = useState(parseInt(localStorage.getItem('current-user-id')));
 
   useEffect(() => {
     const getUserData = async () => {
@@ -19,7 +19,6 @@ const HomeScreen = ({ error, handleErrorMessage }) => {
         const response = await fetch('http://localhost:3001/users');
         const userResults = await response.json();
 
-        const currentUserId = parseInt(currentUserIdString);
         const allUsersMinusNewRegisteredUser = userResults.filter((user) => user.id !== currentUserId);
 
         setUsers(allUsersMinusNewRegisteredUser);

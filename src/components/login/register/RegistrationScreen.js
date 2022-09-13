@@ -7,6 +7,7 @@ import { avatars } from '../../../constants/constants';
 // Make it so you can only register if all fields are filled in
 // Hide password? Add password criteria logic
 // Display the avatar at the top
+// Style error
 
 const RegistrationScreen = ({ error, handleErrorMessage }) => {
   const [newUserName, setNewUserName] = useState('');
