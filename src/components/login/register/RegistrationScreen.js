@@ -6,28 +6,26 @@ import NameAndPasswordInput from './NameAndPasswordInput';
 
 // TODO:
 // Hide password?
-// Display the avatar at the top
-// Style error
 // Encrypt password when sending it to back end
 
 const RegistrationScreen = ({
-  error,
-  newUserName,
-  setNewUserName,
-  newPassword,
-  setNewPassword,
+  serverError,
+  userNameInput,
+  passwordInput,
   isNameMissing,
   setIsNameMissing,
   isPasswordMissing,
   setIsPasswordMissing,
+  showErrorMessage,
+  setShowErrorMessage,
+  setCurrentUser,
   isPasswordTooShort,
   onChangeUserName,
   onChangePassword,
-  handleErrorMessage,
+  handleServerErrorMessage,
 }) => {
-  const [newAvatarId, setNewAvatarId] = useState(null);
   const [isAvatarMissing, setIsAvatarMissing] = useState(false);
-  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [avatarId, setAvatarId] = useState(null);
 
   const navigate = useNavigate();
 
@@ -35,15 +33,15 @@ const RegistrationScreen = ({
   const firstFourAvatars = [firstAvatar, secondAvatar, thirdAvatar, fourthAvatar];
 
   const onClickCreateNewUser = async () => {
-    if (newUserName !== '' && newPassword !== '' && newAvatarId !== null) {
+    if (userNameInput !== '' && passwordInput !== '' && avatarId !== null) {
       try {
         const response = await fetch('http://localhost:3001/users', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name: newUserName,
-            password: newPassword,
-            avatar_id: newAvatarId,
+            name: userNameInput,
+            password: passwordInput,
+            avatar_id: avatarId,
           }),
         });
 
@@ -52,50 +50,50 @@ const RegistrationScreen = ({
 
         localStorage.setItem('current-user-id', newUserId);
 
-        // Resetting relevant states
-        setNewUserName('');
-        setNewPassword('');
-        setNewAvatarId(null);
+        setCurrentUser({
+          id: newUserId,
+          name: userNameInput,
+          avatarId,
+        });
+
         setShowErrorMessage(false);
 
         // Go to home screen here instead of using <Link> to make sure the newest current-user-id gets passed
         navigate('/home');
       } catch (e) {
         console.log(e);
-        handleErrorMessage(e);
+        handleServerErrorMessage(e);
       }
     } else {
       setShowErrorMessage(true);
-      if (newUserName === '') {
+      if (userNameInput === '') {
         setIsNameMissing(true);
       }
-      if (newPassword === '') {
+      if (passwordInput === '') {
         setIsPasswordMissing(true);
       }
-      if (newAvatarId === null) {
+      if (avatarId === null) {
         setIsAvatarMissing(true);
       }
     }
   };
 
   const onClickSelectAvatar = (id) => {
-    setNewAvatarId(id);
+    setAvatarId(id);
     setIsAvatarMissing(false);
   };
 
-  if (error) {
-    return <p>{error}</p>;
+  if (serverError) {
+    return <p>{serverError}</p>;
   }
-
-  console.log('>>> newAvatarId: ', newAvatarId);
 
   return (
     <div className="card-container">
       <StyledRegistrationCardContainer>
         <NameAndPasswordInput
           title="Create your account"
-          newUserName={newUserName}
-          newPassword={newPassword}
+          userNameInput={userNameInput}
+          passwordInput={passwordInput}
           isNameMissing={isNameMissing}
           isPasswordMissing={isPasswordMissing}
           isPasswordTooShort={isPasswordTooShort}
@@ -108,7 +106,7 @@ const RegistrationScreen = ({
         </StyledAvatarTitleContainer>
         <StyledAvatarContainer>
           {firstFourAvatars.map((avatar) => {
-            const avatarClassName = newAvatarId === avatar.id ? 'selected-avatar' : '';
+            const avatarClassName = avatarId === avatar.id ? 'selected-avatar' : '';
 
             return (
               <img
@@ -122,7 +120,7 @@ const RegistrationScreen = ({
         </StyledAvatarContainer>
         <StyledAvatarContainer>
           {lastFourAvatars.map((avatar) => {
-            const avatarClassName = newAvatarId === avatar.id ? 'selected-avatar' : '';
+            const avatarClassName = avatarId === avatar.id ? 'selected-avatar' : '';
 
             return (
               <img
@@ -130,7 +128,7 @@ const RegistrationScreen = ({
                 className={avatarClassName}
                 src={avatar.animal}
                 alt="animal-avatar"
-                onClick={() => setNewAvatarId(avatar.id)} />
+                onClick={() => onClickSelectAvatar(avatar.id)} />
             );
           })}
         </StyledAvatarContainer>

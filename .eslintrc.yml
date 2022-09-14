@@ -21,6 +21,7 @@ env:
   browser: true
 
 rules:
+  camelcase: 'off'
   arrow-body-style: 0
   func-style: 0
   func-names: 0

@@ -10,26 +10,31 @@ import LoginScreen from './components/login/register/LoginScreen';
 // Command to set up the database again:
 // psql -h localhost -p 5432 -U marieimpens -d react_message_app -f db/init.sql (in the api)
 
+// TODO: add error component
+
 const App = () => {
-  const [error, setError] = useState('');
-  const [newUserName, setNewUserName] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [serverError, setServerError] = useState('');
+  const [currentUser, setCurrentUser] = useState(null);
+  const [userNameInput, setUserNameInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState('');
   const [isNameMissing, setIsNameMissing] = useState(false);
   const [isPasswordMissing, setIsPasswordMissing] = useState(false);
   const [isPasswordTooShort, setIsPasswordTooShort] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [newAvatarId, setNewAvatarId] = useState(null);
 
-  const handleErrorMessage = (e) => {
+  const handleServerErrorMessage = (e) => {
     console.log(e);
-    setError('Something went wrong with your request');
+    setServerError('Something went wrong with your request');
   };
 
   const onChangeUserName = (event) => {
-    setNewUserName(event.target.value);
+    setUserNameInput(event.target.value);
     setIsNameMissing(false);
   };
 
   const onChangePassword = (event) => {
-    setNewPassword(event.target.value);
+    setPasswordInput(event.target.value);
     setIsPasswordMissing(false);
 
     if (event.target.value.length < 8) {
@@ -39,48 +44,62 @@ const App = () => {
     }
   };
 
+  console.log('>>> currentUser: ', currentUser);
+
   return (
     <StyledAppContainer>
       <Routes>
-        <Route exact path="/" element={<WelcomeScreen error={error} handleErrorMessage={handleErrorMessage} />} />
+        <Route exact path="/" element={<WelcomeScreen serverError={serverError} handleServerErrorMessage={handleServerErrorMessage} />} />
         <Route
           exact
           path="/register"
           element={(
             <RegistrationScreen
-              error={error}
-              newUserName={newUserName}
-              newPassword={newPassword}
-              setNewUserName={setNewUserName}
-              setNewPassword={setNewPassword}
+              serverError={serverError}
+              userNameInput={userNameInput}
+              passwordInput={passwordInput}
               isNameMissing={isNameMissing}
               setIsNameMissing={setIsNameMissing}
+              newAvatarId={newAvatarId}
+              setNewAvatarId={setNewAvatarId}
               isPasswordMissing={isPasswordMissing}
               setIsPasswordMissing={setIsPasswordMissing}
+              showErrorMessage={showErrorMessage}
+              setShowErrorMessage={setShowErrorMessage}
+              setCurrentUser={setCurrentUser}
               isPasswordTooShort={isPasswordTooShort}
               onChangeUserName={onChangeUserName}
               onChangePassword={onChangePassword}
-              handleErrorMessage={handleErrorMessage} />
+              handleServerErrorMessage={handleServerErrorMessage} />
           )} />
         <Route
           exact
           path="/login"
           element={(
             <LoginScreen
-              error={error}
-              newUserName={newUserName}
-              newPassword={newPassword}
-              setNewUserName={setNewUserName}
-              setNewPassword={setNewPassword}
+              serverError={serverError}
+              userNameInput={userNameInput}
+              passwordInput={passwordInput}
               isNameMissing={isNameMissing}
               isPasswordMissing={isPasswordMissing}
               setIsNameMissing={setIsNameMissing}
               setIsPasswordMissing={setIsPasswordMissing}
+              showErrorMessage={showErrorMessage}
+              setShowErrorMessage={setShowErrorMessage}
+              setCurrentUser={setCurrentUser}
               onChangeUserName={onChangeUserName}
               onChangePassword={onChangePassword}
-              handleErrorMessage={handleErrorMessage} />
+              handleServerErrorMessage={handleServerErrorMessage} />
           )} />
-        <Route exact path="/home" element={<HomeScreen error={error} handleErrorMessage={handleErrorMessage} />} />
+        <Route
+          exact
+          path="/home"
+          element={(
+            <HomeScreen
+              serverError={serverError}
+              currentUser={currentUser}
+              handleServerErrorMessage={handleServerErrorMessage} />
+          )} />
       </Routes>
     </StyledAppContainer>
   );

@@ -43,12 +43,15 @@ const StyledSearchBoxContainer = styled.div`
   cursor: pointer;
   background-color: #e9e9e9;
   width: 13%;
+  border-radius: 7px;
+  margin: 10px 0 5px 15px;
 
   input {
     background-color: transparent;
     border: none;
     width: 70%;
-    margin: 5px 0
+    margin: 5px 0;
+    font-size: 14px;
   }
 
   input:focus {

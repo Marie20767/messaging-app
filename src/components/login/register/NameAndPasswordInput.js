@@ -4,12 +4,13 @@ import { faKey, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const NameAndPasswordInput = ({
   title,
-  newUserName,
-  newPassword,
+  userNameInput,
+  passwordInput,
   isNameMissing,
   isPasswordMissing,
   isPasswordTooShort,
   showErrorMessage,
+  loginError,
   onChangeUserName,
   onChangePassword,
 }) => {
@@ -20,6 +21,10 @@ const NameAndPasswordInput = ({
         ? <p className="error-message">Please fill in or select all required fields</p>
         : null
       }
+      {loginError !== null
+        ? <p className="error-message">{loginError}</p>
+        : null
+      }
       <StyledInputContainer $isNameMissing={isNameMissing}>
         <StyledInputContent>
           <FontAwesomeIcon icon={faUser} className="icon" />
@@ -28,7 +33,7 @@ const NameAndPasswordInput = ({
             name="user_name"
             placeholder="Name e.g. Albus"
             onChange={onChangeUserName}
-            value={newUserName} />
+            value={userNameInput} />
         </StyledInputContent>
       </StyledInputContainer>
       <StyledInputContainer $isPasswordMissing={isPasswordMissing}>
@@ -39,7 +44,7 @@ const NameAndPasswordInput = ({
             name="user_password"
             placeholder="Password"
             onChange={onChangePassword}
-            value={newPassword} />
+            value={passwordInput} />
         </StyledInputContent>
         {isPasswordTooShort
           ? <p className="error-message">Password needs min. 8 characters</p>

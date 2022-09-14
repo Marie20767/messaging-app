@@ -95,4 +95,9 @@ const demoUsersAvatars = [
   },
 ];
 
-export { avatars, demoUsersAvatars };
+const allAvatars = [
+  ...avatars,
+  ...demoUsersAvatars,
+];
+
+export { avatars, demoUsersAvatars, allAvatars };
