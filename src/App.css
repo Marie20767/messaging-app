@@ -16,14 +16,14 @@ h2 {
   font-size: 30px;
 }
 
-h3, p, button, input {
+h3, p, button, input, footer {
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
 }
 
 h3, p {
   font-size: 18px;
-  color:  #919190;
+  color: #919190;
 }
 
 input {
@@ -59,4 +59,24 @@ p {
 
 .error-message {
   color: #dd3a08;
+  margin-top: 0;
+}
+
+.dark-icon {
+  color: #8a8a8b;
+  height: 13px;
+  margin-bottom: 2px;
+  margin-right: 6px;
+}
+
+.clickable {
+  cursor: pointer
+}
+
+.light-icon {
+    color: #919190;
+}
+
+.message-icon {
+  height: 100px;
 }

@@ -24,7 +24,7 @@ const SearchBox = ({
 
   return (
     <StyledSearchBoxContainer onClick={onClickFocusOnSearchBox}>
-      <FontAwesomeIcon icon={faMagnifyingGlass} className="icon magnifying-glass" />
+      <FontAwesomeIcon icon={faMagnifyingGlass} className="light-icon magnifying-glass" />
       <input
         ref={ref}
         type="text"
@@ -32,7 +32,7 @@ const SearchBox = ({
         value={searchInput}
         onChange={(e) => onChangeSearchInputGetSearchResults(e)} />
       {searchInput !== ''
-        ? <FontAwesomeIcon icon={faXmark} className="icon x-mark" onClick={onClickCloseSearch} />
+        ? <FontAwesomeIcon icon={faXmark} className="light-icon x-mark" onClick={onClickCloseSearch} />
         : null
       }
     </StyledSearchBoxContainer>
@@ -41,8 +41,8 @@ const SearchBox = ({
 
 const StyledSearchBoxContainer = styled.div`
   cursor: pointer;
+  width: 452px;
   background-color: #e9e9e9;
-  width: 13%;
   border-radius: 7px;
   margin: 10px 0 5px 15px;
 
@@ -56,10 +56,6 @@ const StyledSearchBoxContainer = styled.div`
 
   input:focus {
     outline: none
-  }
-
-  .icon {
-    color: #919190;
   }
 
   .magnifying-glass {

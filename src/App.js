@@ -1,16 +1,32 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Routes, Route } from 'react-router-dom';
-import WelcomeScreen from './components/login/register/WelcomeScreen';
+import WelcomeScreen from './components/auth/WelcomeScreen';
 import './App.css';
 import HomeScreen from './components/home/HomeScreen';
-import RegistrationScreen from './components/login/register/RegistrationScreen';
-import LoginScreen from './components/login/register/LoginScreen';
+import RegistrationScreen from './components/auth/RegistrationScreen';
+import LoginScreen from './components/auth/LoginScreen';
+import AutoLogin from './components/auth/AutoLogin';
 
 // Command to set up the database again:
 // psql -h localhost -p 5432 -U marieimpens -d react_message_app -f db/init.sql (in the api)
 
-// TODO: add error component
+// TODO:
+// - handle serverError in each component depending on what you want to happen
+//   (e.g. in LoginScreen just show a error message somewhere, in HomeScreen show error with Retry button)
+//   Note - you'll want to move serverError state from App into each component
+
+// - when border is red for the Input fields (e.g. when you don't fill them in on the Login screen, make it
+// so there is just one border on the input container)
+
+// - rename showErrorMessage to something like showFormInvalidErrorMessage to make it a bit more specific
+
+// - spacing on RegistrationForm when multiple errors are showing
+
+// TODO: together:
+// Make it so if I go to login, register or welcome screen, if im already logged in it sends me to the home page
+// - Make sure you can't access /home if not logged in
+// - Make sure if going to /home and logged in, it keeps you on /home
 
 const App = () => {
   const [serverError, setServerError] = useState('');
@@ -44,12 +60,13 @@ const App = () => {
     }
   };
 
-  console.log('>>> currentUser: ', currentUser);
-
   return (
     <StyledAppContainer>
       <Routes>
-        <Route exact path="/" element={<WelcomeScreen serverError={serverError} handleServerErrorMessage={handleServerErrorMessage} />} />
+        <Route
+          exact
+          path="/"
+          element={<WelcomeScreen />} />
         <Route
           exact
           path="/register"
@@ -95,10 +112,12 @@ const App = () => {
           exact
           path="/home"
           element={(
-            <HomeScreen
-              serverError={serverError}
-              currentUser={currentUser}
-              handleServerErrorMessage={handleServerErrorMessage} />
+            <AutoLogin setCurrentUser={setCurrentUser}>
+              <HomeScreen
+                serverError={serverError}
+                currentUser={currentUser}
+                handleServerErrorMessage={handleServerErrorMessage} />
+            </AutoLogin>
           )} />
       </Routes>
     </StyledAppContainer>

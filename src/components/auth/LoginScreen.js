@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import NameAndPasswordInput from './NameAndPasswordInput';
 
 // TODO:
-// Add logic so you can check if a username with that password exists
 // Refactor the styling of the container (a lot of duplicate code with Registration Screen)
+// Make FormInput component that just returns a StyledInputContainer and has appropriate styling within it
 
 const LoginScreen = ({
   serverError,
@@ -39,8 +39,6 @@ const LoginScreen = ({
         });
 
         const result = await response.json();
-
-        console.log('>>> result: ', result);
 
         if (!result.error) {
           const newUserId = result.id;
@@ -116,15 +114,7 @@ const StyledLoginScreenContainer = styled.div`
     padding: 0px 8px 3px 0;
     border: 0;
     outline: 0;
-    border-bottom: 1px solid #8a8a8b;
     color: #8a8a8b;
-  }
-
-  .icon {
-    color: #8a8a8b;
-    height: 13px;
-    margin-bottom: 2px;
-    margin-right: 6px;
   }
 
   a {

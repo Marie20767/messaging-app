@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import messageIcon from '../../../images/message-icon.png';
+import messageIcon from '../../images/message-icon.png';
 
 const WelcomeScreen = () => {
   return (
@@ -8,7 +8,7 @@ const WelcomeScreen = () => {
       <StyledWelcomeScreenCard>
         <h2>Welcome to MessageOh!</h2>
         <h3>The instant messaging app that keeps you connected</h3>
-        <img src={messageIcon} alt="Waving dog with a cape" />
+        <img src={messageIcon} alt="message icon" className="message-icon" />
         <StyledButtonContainer>
           <button type="button" className="login-button">
             <Link to="/login">Log in</Link>
@@ -32,11 +32,7 @@ const StyledWelcomeScreenCard = styled.div`
   align-items: center;
   justify-content: space-around;
   padding: 30px 0;
-
-  img {
-    height: 100px;
-  }
-
+  
   .login-button {
     margin-right: 15px;
   }

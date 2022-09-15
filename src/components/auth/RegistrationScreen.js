@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { avatars } from '../../../constants/constants';
+import { avatars } from '../../constants/constants';
 import NameAndPasswordInput from './NameAndPasswordInput';
 
 // TODO:
-// Hide password?
 // Encrypt password when sending it to back end
 
 const RegistrationScreen = ({
@@ -66,6 +65,7 @@ const RegistrationScreen = ({
       }
     } else {
       setShowErrorMessage(true);
+
       if (userNameInput === '') {
         setIsNameMissing(true);
       }
@@ -133,7 +133,7 @@ const RegistrationScreen = ({
           })}
         </StyledAvatarContainer>
         <button type="button" onClick={onClickCreateNewUser}>Register</button>
-        <p>Have an account? <Link to="/login">Log in</Link></p>
+        <footer>Have an account? <Link to="/login">Log in</Link></footer>
       </StyledRegistrationCardContainer>
     </div>
   );
@@ -150,13 +150,8 @@ const StyledRegistrationCardContainer = styled.div`
   justify-content: space-between;
   padding: 35px 0px;
 
-  h2 {
-    margin-bottom: 20px;
-  }
-
   h3 {
     font-size: 17px;
-    color: ç;
   }
 
   input {
@@ -164,24 +159,19 @@ const StyledRegistrationCardContainer = styled.div`
     padding: 0px 8px 3px 0;
     border: 0;
     outline: 0;
-    border-bottom: 1px solid #8a8a8b;
     color: #8a8a8b;
   }
 
-  p {
+
+  footer {
     margin-top: 10px;
+    font-size: 14px;
+    color: #919190;
   }
 
   a {
   color: #ea738dff;
   font-weight: bold;
-  }
-
-  .icon {
-    color: #8a8a8b;
-    height: 13px;
-    margin-bottom: 2px;
-    margin-right: 6px;
   }
 
   button {

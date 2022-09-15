@@ -41,6 +41,7 @@ const StyledUserContainer = styled.div`
 
     &:hover {
       background-color: #f6f6f6;
+      border-radius: 10px;
     }
   }
 

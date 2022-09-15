@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faKey, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faKey, faEye, faEyeSlash, faUser } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
 
 const NameAndPasswordInput = ({
   title,
@@ -14,6 +15,8 @@ const NameAndPasswordInput = ({
   onChangeUserName,
   onChangePassword,
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <>
       <h2>{title}</h2>
@@ -25,9 +28,13 @@ const NameAndPasswordInput = ({
         ? <p className="error-message">{loginError}</p>
         : null
       }
+      {isPasswordTooShort
+        ? <p className="error-message">Password needs min. 8 characters</p>
+        : null
+        }
       <StyledInputContainer $isNameMissing={isNameMissing}>
         <StyledInputContent>
-          <FontAwesomeIcon icon={faUser} className="icon" />
+          <FontAwesomeIcon icon={faUser} className="dark-icon" />
           <input
             type="text"
             name="user_name"
@@ -38,18 +45,18 @@ const NameAndPasswordInput = ({
       </StyledInputContainer>
       <StyledInputContainer $isPasswordMissing={isPasswordMissing}>
         <StyledInputContent>
-          <FontAwesomeIcon icon={faKey} className="icon" />
+          <FontAwesomeIcon icon={faKey} className="dark-icon" />
           <input
-            type="text"
+            type={showPassword ? 'text' : 'password'}
             name="user_password"
             placeholder="Password"
             onChange={onChangePassword}
             value={passwordInput} />
+          <FontAwesomeIcon
+            icon={showPassword ? faEyeSlash : faEye}
+            className="dark-icon clickable"
+            onClick={() => setShowPassword(!showPassword)} />
         </StyledInputContent>
-        {isPasswordTooShort
-          ? <p className="error-message">Password needs min. 8 characters</p>
-          : null
-        }
       </StyledInputContainer>
     </>
   );
@@ -59,6 +66,7 @@ const StyledInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 60%;
+  border-bottom: 1px solid #8a8a8b;
 
   input[name="user_name"] {
     ${(props) => props.$isNameMissing ? 'border-bottom: 1px solid #dd3a08' : ''}
@@ -82,6 +90,7 @@ const StyledInputContent = styled.div`
   flex-direction: row;
   align-items: center;
   width: 100%;
+
 `;
 
 export default NameAndPasswordInput;
