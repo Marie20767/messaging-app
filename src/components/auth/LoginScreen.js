@@ -3,9 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import NameAndPasswordInput from './NameAndPasswordInput';
 
-// TODO:
-// Refactor the styling of the container (a lot of duplicate code with Registration Screen)
-
 const LoginScreen = ({
   userNameInput,
   passwordInput,
@@ -90,7 +87,7 @@ const LoginScreen = ({
           : null
         }
         <button type="button" onClick={onClickLogin}>Log in</button>
-        <p>No account? <Link to="/register">Register</Link></p>
+        <p>No account? <Link to="/register" className="auth-a-tag">Register</Link></p>
       </StyledLoginScreenContainer>
     </div>
   );
@@ -106,19 +103,6 @@ const StyledLoginScreenContainer = styled.div`
   align-items: center;
   justify-content: space-around;
   padding: 20px 0;
-
-  input {
-    width: 100%;
-    padding: 0px 8px 3px 0;
-    border: 0;
-    outline: 0;
-    color: #8a8a8b;
-  }
-
-  a {
-  color: #ea738dff;
-  font-weight: bold;
-  }
 `;
 
 export default LoginScreen;

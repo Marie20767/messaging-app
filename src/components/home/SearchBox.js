@@ -41,13 +41,16 @@ const SearchBox = ({
 
 const StyledSearchBoxContainer = styled.div`
   cursor: pointer;
-  width: 452px;
+  width: 352px;
   background-color: #e9e9e9;
   border-radius: 7px;
   margin: 10px 0 5px 15px;
+  display: flex;
+  align-items: center;
 
   input {
     background-color: transparent;
+    color: #919190;
     border: none;
     width: 70%;
     margin: 5px 0;
@@ -59,9 +62,9 @@ const StyledSearchBoxContainer = styled.div`
   }
 
   .magnifying-glass {
-    margin: 2px 8px;
     width: 12px;
     height: 12px;
+    margin: 0px 10px;
   }
 `;
 

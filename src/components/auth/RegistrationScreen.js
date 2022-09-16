@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { avatars } from '../../constants/constants';
+import AvatarDisplay from '../AvatarDisplay';
 import NameAndPasswordInput from './NameAndPasswordInput';
 
 // TODO:
@@ -14,15 +15,17 @@ const RegistrationScreen = ({
   setIsNameMissing,
   isPasswordMissing,
   setIsPasswordMissing,
+  avatarId,
+  isAvatarMissing,
+  setIsAvatarMissing,
   showFormInvalidErrorMessage,
   setshowFormInvalidErrorMessage,
   setCurrentUser,
   isPasswordTooShort,
   onChangeUserName,
   onChangePassword,
+  onClickSelectAvatar,
 }) => {
-  const [isAvatarMissing, setIsAvatarMissing] = useState(false);
-  const [avatarId, setAvatarId] = useState(null);
   const [serverError, setServerError] = useState('');
 
   const navigate = useNavigate();
@@ -77,11 +80,6 @@ const RegistrationScreen = ({
     }
   };
 
-  const onClickSelectAvatar = (id) => {
-    setAvatarId(id);
-    setIsAvatarMissing(false);
-  };
-
   if (userNameInput !== '' && passwordInput !== '' && avatarId !== null) {
     setshowFormInvalidErrorMessage(false);
   }
@@ -99,44 +97,18 @@ const RegistrationScreen = ({
           showFormInvalidErrorMessage={showFormInvalidErrorMessage}
           onChangeUserName={onChangeUserName}
           onChangePassword={onChangePassword} />
-        <StyledAvatarTitleContainer $isAvatarMissing={isAvatarMissing}>
-          <h3>Choose your avatar</h3>
-          <div className="avatar-title-line" />
-        </StyledAvatarTitleContainer>
-        <StyledAvatarContainer>
-          {firstFourAvatars.map((avatar) => {
-            const avatarClassName = avatarId === avatar.id ? 'selected-avatar' : '';
-
-            return (
-              <img
-                key={avatar.id}
-                className={avatarClassName}
-                src={avatar.animal}
-                alt="animal-avatar"
-                onClick={() => onClickSelectAvatar(avatar.id)} />
-            );
-          })}
-        </StyledAvatarContainer>
-        <StyledAvatarContainer>
-          {lastFourAvatars.map((avatar) => {
-            const avatarClassName = avatarId === avatar.id ? 'selected-avatar' : '';
-
-            return (
-              <img
-                key={avatar.id}
-                className={avatarClassName}
-                src={avatar.animal}
-                alt="animal-avatar"
-                onClick={() => onClickSelectAvatar(avatar.id)} />
-            );
-          })}
-        </StyledAvatarContainer>
+        <AvatarDisplay
+          isAvatarMissing={isAvatarMissing}
+          avatarId={avatarId}
+          onClickSelectAvatar={onClickSelectAvatar}
+          avatars1={firstFourAvatars}
+          avatars2={lastFourAvatars} />
         {serverError
           ? <p className="error-message server-error">{serverError}</p>
           : null
         }
         <button type="button" onClick={onClickCreateNewUser}>Register</button>
-        <footer>Have an account? <Link to="/login">Log in</Link></footer>
+        <footer>Have an account? <Link to="/login" className="auth-a-tag">Log in</Link></footer>
       </StyledRegistrationCardContainer>
     </div>
   );
@@ -157,58 +129,15 @@ const StyledRegistrationCardContainer = styled.div`
     font-size: 17px;
   }
 
-  input {
-    width: 100%;
-    padding: 0px 8px 3px 0;
-    border: 0;
-    outline: 0;
-    color: #8a8a8b;
-  }
-
-
   footer {
     margin-top: 10px;
     font-size: 14px;
     color: #919190;
   }
 
-  a {
-  color: #ea738dff;
-  font-weight: bold;
-  }
-
   button {
     margin-top: 10px;
   }
-
-`;
-
-const StyledAvatarTitleContainer = styled.div`
-  h3 {
-    margin: 2px 0;
-    color: #8a8a8b;
-    ${(props) => props.$isAvatarMissing ? 'color: #dd3a08' : ''}
-  }
-
-  .avatar-title-line {
-    height: 1px;
-    width: 100%;
-    background-color: #8a8a8b;
-    ${(props) => props.$isAvatarMissing ? 'background-color: #dd3a08' : ''}
-  }
-`;
-
-const StyledAvatarContainer = styled.div`
-  img {
-    height: 70px;
-    margin-right: 15px;
-    cursor: pointer;
-  }
-
-  .selected-avatar {
-    border: 4.5px dashed #ea738dff;
-    border-radius: 55%;
-    }
 `;
 
 export default RegistrationScreen;

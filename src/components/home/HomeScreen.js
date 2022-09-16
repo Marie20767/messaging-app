@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import ChangeAvatarOverlay from './ChangeAvatarOverlay';
 import Sidebar from './Sidebar';
 
-const HomeScreen = ({ currentUser }) => {
+const HomeScreen = ({ currentUser, avatarId, onClickSelectAvatar }) => {
   const [users, setUsers] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [activeUserId, setActiveUserId] = useState(null);
   const [serverError, setServerError] = useState('');
+  const [showAvatarOverlay, setShowAvatarOverlay] = useState(false);
 
   const { id } = currentUser;
 
@@ -55,6 +57,10 @@ const HomeScreen = ({ currentUser }) => {
 
   return (
     <StyledHomeScreenContainer>
+      {showAvatarOverlay
+        ? <ChangeAvatarOverlay setShowAvatarOverlay={setShowAvatarOverlay} avatarId={avatarId} onClickSelectAvatar={onClickSelectAvatar} />
+        : null
+        }
       <Sidebar
         isSearching={isSearching}
         users={users}
@@ -66,6 +72,7 @@ const HomeScreen = ({ currentUser }) => {
         setIsSearching={setIsSearching}
         searchInput={searchInput}
         setSearchInput={setSearchInput}
+        setShowAvatarOverlay={setShowAvatarOverlay}
         onChangeSearchInputGetSearchResults={onChangeSearchInputGetSearchResults} />
     </StyledHomeScreenContainer>
   );
@@ -94,7 +101,9 @@ const StyledServerErrorContainer = styled.div`
   }
 
 `;
+
 const StyledHomeScreenContainer = styled.div`
   height: 100%;
 `;
+
 export default HomeScreen;

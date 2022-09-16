@@ -11,6 +11,12 @@ import AutoLogin from './components/auth/AutoLogin';
 // Command to set up the database again:
 // psql -h localhost -p 5432 -U marieimpens -d react_message_app -f db/init.sql (in the api)
 
+// TODO:
+// Align the x mark for the search box so that you don't have to use  margins (align self didn't work)
+
+// TODO:
+// Change all names to Harry Potter names
+
 // TODO: together:
 // Make it so if I go to login, register or welcome screen, if im already logged in it sends me to the home page
 // - Make sure you can't access /home if not logged in
@@ -24,7 +30,8 @@ const App = () => {
   const [isPasswordMissing, setIsPasswordMissing] = useState(false);
   const [isPasswordTooShort, setIsPasswordTooShort] = useState(false);
   const [showFormInvalidErrorMessage, setshowFormInvalidErrorMessage] = useState(false);
-  const [newAvatarId, setNewAvatarId] = useState(null);
+  const [isAvatarMissing, setIsAvatarMissing] = useState(false);
+  const [avatarId, setAvatarId] = useState(null);
 
   const onChangeUserName = (event) => {
     setUserNameInput(event.target.value);
@@ -40,6 +47,11 @@ const App = () => {
     } else {
       setIsPasswordTooShort(false);
     }
+  };
+
+  const onClickSelectAvatar = (id) => {
+    setAvatarId(id);
+    setIsAvatarMissing(false);
   };
 
   return (
@@ -58,16 +70,18 @@ const App = () => {
               passwordInput={passwordInput}
               isNameMissing={isNameMissing}
               setIsNameMissing={setIsNameMissing}
-              newAvatarId={newAvatarId}
-              setNewAvatarId={setNewAvatarId}
               isPasswordMissing={isPasswordMissing}
               setIsPasswordMissing={setIsPasswordMissing}
+              avatarId={avatarId}
+              isAvatarMissing={isAvatarMissing}
+              setIsAvatarMissing={setIsAvatarMissing}
               showFormInvalidErrorMessage={showFormInvalidErrorMessage}
               setshowFormInvalidErrorMessage={setshowFormInvalidErrorMessage}
               setCurrentUser={setCurrentUser}
               isPasswordTooShort={isPasswordTooShort}
               onChangeUserName={onChangeUserName}
-              onChangePassword={onChangePassword} />
+              onChangePassword={onChangePassword}
+              onClickSelectAvatar={onClickSelectAvatar} />
           )} />
         <Route
           exact
@@ -92,7 +106,9 @@ const App = () => {
           element={(
             <AutoLogin setCurrentUser={setCurrentUser}>
               <HomeScreen
-                currentUser={currentUser} />
+                currentUser={currentUser}
+                avatarId={avatarId}
+                onClickSelectAvatar={onClickSelectAvatar} />
             </AutoLogin>
           )} />
       </Routes>

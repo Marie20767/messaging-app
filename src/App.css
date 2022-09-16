@@ -84,3 +84,14 @@ p {
 .message-icon {
   height: 100px;
 }
+
+.auth-a-tag {
+  color: #ea738dff;
+  font-weight: bold;
+}
+
+.x-mark {
+  display: flex;
+  margin-left: 50px;
+  cursor: pointer;
+}
