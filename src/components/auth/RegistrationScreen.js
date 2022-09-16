@@ -8,23 +8,22 @@ import NameAndPasswordInput from './NameAndPasswordInput';
 // Encrypt password when sending it to back end
 
 const RegistrationScreen = ({
-  serverError,
   userNameInput,
   passwordInput,
   isNameMissing,
   setIsNameMissing,
   isPasswordMissing,
   setIsPasswordMissing,
-  showErrorMessage,
-  setShowErrorMessage,
+  showFormInvalidErrorMessage,
+  setshowFormInvalidErrorMessage,
   setCurrentUser,
   isPasswordTooShort,
   onChangeUserName,
   onChangePassword,
-  handleServerErrorMessage,
 }) => {
   const [isAvatarMissing, setIsAvatarMissing] = useState(false);
   const [avatarId, setAvatarId] = useState(null);
+  const [serverError, setServerError] = useState('');
 
   const navigate = useNavigate();
 
@@ -55,16 +54,16 @@ const RegistrationScreen = ({
           avatarId,
         });
 
-        setShowErrorMessage(false);
+        setshowFormInvalidErrorMessage(false);
 
         // Go to home screen here instead of using <Link> to make sure the newest current-user-id gets passed
         navigate('/home');
       } catch (e) {
         console.log(e);
-        handleServerErrorMessage(e);
+        setServerError('Something went wrong with your request');
       }
     } else {
-      setShowErrorMessage(true);
+      setshowFormInvalidErrorMessage(true);
 
       if (userNameInput === '') {
         setIsNameMissing(true);
@@ -83,8 +82,8 @@ const RegistrationScreen = ({
     setIsAvatarMissing(false);
   };
 
-  if (serverError) {
-    return <p>{serverError}</p>;
+  if (userNameInput !== '' && passwordInput !== '' && avatarId !== null) {
+    setshowFormInvalidErrorMessage(false);
   }
 
   return (
@@ -97,7 +96,7 @@ const RegistrationScreen = ({
           isNameMissing={isNameMissing}
           isPasswordMissing={isPasswordMissing}
           isPasswordTooShort={isPasswordTooShort}
-          showErrorMessage={showErrorMessage}
+          showFormInvalidErrorMessage={showFormInvalidErrorMessage}
           onChangeUserName={onChangeUserName}
           onChangePassword={onChangePassword} />
         <StyledAvatarTitleContainer $isAvatarMissing={isAvatarMissing}>
@@ -132,6 +131,10 @@ const RegistrationScreen = ({
             );
           })}
         </StyledAvatarContainer>
+        {serverError
+          ? <p className="error-message server-error">{serverError}</p>
+          : null
+        }
         <button type="button" onClick={onClickCreateNewUser}>Register</button>
         <footer>Have an account? <Link to="/login">Log in</Link></footer>
       </StyledRegistrationCardContainer>
@@ -196,7 +199,6 @@ const StyledAvatarTitleContainer = styled.div`
 `;
 
 const StyledAvatarContainer = styled.div`
-
   img {
     height: 70px;
     margin-right: 15px;

@@ -5,25 +5,23 @@ import NameAndPasswordInput from './NameAndPasswordInput';
 
 // TODO:
 // Refactor the styling of the container (a lot of duplicate code with Registration Screen)
-// Make FormInput component that just returns a StyledInputContainer and has appropriate styling within it
 
 const LoginScreen = ({
-  serverError,
   userNameInput,
   passwordInput,
   isNameMissing,
   isPasswordMissing,
   setIsNameMissing,
   setIsPasswordMissing,
-  showErrorMessage,
-  setShowErrorMessage,
+  showFormInvalidErrorMessage,
+  setshowFormInvalidErrorMessage,
   setCurrentUser,
   onChangeUserName,
   onChangePassword,
-  handleServerErrorMessage,
 }) => {
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState(null);
+  const [serverError, setServerError] = useState('');
 
   const onClickLogin = async () => {
     if (userNameInput !== '' && passwordInput !== '') {
@@ -58,13 +56,13 @@ const LoginScreen = ({
           setLoginError(result.error);
         }
 
-        setShowErrorMessage(false);
+        setshowFormInvalidErrorMessage(false);
       } catch (e) {
         console.log(e);
-        handleServerErrorMessage(e);
+        setServerError('Something went wrong with your request');
       }
     } else {
-      setShowErrorMessage(true);
+      setshowFormInvalidErrorMessage(true);
       if (userNameInput === '') {
         setIsNameMissing(true);
       }
@@ -73,10 +71,6 @@ const LoginScreen = ({
       }
     }
   };
-
-  if (serverError) {
-    return <p>{serverError}</p>;
-  }
 
   return (
     <div className="card-container">
@@ -87,10 +81,14 @@ const LoginScreen = ({
           passwordInput={passwordInput}
           isNameMissing={isNameMissing}
           isPasswordMissing={isPasswordMissing}
-          showErrorMessage={showErrorMessage}
+          showFormInvalidErrorMessage={showFormInvalidErrorMessage}
           loginError={loginError}
           onChangeUserName={onChangeUserName}
           onChangePassword={onChangePassword} />
+        {serverError
+          ? <p className="error-message">{serverError}</p>
+          : null
+        }
         <button type="button" onClick={onClickLogin}>Log in</button>
         <p>No account? <Link to="/register">Register</Link></p>
       </StyledLoginScreenContainer>

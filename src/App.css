@@ -62,6 +62,10 @@ p {
   margin-top: 0;
 }
 
+.server-error {
+  margin-top: 5px;
+}
+
 .dark-icon {
   color: #8a8a8b;
   height: 13px;
@@ -74,7 +78,7 @@ p {
 }
 
 .light-icon {
-    color: #919190;
+  color: #919190;
 }
 
 .message-icon {
