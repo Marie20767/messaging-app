@@ -43,8 +43,9 @@ const StyledOverlay = styled.div`
 const StyledOverlayContent = styled.div`
   display: flex;
   flex-direction: column;
-  height: 62%;
-  width: 40%;
+  height: 55%;
+  width: 38%;
+  padding: 20px 0;
   border-radius: 15px;
   z-index: 1;
   background-color: white;
@@ -54,7 +55,7 @@ const StyledOverlayContent = styled.div`
 const StyledXIconContainer = styled.div`
   display: flex;
   align-self: flex-end;
-  margin: 15px 20px 0 0;
+  margin: 0px 20px 0 0;
 `;
 
 const StyledTitleAvatarsAndButtonContainer = styled.div`

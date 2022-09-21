@@ -14,14 +14,28 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
   const { id, avatarId } = currentUser;
 
-  // TODO: save this new avatar to back end
-  const onClickSaveNewAvatar = (newAvatarId) => {
-    setCurrentUser({
-      ...currentUser,
-      avatarId: newAvatarId,
-    });
+  const onClickSaveNewAvatar = async (newAvatarId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/users/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          avatar_id: newAvatarId,
+        }),
+      });
+      const result = await response.json();
 
-    setShowAvatarOverlay(false);
+      if (!result.error) {
+        setCurrentUser({
+          ...currentUser,
+          avatarId: newAvatarId,
+        });
+
+        setShowAvatarOverlay(false);
+      }
+    } catch (e) {
+      setServerError('Something went wrong with your request');
+    }
   };
 
   const getUserData = async () => {
@@ -56,7 +70,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     setSearchResult(usersMatchingSearchInput);
   };
 
-  if (serverError) {
+  if (serverError && !showAvatarOverlay) {
     return (
       <StyledServerErrorContainer>
         <h2>{serverError}</h2>
@@ -68,7 +82,13 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   return (
     <StyledHomeScreenContainer>
       {showAvatarOverlay
-        ? <ChangeAvatarOverlay setShowAvatarOverlay={setShowAvatarOverlay} avatarId={avatarId} onClickSaveNewAvatar={onClickSaveNewAvatar} />
+        ? (
+          <ChangeAvatarOverlay
+            setShowAvatarOverlay={setShowAvatarOverlay}
+            avatarId={avatarId}
+            serverError={serverError}
+            onClickSaveNewAvatar={onClickSaveNewAvatar} />
+        )
         : null
         }
       <Sidebar
@@ -114,7 +134,7 @@ const StyledServerErrorContainer = styled.div`
 `;
 
 const StyledHomeScreenContainer = styled.div`
-  height: 100%;
+  min-height: 100%;
 `;
 
 export default HomeScreen;

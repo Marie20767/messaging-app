@@ -5,8 +5,6 @@ import SearchBox from './SearchBox';
 import { allAvatars } from '../../constants/constants';
 import SettingsPopUpMenu from './SettingsPopUpMenu';
 
-// TODO: Finish overlay
-
 const Sidebar = ({
   isSearching,
   users,
@@ -78,7 +76,8 @@ const Sidebar = ({
 const StyledSidebarContainer = styled.div`
   z-index: -1;
   width: 400px;
-  height: 100%;
+  min-height: 100%;
+  padding-bottom: 5px;
   border-right: 1px solid #e9e9e9;
 
   .no-search-result {

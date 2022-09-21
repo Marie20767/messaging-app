@@ -3,7 +3,7 @@ import { avatars } from '../../constants/constants';
 import AvatarDisplay from '../AvatarDisplay';
 import FullScreenOverlay from '../overlays-and-popups/FullScreenOverlay';
 
-const ChangeAvatarOverlay = ({ avatarId, setShowAvatarOverlay, onClickSaveNewAvatar }) => {
+const ChangeAvatarOverlay = ({ avatarId, setShowAvatarOverlay, serverError, onClickSaveNewAvatar }) => {
   const [newSelectedAvatarId, setNewSelectedAvatarId] = useState(avatarId);
 
   const [firstAvatar, secondAvatar, thirdAvatar, fourthAvatar, ...lastFourAvatars] = avatars;
@@ -19,6 +19,7 @@ const ChangeAvatarOverlay = ({ avatarId, setShowAvatarOverlay, onClickSaveNewAva
         avatarId={newSelectedAvatarId}
         avatars1={firstFourAvatars}
         avatars2={lastFourAvatars}
+        serverError={serverError}
         isOverlay
         onClickSelectAvatar={onClickSelectNewAvatar} />
       <button type="button" onClick={() => onClickSaveNewAvatar(newSelectedAvatarId)}>Save</button>

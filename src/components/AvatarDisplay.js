@@ -6,6 +6,7 @@ const AvatarDisplay = ({
   avatars1,
   avatars2,
   avatarId,
+  serverError,
   onClickSelectAvatar,
 }) => {
   return (
@@ -16,6 +17,10 @@ const AvatarDisplay = ({
           : <h3>Choose your avatar</h3>
         }
         <div className="avatar-title-line" />
+        {serverError
+          ? <p className="error-message server-error">{serverError}</p>
+          : null
+        }
       </StyledAvatarTitleContainer>
       <StyledAvatarContainer>
         {avatars1.map((avatar) => {
@@ -50,6 +55,10 @@ const AvatarDisplay = ({
 };
 
 const StyledAvatarTitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
   h3 {
     margin: 2px 0;
     color: #8a8a8b;
@@ -59,6 +68,11 @@ const StyledAvatarTitleContainer = styled.div`
   h2 {
     font-size: 23px;
   }
+
+  p {
+    margin-top: 20px;
+  }
+
 
   .avatar-title-line {
     height: 1px;
