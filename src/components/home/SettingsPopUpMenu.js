@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import PopUpMenu from '../overlays and popups/PopUpMenu';
+import PopUpMenu from '../overlays-and-popups/PopUpMenu';
 
-const SettingsPopUpMenu = ({ setShowAvatarOverlay, setShowSettingsPopUpMenu }) => {
+const SettingsPopUpMenu = ({ setShowAvatarOverlay, setCurrentUser, setShowSettingsPopUpMenu }) => {
   const navigate = useNavigate();
 
   const onClickLogOut = () => {
     navigate('/login');
     localStorage.removeItem('current-user-id');
+    setCurrentUser(null);
   };
 
   const onClickShowAvatarOverlay = () => {

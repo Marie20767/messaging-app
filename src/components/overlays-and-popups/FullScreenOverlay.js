@@ -7,12 +7,16 @@ const FullScreenOverlay = ({ children, onClick }) => {
     <StyledFullScreenOverlayContainer>
       <StyledOverlay />
       <StyledOverlayContent>
-        <FontAwesomeIcon
-          icon={faXmark}
-          onClick={onClick}
-          className="light-icon x-mark"
-          fontSize="26px" />
-        {children}
+        <StyledXIconContainer>
+          <FontAwesomeIcon
+            icon={faXmark}
+            onClick={onClick}
+            className="light-icon x-icon"
+            fontSize="26px" />
+        </StyledXIconContainer>
+        <StyledTitleAvatarsAndButtonContainer>
+          {children}
+        </StyledTitleAvatarsAndButtonContainer>
       </StyledOverlayContent>
     </StyledFullScreenOverlayContainer>
   );
@@ -45,6 +49,20 @@ const StyledOverlayContent = styled.div`
   z-index: 1;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
+`;
+
+const StyledXIconContainer = styled.div`
+  display: flex;
+  align-self: flex-end;
+  margin: 15px 20px 0 0;
+`;
+
+const StyledTitleAvatarsAndButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-around;
+  align-items: center;
 `;
 
 export default FullScreenOverlay;

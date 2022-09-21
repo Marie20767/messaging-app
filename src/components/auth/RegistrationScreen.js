@@ -2,31 +2,33 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { avatars } from '../../constants/constants';
+import useAuthForm from '../../hooks/useAuthForm';
 import AvatarDisplay from '../AvatarDisplay';
 import NameAndPasswordInput from './NameAndPasswordInput';
 
 // TODO:
 // Encrypt password when sending it to back end
 
-const RegistrationScreen = ({
-  userNameInput,
-  passwordInput,
-  isNameMissing,
-  setIsNameMissing,
-  isPasswordMissing,
-  setIsPasswordMissing,
-  avatarId,
-  isAvatarMissing,
-  setIsAvatarMissing,
-  showFormInvalidErrorMessage,
-  setshowFormInvalidErrorMessage,
-  setCurrentUser,
-  isPasswordTooShort,
-  onChangeUserName,
-  onChangePassword,
-  onClickSelectAvatar,
-}) => {
+const RegistrationScreen = ({ setCurrentUser }) => {
   const [serverError, setServerError] = useState('');
+
+  const {
+    userNameInput,
+    passwordInput,
+    avatarId,
+    isNameMissing,
+    isPasswordMissing,
+    isAvatarMissing,
+    isPasswordTooShort,
+    setIsNameMissing,
+    showFormInvalidErrorMessage,
+    setShowFormInvalidErrorMessage,
+    setIsPasswordMissing,
+    setIsAvatarMissing,
+    onChangeUserName,
+    onChangePassword,
+    onClickSelectAvatar,
+  } = useAuthForm();
 
   const navigate = useNavigate();
 
@@ -57,7 +59,7 @@ const RegistrationScreen = ({
           avatarId,
         });
 
-        setshowFormInvalidErrorMessage(false);
+        setShowFormInvalidErrorMessage(false);
 
         // Go to home screen here instead of using <Link> to make sure the newest current-user-id gets passed
         navigate('/home');
@@ -66,7 +68,7 @@ const RegistrationScreen = ({
         setServerError('Something went wrong with your request');
       }
     } else {
-      setshowFormInvalidErrorMessage(true);
+      setShowFormInvalidErrorMessage(true);
 
       if (userNameInput === '') {
         setIsNameMissing(true);
@@ -79,10 +81,6 @@ const RegistrationScreen = ({
       }
     }
   };
-
-  if (userNameInput !== '' && passwordInput !== '' && avatarId !== null) {
-    setshowFormInvalidErrorMessage(false);
-  }
 
   return (
     <div className="card-container">

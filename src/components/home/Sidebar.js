@@ -15,6 +15,7 @@ const Sidebar = ({
   activeUserId,
   setActiveUserId,
   setSearchResult,
+  setCurrentUser,
   setIsSearching,
   searchInput,
   setSearchInput,
@@ -42,6 +43,7 @@ const Sidebar = ({
         ? (
           <SettingsPopUpMenu
             setShowSettingsPopUpMenu={setShowSettingsPopUpMenu}
+            setCurrentUser={setCurrentUser}
             setShowAvatarOverlay={setShowAvatarOverlay} />
         )
         : null

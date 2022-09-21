@@ -22,8 +22,8 @@ const DemoUser = ({
 const StyledUserContainer = styled.div`
   display: flex;
   align-items: center;
-  margin: 20px 30px 20px 20px;
-  padding: 10px;
+  margin: 20px 12px 20px 15px;
+  padding: 11px 10px;
   cursor: pointer;
 
   p {

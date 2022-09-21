@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import ChangeAvatarOverlay from './ChangeAvatarOverlay';
 import Sidebar from './Sidebar';
 
-const HomeScreen = ({ currentUser, avatarId, onClickSelectAvatar }) => {
+const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [users, setUsers] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] = useState([]);
@@ -12,7 +12,17 @@ const HomeScreen = ({ currentUser, avatarId, onClickSelectAvatar }) => {
   const [serverError, setServerError] = useState('');
   const [showAvatarOverlay, setShowAvatarOverlay] = useState(false);
 
-  const { id } = currentUser;
+  const { id, avatarId } = currentUser;
+
+  // TODO: save this new avatar to back end
+  const onClickSaveNewAvatar = (newAvatarId) => {
+    setCurrentUser({
+      ...currentUser,
+      avatarId: newAvatarId,
+    });
+
+    setShowAvatarOverlay(false);
+  };
 
   const getUserData = async () => {
     try {
@@ -58,7 +68,7 @@ const HomeScreen = ({ currentUser, avatarId, onClickSelectAvatar }) => {
   return (
     <StyledHomeScreenContainer>
       {showAvatarOverlay
-        ? <ChangeAvatarOverlay setShowAvatarOverlay={setShowAvatarOverlay} avatarId={avatarId} onClickSelectAvatar={onClickSelectAvatar} />
+        ? <ChangeAvatarOverlay setShowAvatarOverlay={setShowAvatarOverlay} avatarId={avatarId} onClickSaveNewAvatar={onClickSaveNewAvatar} />
         : null
         }
       <Sidebar
@@ -69,6 +79,7 @@ const HomeScreen = ({ currentUser, avatarId, onClickSelectAvatar }) => {
         setActiveUserId={setActiveUserId}
         searchResult={searchResult}
         setSearchResult={setSearchResult}
+        setCurrentUser={setCurrentUser}
         setIsSearching={setIsSearching}
         searchInput={searchInput}
         setSearchInput={setSearchInput}

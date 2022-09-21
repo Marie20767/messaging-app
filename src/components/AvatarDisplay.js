@@ -2,15 +2,19 @@ import styled from 'styled-components';
 
 const AvatarDisplay = ({
   isAvatarMissing = false,
-  onClickSelectAvatar,
+  isOverlay = false,
   avatars1,
   avatars2,
   avatarId,
+  onClickSelectAvatar,
 }) => {
   return (
     <>
       <StyledAvatarTitleContainer $isAvatarMissing={isAvatarMissing}>
-        <h3>Choose your avatar</h3>
+        {isOverlay
+          ? <h2>Choose your new avatar</h2>
+          : <h3>Choose your avatar</h3>
+        }
         <div className="avatar-title-line" />
       </StyledAvatarTitleContainer>
       <StyledAvatarContainer>
@@ -50,6 +54,10 @@ const StyledAvatarTitleContainer = styled.div`
     margin: 2px 0;
     color: #8a8a8b;
     ${(props) => props.$isAvatarMissing ? 'color: #dd3a08' : ''}
+  }
+
+  h2 {
+    font-size: 23px;
   }
 
   .avatar-title-line {

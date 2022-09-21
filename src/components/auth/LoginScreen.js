@@ -1,24 +1,26 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import useAuthForm from '../../hooks/useAuthForm';
 import NameAndPasswordInput from './NameAndPasswordInput';
 
-const LoginScreen = ({
-  userNameInput,
-  passwordInput,
-  isNameMissing,
-  isPasswordMissing,
-  setIsNameMissing,
-  setIsPasswordMissing,
-  showFormInvalidErrorMessage,
-  setshowFormInvalidErrorMessage,
-  setCurrentUser,
-  onChangeUserName,
-  onChangePassword,
-}) => {
+const LoginScreen = ({ setCurrentUser }) => {
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState(null);
   const [serverError, setServerError] = useState('');
+
+  const {
+    userNameInput,
+    passwordInput,
+    isNameMissing,
+    isPasswordMissing,
+    showFormInvalidErrorMessage,
+    setIsNameMissing,
+    setIsPasswordMissing,
+    setShowFormInvalidErrorMessage,
+    onChangeUserName,
+    onChangePassword,
+  } = useAuthForm(true);
 
   const onClickLogin = async () => {
     if (userNameInput !== '' && passwordInput !== '') {
@@ -53,13 +55,13 @@ const LoginScreen = ({
           setLoginError(result.error);
         }
 
-        setshowFormInvalidErrorMessage(false);
+        setShowFormInvalidErrorMessage(false);
       } catch (e) {
         console.log(e);
         setServerError('Something went wrong with your request');
       }
     } else {
-      setshowFormInvalidErrorMessage(true);
+      setShowFormInvalidErrorMessage(true);
       if (userNameInput === '') {
         setIsNameMissing(true);
       }

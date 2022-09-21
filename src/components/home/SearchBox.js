@@ -32,7 +32,7 @@ const SearchBox = ({
         value={searchInput}
         onChange={(e) => onChangeSearchInputGetSearchResults(e)} />
       {searchInput !== ''
-        ? <FontAwesomeIcon icon={faXmark} className="light-icon x-mark" onClick={onClickCloseSearch} />
+        ? <FontAwesomeIcon icon={faXmark} className="light-icon x-icon" onClick={onClickCloseSearch} />
         : null
       }
     </StyledSearchBoxContainer>
@@ -41,7 +41,7 @@ const SearchBox = ({
 
 const StyledSearchBoxContainer = styled.div`
   cursor: pointer;
-  width: 352px;
+  width: 372px;
   background-color: #e9e9e9;
   border-radius: 7px;
   margin: 10px 0 5px 15px;
