@@ -72,25 +72,15 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
   if (serverError && !showAvatarOverlay) {
     return (
-      <StyledServerErrorContainer>
+      <div className="full-screen-error-container">
         <h2>{serverError}</h2>
         <button type="button" className="home-screen-server-error-button" onClick={getUserData}>Retry</button>
-      </StyledServerErrorContainer>
+      </div>
     );
   }
 
   return (
     <StyledHomeScreenContainer>
-      {showAvatarOverlay
-        ? (
-          <ChangeAvatarOverlay
-            setShowAvatarOverlay={setShowAvatarOverlay}
-            avatarId={avatarId}
-            serverError={serverError}
-            onClickSaveNewAvatar={onClickSaveNewAvatar} />
-        )
-        : null
-        }
       <Sidebar
         isSearching={isSearching}
         users={users}
@@ -105,33 +95,19 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         setSearchInput={setSearchInput}
         setShowAvatarOverlay={setShowAvatarOverlay}
         onChangeSearchInputGetSearchResults={onChangeSearchInputGetSearchResults} />
+      {showAvatarOverlay
+        ? (
+          <ChangeAvatarOverlay
+            setShowAvatarOverlay={setShowAvatarOverlay}
+            avatarId={avatarId}
+            serverError={serverError}
+            onClickSaveNewAvatar={onClickSaveNewAvatar} />
+        )
+        : null
+        }
     </StyledHomeScreenContainer>
   );
 };
-
-const StyledServerErrorContainer = styled.div`
-  background-color: #9dbbf8;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-
-  h2 {
-    margin-bottom: 20px;
-  }
-
-  button {
-    width: 80px;
-  }
-
-  button:hover{
-    background-color: #ea738dff;
-    transform: scale(1.1);
-  }
-
-`;
 
 const StyledHomeScreenContainer = styled.div`
   min-height: 100%;

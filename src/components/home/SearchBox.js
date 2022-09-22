@@ -42,7 +42,7 @@ const SearchBox = ({
 const StyledSearchBoxContainer = styled.div`
   cursor: pointer;
   width: 372px;
-  background-color: #e9e9e9;
+  background-color: #e7e6e6;
   border-radius: 7px;
   margin: 10px 0 5px 15px;
   display: flex;

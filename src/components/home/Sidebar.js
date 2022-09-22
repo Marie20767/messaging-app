@@ -30,54 +30,56 @@ const Sidebar = ({
   return (
     <StyledSidebarContainer>
       <StyledHomePageHeader>
-        <img
-          src={currentUserAvatar.animal}
-          alt="your user avatar"
-          className="current-user-avatar clickable"
-          onClick={() => setShowSettingsPopUpMenu(!showSettingsPopUpMenu)} />
-        <p className="current-user-name">Hi {name}!</p>
+        <StyledHomePageNameAndAvatar>
+          <img
+            src={currentUserAvatar.animal}
+            alt="your user avatar"
+            className="current-user-avatar clickable"
+            onClick={() => setShowSettingsPopUpMenu(!showSettingsPopUpMenu)} />
+          <p className="current-user-name">Hi {name}!</p>
+        </StyledHomePageNameAndAvatar>
+        {showSettingsPopUpMenu
+          ? (
+            <SettingsPopUpMenu
+              setShowSettingsPopUpMenu={setShowSettingsPopUpMenu}
+              setCurrentUser={setCurrentUser}
+              setShowAvatarOverlay={setShowAvatarOverlay} />
+          )
+          : null
+        }
+
+        <SearchBox
+          searchInput={searchInput}
+          setSearchInput={setSearchInput}
+          setSearchResult={setSearchResult}
+          setIsSearching={setIsSearching}
+          onChangeSearchInputGetSearchResults={onChangeSearchInputGetSearchResults} />
       </StyledHomePageHeader>
-      {showSettingsPopUpMenu
-        ? (
-          <SettingsPopUpMenu
-            setShowSettingsPopUpMenu={setShowSettingsPopUpMenu}
-            setCurrentUser={setCurrentUser}
-            setShowAvatarOverlay={setShowAvatarOverlay} />
-        )
-        : null
-      }
-      <SearchBox
-        searchInput={searchInput}
-        setSearchInput={setSearchInput}
-        setSearchResult={setSearchResult}
-        setIsSearching={setIsSearching}
-        onChangeSearchInputGetSearchResults={onChangeSearchInputGetSearchResults} />
+      <StyledDemoUsersContainer>
+        {usersToDisplay.map((user) => {
+          return (
+            <DemoUser
+              key={user.id}
+              id={user.id}
+              avatarId={user.avatar_id}
+              name={user.name}
+              activeUserId={activeUserId}
+              setActiveUserId={setActiveUserId} />
+          );
+        })}
 
-      {usersToDisplay.map((user) => {
-        return (
-          <DemoUser
-            key={user.id}
-            id={user.id}
-            avatarId={user.avatar_id}
-            name={user.name}
-            activeUserId={activeUserId}
-            setActiveUserId={setActiveUserId} />
-        );
-      })}
-
-      {searchResult.length === 0 && isSearching
-        ? <p className="no-search-result">{`No result for '${searchInput}'`}</p>
-        : null
-      }
+        {searchResult.length === 0 && isSearching
+          ? <p className="no-search-result">{`No result for '${searchInput}'`}</p>
+          : null
+        }
+      </StyledDemoUsersContainer>
     </StyledSidebarContainer>
   );
 };
 
 const StyledSidebarContainer = styled.div`
-  z-index: -1;
-  width: 400px;
-  min-height: 100%;
-  padding-bottom: 5px;
+  width: 400px; 
+  background-color: #f8f7f7;
   border-right: 1px solid #e9e9e9;
 
   .no-search-result {
@@ -91,6 +93,13 @@ const StyledSidebarContainer = styled.div`
 `;
 
 const StyledHomePageHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 16vh;
+`;
+
+const StyledHomePageNameAndAvatar = styled.div`
 display: flex;
 align-items: center;
 padding: 20px 0px 15px 15px;
@@ -102,6 +111,11 @@ img {
 .current-user-avatar {
     height: 40px;
   }
+`;
+
+const StyledDemoUsersContainer = styled.div`
+  overflow-y: scroll;
+  height: 84vh;
 `;
 
 export default Sidebar;

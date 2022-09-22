@@ -22,8 +22,8 @@ const DemoUser = ({
 const StyledUserContainer = styled.div`
   display: flex;
   align-items: center;
-  margin: 20px 12px 20px 15px;
-  padding: 11px 10px;
+  padding: 15px 0 15px 10px;
+  margin: 0 5px 0 15px;
   cursor: pointer;
 
   p {
@@ -32,7 +32,7 @@ const StyledUserContainer = styled.div`
   }
 
   &.active-user {
-    background-color: #e9e9e9;
+    background-color: #9dbbf8a9;
     border-radius: 10px;
   }
 
@@ -40,7 +40,7 @@ const StyledUserContainer = styled.div`
     background-color: transparent;
 
     &:hover {
-      background-color: #f6f6f6;
+      background-color: #e7e6e6;
       border-radius: 10px;
     }
   }

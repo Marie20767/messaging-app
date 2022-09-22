@@ -31,13 +31,13 @@ input {
 }
 
 button {
-  font-size: 18px;
-  background-color: #ea738dff;
+  font-size: 17px;
+  background-color: #ea738d;
   color: white;
   cursor: pointer;
   border: none;
   border-radius: 10px;
-  padding: 6px 15px;
+  padding: 6px 12px;
 }
 
 button:hover {
@@ -94,4 +94,36 @@ p {
   display: flex;
   margin-left: 50px;
   cursor: pointer;
+}
+
+.full-screen-error-container {
+  background-color: #9dbbf8;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.full-screen-error-container h2 {
+    margin-bottom: 20px;
+}
+
+.full-screen-error-container button {
+  min-width: 80px;
+}
+
+.full-screen-error-container button:hover {
+  background-color: #ea738dff;
+  transform: scale(1.1);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #919190; 
+  border-radius: 8px;
 }
