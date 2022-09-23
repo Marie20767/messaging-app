@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { avatars } from '../../constants/constants';
-import AvatarDisplay from '../AvatarDisplay';
-import FullScreenOverlay from '../overlays-and-popups/FullScreenOverlay';
+import { avatars } from '../../../constants/constants';
+import AvatarDisplay from '../../AvatarDisplay';
+import FullScreenOverlay from '../../overlays-and-popups/FullScreenOverlay';
 
 const ChangeAvatarOverlay = ({ avatarId, setShowAvatarOverlay, serverError, onClickSaveNewAvatar }) => {
   const [newSelectedAvatarId, setNewSelectedAvatarId] = useState(avatarId);

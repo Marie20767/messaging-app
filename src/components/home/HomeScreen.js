@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ChangeAvatarOverlay from './ChangeAvatarOverlay';
-import Sidebar from './Sidebar';
+import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
+import ActiveMessagesThread from './active-message-thread/ActiveMessagesThread';
+import Sidebar from './sidebar/Sidebar';
 
 const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [users, setUsers] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [activeUserId, setActiveUserId] = useState(null);
+  const [activeUserId, setActiveUserId] = useState('1');
   const [serverError, setServerError] = useState('');
   const [showAvatarOverlay, setShowAvatarOverlay] = useState(false);
 
@@ -95,6 +96,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         setSearchInput={setSearchInput}
         setShowAvatarOverlay={setShowAvatarOverlay}
         onChangeSearchInputGetSearchResults={onChangeSearchInputGetSearchResults} />
+      <ActiveMessagesThread users={users} />
       {showAvatarOverlay
         ? (
           <ChangeAvatarOverlay
@@ -104,13 +106,14 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
             onClickSaveNewAvatar={onClickSaveNewAvatar} />
         )
         : null
-        }
+      }
     </StyledHomeScreenContainer>
   );
 };
 
 const StyledHomeScreenContainer = styled.div`
   min-height: 100%;
+  display: flex;
 `;
 
 export default HomeScreen;

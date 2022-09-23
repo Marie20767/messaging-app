@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { allAvatars } from '../../constants/constants';
+import { allAvatars } from '../../../constants/constants';
 
 const DemoUser = ({
   name,

@@ -16,7 +16,7 @@ h2 {
   font-size: 30px;
 }
 
-h3, p, button, input, footer {
+h3, p, h4, button, input, footer {
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
 }

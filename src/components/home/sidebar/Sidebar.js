@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import DemoUser from './DemoUser';
 import SearchBox from './SearchBox';
-import { allAvatars } from '../../constants/constants';
+import { allAvatars } from '../../../constants/constants';
 import SettingsPopUpMenu from './SettingsPopUpMenu';
 
 const Sidebar = ({

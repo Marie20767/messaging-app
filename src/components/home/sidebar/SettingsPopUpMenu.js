@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import PopUpMenu from '../overlays-and-popups/PopUpMenu';
+import PopUpMenu from '../../overlays-and-popups/PopUpMenu';
 
 const SettingsPopUpMenu = ({ setShowAvatarOverlay, setCurrentUser, setShowSettingsPopUpMenu }) => {
   const navigate = useNavigate();
