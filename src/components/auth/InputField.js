@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const InputField = ({ isMissing, icon, type, name, placeholder, onChange, value, RightIcon }) => {
+const InputField = ({ isMissing, icon, type, name, placeholder, onChange, value, RightIcon, onKeyDown }) => {
   return (
     <StyledInputContainer $isMissing={isMissing}>
       <StyledInputContent>
@@ -11,7 +11,8 @@ const InputField = ({ isMissing, icon, type, name, placeholder, onChange, value,
           name={name}
           placeholder={placeholder}
           onChange={onChange}
-          value={value} />
+          value={value}
+          onKeyDown={onKeyDown} />
         {RightIcon}
       </StyledInputContent>
     </StyledInputContainer>

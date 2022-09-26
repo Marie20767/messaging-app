@@ -4,10 +4,7 @@ import MockThreadData from '../../../data/mock-thread-data';
 import { demoUsersAvatars } from '../../../constants/constants';
 import MessagesHeader from './ActiveMessagesHeader';
 import Messages from './Messages';
-
-
-// TODO: make an inout at the bottom that is fixed to type in the Message
-// Make the header fixed at the top like the sidebar name and avatar
+import MessageInputField from './MessageInputField';
 
 const ActiveMessagesThread = ({ users }) => {
   const [activeMessagesThread, seActiveMessagesThread] = useState(MockThreadData[0]);
@@ -26,6 +23,7 @@ const ActiveMessagesThread = ({ users }) => {
     <StyledMessagesThreadContainer>
       <MessagesHeader users={users} demoUserAvatar={demoUserAvatar} />
       <Messages activeMessagesThread={activeMessagesThread} />
+      <MessageInputField />
     </StyledMessagesThreadContainer>
   );
 };
@@ -33,9 +31,8 @@ const ActiveMessagesThread = ({ users }) => {
 const StyledMessagesThreadContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 20px 25px 15px 15px;
   height: 100vh;
-  overflow-y: scroll;
+  justify-content: space-between;
 `;
 
 export default ActiveMessagesThread;

@@ -7,6 +7,8 @@ const AvatarDisplay = ({
   avatars2,
   avatarId,
   serverError,
+  tabIndex,
+  onKeyDown,
   onClickSelectAvatar,
 }) => {
   return (
@@ -29,6 +31,8 @@ const AvatarDisplay = ({
           return (
             <img
               key={avatar.id}
+              tabIndex={tabIndex}
+              onKeyDown={onKeyDown}
               className={avatarClassName}
               src={avatar.animal}
               alt="animal-avatar"
@@ -43,10 +47,13 @@ const AvatarDisplay = ({
           return (
             <img
               key={avatar.id}
+              tabIndex={tabIndex}
+              onKeyDown={onKeyDown}
               className={avatarClassName}
               src={avatar.animal}
               alt="animal-avatar"
               onClick={() => onClickSelectAvatar(avatar.id)} />
+
           );
         })}
       </StyledAvatarContainer>

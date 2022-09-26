@@ -15,6 +15,7 @@ const NameAndPasswordInput = ({
   loginError,
   onChangeUserName,
   onChangePassword,
+  onKeyDown,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -48,6 +49,7 @@ const NameAndPasswordInput = ({
         name="user_name"
         placeholder="Name e.g. Albus"
         onChange={onChangeUserName}
+        onKeyDown={onKeyDown}
         value={userNameInput} />
       <InputField
         isMissing={isPasswordMissing}
@@ -56,6 +58,7 @@ const NameAndPasswordInput = ({
         name="user_password"
         placeholder="Password"
         onChange={onChangePassword}
+        onKeyDown={onKeyDown}
         value={passwordInput}
         RightIcon={(
           <FontAwesomeIcon

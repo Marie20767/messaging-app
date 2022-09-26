@@ -13,9 +13,18 @@ import PageNotFound from './components/PageNotFound';
 // psql -h localhost -p 5432 -U marieimpens -d react_message_app -f db/init.sql (in the api)
 
 // TODO:
-// Align the x mark for the search box so that you don't have to use  margins (align self didn't work)
-// When you auto fill on the log in or reg screen remove the background
+// STYLING
 // Fix sidebar view on large laptop screens
+// Have it so the messagesInputField doesn't grow in width but in height the more you type (use textarea?)
+
+// TODO:
+// REGISTRATION
+// Encrypt password when sending it to back end
+
+// TODO:
+// Messages
+// Get messages from back end when registering
+// Handle sending messages on the front end
 
 // TODO: together:
 // Make it so if I go to login, register or welcome screen, if im already logged in it sends me to the home page

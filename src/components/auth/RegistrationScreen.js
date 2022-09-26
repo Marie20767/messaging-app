@@ -6,9 +6,6 @@ import useAuthForm from '../../hooks/useAuthForm';
 import AvatarDisplay from '../AvatarDisplay';
 import NameAndPasswordInput from './NameAndPasswordInput';
 
-// TODO:
-// Encrypt password when sending it to back end
-
 const RegistrationScreen = ({ setCurrentUser }) => {
   const [serverError, setServerError] = useState('');
 
@@ -82,6 +79,12 @@ const RegistrationScreen = ({ setCurrentUser }) => {
     }
   };
 
+  const handleEnterPressRegistration = (e) => {
+    if (e.keyCode === 13) {
+      onClickCreateNewUser();
+    }
+  };
+
   return (
     <div className="card-container">
       <StyledRegistrationCardContainer>
@@ -94,13 +97,16 @@ const RegistrationScreen = ({ setCurrentUser }) => {
           isPasswordTooShort={isPasswordTooShort}
           showFormInvalidErrorMessage={showFormInvalidErrorMessage}
           onChangeUserName={onChangeUserName}
-          onChangePassword={onChangePassword} />
+          onChangePassword={onChangePassword}
+          onKeyDown={handleEnterPressRegistration} />
         <AvatarDisplay
           isAvatarMissing={isAvatarMissing}
           avatarId={avatarId}
           onClickSelectAvatar={onClickSelectAvatar}
           avatars1={firstFourAvatars}
-          avatars2={lastFourAvatars} />
+          avatars2={lastFourAvatars}
+          tabIndex={0}
+          onKeyDown={handleEnterPressRegistration} />
         {serverError
           ? <p className="error-message server-error">{serverError}</p>
           : null

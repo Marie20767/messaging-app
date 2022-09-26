@@ -52,7 +52,7 @@ const StyledSearchBoxContainer = styled.div`
     background-color: transparent;
     color: #919190;
     border: none;
-    width: 70%;
+    width: 100%;
     margin: 5px 0;
     font-size: 14px;
   }

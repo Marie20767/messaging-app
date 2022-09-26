@@ -30,6 +30,10 @@ input {
   font-size: 16px;
 }
 
+input:-webkit-autofill { 
+  background-clip: text;
+}
+
 button {
   font-size: 17px;
   background-color: #ea738d;
@@ -92,7 +96,8 @@ p {
 
 .x-icon {
   display: flex;
-  margin-left: 50px;
+  margin-right: 10px;
+  justify-self: flex-end;
   cursor: pointer;
 }
 

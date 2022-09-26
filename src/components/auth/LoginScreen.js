@@ -25,6 +25,8 @@ const LoginScreen = ({ setCurrentUser }) => {
   const onClickLogin = async () => {
     if (userNameInput !== '' && passwordInput !== '') {
       setLoginError(false);
+      setShowFormInvalidErrorMessage(false);
+
       try {
         const response = await fetch('http://localhost:3001/login', {
           method: 'POST',
@@ -54,8 +56,6 @@ const LoginScreen = ({ setCurrentUser }) => {
         } else {
           setLoginError(result.error);
         }
-
-        setShowFormInvalidErrorMessage(false);
       } catch (e) {
         console.log(e);
         setServerError('Something went wrong with your request');
@@ -71,6 +71,12 @@ const LoginScreen = ({ setCurrentUser }) => {
     }
   };
 
+  const handleEnterKeyPressLogin = (e) => {
+    if (e.keyCode === 13) {
+      onClickLogin();
+    }
+  };
+
   return (
     <div className="card-container">
       <StyledLoginScreenContainer>
@@ -83,7 +89,8 @@ const LoginScreen = ({ setCurrentUser }) => {
           showFormInvalidErrorMessage={showFormInvalidErrorMessage}
           loginError={loginError}
           onChangeUserName={onChangeUserName}
-          onChangePassword={onChangePassword} />
+          onChangePassword={onChangePassword}
+          onKeyDown={handleEnterKeyPressLogin} />
         {serverError
           ? <p className="error-message">{serverError}</p>
           : null
