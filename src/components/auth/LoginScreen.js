@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useAuthForm from '../../hooks/useAuthForm';
-import NameAndPasswordInput from './NameAndPasswordInput';
+import Form from './Form';
 
 const LoginScreen = ({ setCurrentUser }) => {
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ const LoginScreen = ({ setCurrentUser }) => {
   return (
     <div className="card-container">
       <StyledLoginScreenContainer>
-        <NameAndPasswordInput
+        <Form
           title="Log in to your account"
           userNameInput={userNameInput}
           passwordInput={passwordInput}

@@ -75,7 +75,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     return (
       <div className="full-screen-error-container">
         <h2>{serverError}</h2>
-        <button type="button" className="home-screen-server-error-button" onClick={getUserData}>Retry</button>
+        <button type="button" onClick={getUserData}>Retry</button>
       </div>
     );
   }

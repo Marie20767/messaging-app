@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { avatars } from '../../../constants/constants';
-import AvatarDisplay from '../../AvatarDisplay';
+import PickAvatar from '../../avatar/PickAvatar';
 import FullScreenOverlay from '../../overlays-and-popups/FullScreenOverlay';
 
 const ChangeAvatarOverlay = ({ avatarId, setShowAvatarOverlay, serverError, onClickSaveNewAvatar }) => {
@@ -15,7 +15,7 @@ const ChangeAvatarOverlay = ({ avatarId, setShowAvatarOverlay, serverError, onCl
 
   return (
     <FullScreenOverlay onClick={() => setShowAvatarOverlay(false)}>
-      <AvatarDisplay
+      <PickAvatar
         avatarId={newSelectedAvatarId}
         avatars1={firstFourAvatars}
         avatars2={lastFourAvatars}

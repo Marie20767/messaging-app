@@ -1,14 +1,24 @@
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import PageNotFoundRabbit from '../images/page-not-found-rabbit.png';
 
 const PageNotFound = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="full-screen-error-container">
-      <h2>Page Not Found</h2>
-      <button type="button" className="home-screen-server-error-button" onClick={() => navigate('/')}>Back home</button>
-    </div>
+    <StyledPageNotFoundContainer className="full-screen-error-container">
+      <h2>Uh oh! Page not found...</h2>
+      <img src={PageNotFoundRabbit} alt="Sad rabbit" />
+      <button type="button" onClick={() => navigate('/')}>Back home</button>
+    </StyledPageNotFoundContainer>
   );
 };
+
+const StyledPageNotFoundContainer = styled.div`
+  img {
+    height: 100px;
+    margin: 10px 0 30px 0;
+  }
+`;
 
 export default PageNotFound;

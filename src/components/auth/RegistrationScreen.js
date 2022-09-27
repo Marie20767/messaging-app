@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { avatars } from '../../constants/constants';
 import useAuthForm from '../../hooks/useAuthForm';
-import AvatarDisplay from '../AvatarDisplay';
-import NameAndPasswordInput from './NameAndPasswordInput';
+import PickAvatar from '../avatar/PickAvatar';
+import Form from './Form';
 
 const RegistrationScreen = ({ setCurrentUser }) => {
   const [serverError, setServerError] = useState('');
@@ -88,7 +88,7 @@ const RegistrationScreen = ({ setCurrentUser }) => {
   return (
     <div className="card-container">
       <StyledRegistrationCardContainer>
-        <NameAndPasswordInput
+        <Form
           title="Create your account"
           userNameInput={userNameInput}
           passwordInput={passwordInput}
@@ -99,7 +99,7 @@ const RegistrationScreen = ({ setCurrentUser }) => {
           onChangeUserName={onChangeUserName}
           onChangePassword={onChangePassword}
           onKeyDown={handleEnterPressRegistration} />
-        <AvatarDisplay
+        <PickAvatar
           isAvatarMissing={isAvatarMissing}
           avatarId={avatarId}
           onClickSelectAvatar={onClickSelectAvatar}
