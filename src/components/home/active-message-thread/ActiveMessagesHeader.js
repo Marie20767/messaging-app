@@ -8,16 +8,16 @@ const MessagesHeader = ({ users, demoUserAvatar }) => {
     <>
       {users.length > 0
         ? (
-          <StyledMessagesThreadHeader>
-            <StyledMessagesThreadNameAndAvatar>
+          <StyledHeader>
+            <StyledNameAndAvatarContainer>
               <img src={demoUserAvatar?.animal} alt="Avatar" />
               <h3>{users[0].name}</h3>
-            </StyledMessagesThreadNameAndAvatar>
-            <StyledMessagesThreadIcons>
+            </StyledNameAndAvatarContainer>
+            <StyledIconsContainer>
               <FontAwesomeIcon icon={faMagnifyingGlass} fontSize="18px" className="clickable" />
               <FontAwesomeIcon icon={faTrashCan} fontSize="18px" className="clickable" />
-            </StyledMessagesThreadIcons>
-          </StyledMessagesThreadHeader>
+            </StyledIconsContainer>
+          </StyledHeader>
         )
         : null
       }
@@ -25,7 +25,7 @@ const MessagesHeader = ({ users, demoUserAvatar }) => {
   );
 };
 
-const StyledMessagesThreadHeader = styled.div`
+const StyledHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -33,7 +33,7 @@ const StyledMessagesThreadHeader = styled.div`
   padding: 15px 25px 15px 15px;
 `;
 
-const StyledMessagesThreadNameAndAvatar = styled.div`
+const StyledNameAndAvatarContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -50,7 +50,7 @@ const StyledMessagesThreadNameAndAvatar = styled.div`
   }
 `;
 
-const StyledMessagesThreadIcons = styled.div`
+const StyledIconsContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 70px;

@@ -56,21 +56,6 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     getUserData();
   }, []);
 
-  const onChangeSearchInputGetSearchResults = (e) => {
-    setIsSearching(true);
-    setSearchInput(e.target.value);
-
-    const usersMatchingSearchInput = users.filter((user) => {
-      if (user.name.toLowerCase().includes(e.target.value.toLowerCase())) {
-        return user;
-      }
-
-      return null;
-    });
-
-    setSearchResult(usersMatchingSearchInput);
-  };
-
   if (serverError && !showAvatarOverlay) {
     return (
       <div className="full-screen-error-container">
@@ -94,8 +79,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         setIsSearching={setIsSearching}
         searchInput={searchInput}
         setSearchInput={setSearchInput}
-        setShowAvatarOverlay={setShowAvatarOverlay}
-        onChangeSearchInputGetSearchResults={onChangeSearchInputGetSearchResults} />
+        setShowAvatarOverlay={setShowAvatarOverlay} />
       <ActiveMessagesThread users={users} />
       {showAvatarOverlay
         ? (

@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import DemoUser from './DemoUser';
 import SearchBox from './SearchBox';
 import { allAvatars } from '../../../constants/constants';
 import SettingsPopUpMenu from './SettingsPopUpMenu';
+import DemoUserDisplay from './DemoUserDisplay';
 
 const Sidebar = ({
   isSearching,
@@ -18,7 +18,6 @@ const Sidebar = ({
   searchInput,
   setSearchInput,
   setShowAvatarOverlay,
-  onChangeSearchInputGetSearchResults,
 }) => {
   const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
 
@@ -27,17 +26,32 @@ const Sidebar = ({
 
   const currentUserAvatar = allAvatars.find((avatar) => avatar.id === avatarId);
 
+  const onChangeSearchInputGetSearchResults = (e) => {
+    setIsSearching(true);
+    setSearchInput(e.target.value);
+
+    const usersMatchingSearchInput = users.filter((user) => {
+      if (user.name.toLowerCase().includes(e.target.value.toLowerCase())) {
+        return user;
+      }
+
+      return null;
+    });
+
+    setSearchResult(usersMatchingSearchInput);
+  };
+
   return (
     <StyledSidebarContainer>
       <StyledHomePageHeader>
-        <StyledHomePageNameAndAvatar>
+        <StyledNameAndAvatarContainer>
           <img
             src={currentUserAvatar.animal}
             alt="your user avatar"
             className="current-user-avatar clickable"
             onClick={() => setShowSettingsPopUpMenu(!showSettingsPopUpMenu)} />
           <p className="current-user-name">Hi {name}!</p>
-        </StyledHomePageNameAndAvatar>
+        </StyledNameAndAvatarContainer>
         {showSettingsPopUpMenu
           ? (
             <SettingsPopUpMenu
@@ -55,10 +69,11 @@ const Sidebar = ({
           setIsSearching={setIsSearching}
           onChangeSearchInputGetSearchResults={onChangeSearchInputGetSearchResults} />
       </StyledHomePageHeader>
+
       <StyledDemoUsersContainer>
         {usersToDisplay.map((user) => {
           return (
-            <DemoUser
+            <DemoUserDisplay
               key={user.id}
               id={user.id}
               avatarId={user.avatar_id}
@@ -99,7 +114,7 @@ const StyledHomePageHeader = styled.div`
   height: 16vh;
 `;
 
-const StyledHomePageNameAndAvatar = styled.div`
+const StyledNameAndAvatarContainer = styled.div`
 display: flex;
 align-items: center;
 padding: 20px 0px 15px 15px;

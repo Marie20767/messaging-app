@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { allAvatars } from '../../../constants/constants';
 
-const DemoUser = ({
+const DemoUserDisplay = ({
   name,
   id,
   avatarId,
@@ -52,5 +52,5 @@ const StyledUserContainer = styled.div`
 
 `;
 
-export default DemoUser;
+export default DemoUserDisplay;
 
