@@ -1,27 +1,32 @@
-/* eslint-disable react/jsx-no-useless-fragment */
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { demoUsersAvatars } from '../../../constants/constants';
 
-const MessagesHeader = ({ users, demoUserAvatar }) => {
+const MessagesHeader = ({ users, activeUserId, activeMessagesThread }) => {
+  if (activeMessagesThread === null) {
+    return null;
+  }
+
+  const demoUserAvatar = demoUsersAvatars.find((avatar) => {
+    if (avatar.id === users[activeUserId - 1].avatar_id) {
+      return avatar;
+    }
+
+    return null;
+  });
+
   return (
-    <>
-      {users.length > 0
-        ? (
-          <StyledHeader>
-            <StyledNameAndAvatarContainer>
-              <img src={demoUserAvatar?.animal} alt="Avatar" />
-              <h3>{users[0].name}</h3>
-            </StyledNameAndAvatarContainer>
-            <StyledIconsContainer>
-              <FontAwesomeIcon icon={faMagnifyingGlass} fontSize="18px" className="clickable" />
-              <FontAwesomeIcon icon={faTrashCan} fontSize="18px" className="clickable" />
-            </StyledIconsContainer>
-          </StyledHeader>
-        )
-        : null
-      }
-    </>
+    <StyledHeader>
+      <StyledNameAndAvatarContainer>
+        <img src={demoUserAvatar?.animal} alt="Avatar" />
+        <h3>{users[activeUserId - 1].name}</h3>
+      </StyledNameAndAvatarContainer>
+      <StyledIconsContainer>
+        <FontAwesomeIcon icon={faMagnifyingGlass} fontSize="18px" className="clickable" />
+        <FontAwesomeIcon icon={faTrashCan} fontSize="18px" className="clickable" />
+      </StyledIconsContainer>
+    </StyledHeader>
   );
 };
 

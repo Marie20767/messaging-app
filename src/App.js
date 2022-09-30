@@ -23,7 +23,6 @@ import PageNotFound from './components/PageNotFound';
 
 // TODO:
 // Messages
-// Get messages from back end when registering
 // Handle sending messages on the front end
 
 // TODO: together:

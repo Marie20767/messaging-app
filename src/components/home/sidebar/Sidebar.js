@@ -11,6 +11,7 @@ const Sidebar = ({
   currentUser,
   searchResult,
   activeUserId,
+  messageThreads,
   setActiveUserId,
   setSearchResult,
   setCurrentUser,
@@ -18,6 +19,7 @@ const Sidebar = ({
   searchInput,
   setSearchInput,
   setShowAvatarOverlay,
+  setActiveMessagesThread,
 }) => {
   const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
 
@@ -79,7 +81,9 @@ const Sidebar = ({
               avatarId={user.avatar_id}
               name={user.name}
               activeUserId={activeUserId}
-              setActiveUserId={setActiveUserId} />
+              setActiveUserId={setActiveUserId}
+              messageThreads={messageThreads}
+              setActiveMessagesThread={setActiveMessagesThread} />
           );
         })}
 

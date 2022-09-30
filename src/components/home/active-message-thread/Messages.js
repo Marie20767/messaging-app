@@ -1,23 +1,19 @@
 import styled from 'styled-components';
 
-const Messages = ({ activeMessagesThread }) => {
+const Messages = ({ activeMessagesThread, currentUserId }) => {
+  if (activeMessagesThread === null) {
+    return null;
+  }
+
   return (
     <StyledMessagesContainer>
       {activeMessagesThread.messages.map((message) => {
-        const messageClassName = message.senderId === '11' ? 'from-current-user' : 'from-demo-user';
-
-        const getMinutes = () => {
-          if (message.timestamp.getMinutes() < 10) {
-            return `0${message.timestamp.getMinutes()}`;
-          }
-
-          return message.timestamp.getMinutes();
-        };
+        const messageClassName = message.sending_user_id === parseInt(currentUserId) ? 'from-current-user' : 'from-demo-user';
 
         return (
           <StyledMessageContainer key={message.id} className={messageClassName}>
             <p className="text">{message.text}</p>
-            <p className="timestamp">{`${message.timestamp.getHours()}:${getMinutes()}`}</p>
+            <p className="timestamp">{message.timestamp}</p>
           </StyledMessageContainer>
         );
       })}

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
 import ActiveMessagesThread from './active-message-thread/ActiveMessagesThread';
 import Sidebar from './sidebar/Sidebar';
+import { getFormattedMessageThreads } from '../../utils/utils';
 
 const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [users, setUsers] = useState([]);
@@ -12,6 +13,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [activeUserId, setActiveUserId] = useState('1');
   const [serverError, setServerError] = useState('');
   const [showAvatarOverlay, setShowAvatarOverlay] = useState(false);
+  const [messageThreads, setMessageThreads] = useState(null);
+  const [activeMessagesThread, setActiveMessagesThread] = useState(null);
 
   const { id, avatarId } = currentUser;
 
@@ -39,7 +42,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     }
   };
 
-  const getUserData = async () => {
+  const getDemoUsers = async () => {
     try {
       const response = await fetch('http://localhost:3001/users');
       const userResults = await response.json();
@@ -52,15 +55,33 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     }
   };
 
+  const getMessageThreads = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/messages/${id}`);
+      const messageThreadsResults = await response.json();
+      const formattedMessageThreadsResults = getFormattedMessageThreads(messageThreadsResults, id);
+
+      setMessageThreads(formattedMessageThreadsResults);
+      setActiveMessagesThread(formattedMessageThreadsResults[0]);
+    } catch (e) {
+      setServerError('Something went wrong with your request');
+    }
+  };
+
+  const getDemoUsersAndMessagesData = () => {
+    getDemoUsers();
+    getMessageThreads();
+  };
+
   useEffect(() => {
-    getUserData();
+    getDemoUsersAndMessagesData();
   }, []);
 
   if (serverError && !showAvatarOverlay) {
     return (
       <div className="full-screen-error-container">
         <h2>{serverError}</h2>
-        <button type="button" onClick={getUserData}>Retry</button>
+        <button type="button" onClick={getDemoUsersAndMessagesData}>Retry</button>
       </div>
     );
   }
@@ -72,6 +93,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         users={users}
         currentUser={currentUser}
         activeUserId={activeUserId}
+        messageThreads={messageThreads}
         setActiveUserId={setActiveUserId}
         searchResult={searchResult}
         setSearchResult={setSearchResult}
@@ -79,8 +101,13 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         setIsSearching={setIsSearching}
         searchInput={searchInput}
         setSearchInput={setSearchInput}
-        setShowAvatarOverlay={setShowAvatarOverlay} />
-      <ActiveMessagesThread users={users} />
+        setShowAvatarOverlay={setShowAvatarOverlay}
+        setActiveMessagesThread={setActiveMessagesThread} />
+      <ActiveMessagesThread
+        users={users}
+        currentUserId={id}
+        activeUserId={activeUserId}
+        activeMessagesThread={activeMessagesThread} />
       {showAvatarOverlay
         ? (
           <ChangeAvatarOverlay

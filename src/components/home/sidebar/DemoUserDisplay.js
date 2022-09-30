@@ -5,14 +5,27 @@ const DemoUserDisplay = ({
   name,
   id,
   avatarId,
+  messageThreads,
+  setActiveMessagesThread,
   activeUserId,
   setActiveUserId,
 }) => {
   const userContainerClassName = activeUserId === id ? 'active-user' : 'non-active-user';
   const userAvatar = allAvatars.find((avatar) => avatar.id === avatarId);
 
+  const onClickSelectDemoUser = (demoUserId) => {
+    setActiveUserId(demoUserId);
+
+    const activeMessageThread = messageThreads.find((thread) => thread.demoUserParticipantId === parseInt(demoUserId));
+
+    setActiveMessagesThread(activeMessageThread);
+  };
+
+  console.log('>>> messageThreads: ', messageThreads);
+  console.log('>>> activeUserId: ', activeUserId);
+
   return (
-    <StyledUserContainer onClick={() => setActiveUserId(id)} className={userContainerClassName}>
+    <StyledUserContainer onClick={() => onClickSelectDemoUser(id)} className={userContainerClassName}>
       <img src={userAvatar.animal} alt="user avatar" />
       <p>{name}</p>
     </StyledUserContainer>

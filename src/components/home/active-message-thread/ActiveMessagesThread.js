@@ -1,28 +1,18 @@
-import { useState } from 'react';
 import styled from 'styled-components';
-import MockThreadData from '../../../data/mock-thread-data';
-import { demoUsersAvatars } from '../../../constants/constants';
 import MessagesHeader from './ActiveMessagesHeader';
 import Messages from './Messages';
 import MessageInputField from './MessageInputField';
 
-const ActiveMessagesThread = ({ users }) => {
-  const [activeMessagesThread, seActiveMessagesThread] = useState(MockThreadData[0]);
-
-  const demoUserAvatar = demoUsersAvatars.find((avatar) => {
-    if (users.length > 0) {
-      if (avatar.id === users[0].avatar_id) {
-        return avatar;
-      }
-    }
-
-    return null;
-  });
-
+const ActiveMessagesThread = ({ users, currentUserId, activeUserId, activeMessagesThread }) => {
   return (
     <StyledMessagesThreadContainer>
-      <MessagesHeader users={users} demoUserAvatar={demoUserAvatar} />
-      <Messages activeMessagesThread={activeMessagesThread} />
+      <MessagesHeader
+        users={users}
+        activeUserId={activeUserId}
+        activeMessagesThread={activeMessagesThread} />
+      <Messages
+        activeMessagesThread={activeMessagesThread}
+        currentUserId={currentUserId} />
       <MessageInputField />
     </StyledMessagesThreadContainer>
   );
