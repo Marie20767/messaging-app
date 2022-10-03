@@ -3,13 +3,12 @@ import MessagesHeader from './ActiveMessagesHeader';
 import Messages from './Messages';
 import MessageInputField from './MessageInputField';
 
-const ActiveMessagesThread = ({ users, currentUserId, activeUserId, activeMessagesThread }) => {
+const ActiveMessagesThread = ({ users, currentUserId, activeFriendId, activeMessagesThread }) => {
   return (
     <StyledMessagesThreadContainer>
       <MessagesHeader
         users={users}
-        activeUserId={activeUserId}
-        activeMessagesThread={activeMessagesThread} />
+        activeFriendId={activeFriendId} />
       <Messages
         activeMessagesThread={activeMessagesThread}
         currentUserId={currentUserId} />
@@ -22,6 +21,7 @@ const StyledMessagesThreadContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 100%;
   justify-content: space-between;
 `;
 

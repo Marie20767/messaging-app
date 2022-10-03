@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Loading } from 'react-loading-dot/lib';
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
 import ActiveMessagesThread from './active-message-thread/ActiveMessagesThread';
 import Sidebar from './sidebar/Sidebar';
@@ -8,15 +9,16 @@ import { getFormattedMessageThreads } from '../../utils/utils';
 const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [users, setUsers] = useState([]);
   const [searchInput, setSearchInput] = useState('');
-  const [searchResult, setSearchResult] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [activeUserId, setActiveUserId] = useState('1');
+  const [friendSearchResult, setFriendSearchResult] = useState([]);
+  const [activeFriendId, setActiveFriendId] = useState('1');
   const [serverError, setServerError] = useState('');
   const [showAvatarOverlay, setShowAvatarOverlay] = useState(false);
   const [messageThreads, setMessageThreads] = useState(null);
   const [activeMessagesThread, setActiveMessagesThread] = useState(null);
 
   const { id, avatarId } = currentUser;
+
+  console.log('>>> users: ', users);
 
   const onClickSaveNewAvatar = async (newAvatarId) => {
     try {
@@ -38,6 +40,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         setShowAvatarOverlay(false);
       }
     } catch (e) {
+      console.log('>>> onClickSaveNewAvatar error! ', e);
       setServerError('Something went wrong with your request');
     }
   };
@@ -51,6 +54,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
       setUsers(allUsersMinusNewRegisteredUser);
     } catch (e) {
+      console.log('>>> getDemoUsers error: ', e);
       setServerError('Something went wrong with your request');
     }
   };
@@ -64,6 +68,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       setMessageThreads(formattedMessageThreadsResults);
       setActiveMessagesThread(formattedMessageThreadsResults[0]);
     } catch (e) {
+      console.log('>>> getMessageThreads error: ', e);
       setServerError('Something went wrong with your request');
     }
   };
@@ -86,27 +91,34 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     );
   }
 
+  if (!users.length || !messageThreads) {
+    return (
+      <div className="card-container">
+        <Loading background="#ea738dff" margin="8px" size="18px" duration="0.6s" />
+      </div>
+    );
+  }
+
   return (
     <StyledHomeScreenContainer>
       <Sidebar
-        isSearching={isSearching}
         users={users}
         currentUser={currentUser}
-        activeUserId={activeUserId}
+        activeFriendId={activeFriendId}
         messageThreads={messageThreads}
-        setActiveUserId={setActiveUserId}
-        searchResult={searchResult}
-        setSearchResult={setSearchResult}
+        setActiveFriendId={setActiveFriendId}
+        friendSearchResult={friendSearchResult}
+        setFriendSearchResult={setFriendSearchResult}
         setCurrentUser={setCurrentUser}
-        setIsSearching={setIsSearching}
         searchInput={searchInput}
         setSearchInput={setSearchInput}
         setShowAvatarOverlay={setShowAvatarOverlay}
         setActiveMessagesThread={setActiveMessagesThread} />
+
       <ActiveMessagesThread
         users={users}
         currentUserId={id}
-        activeUserId={activeUserId}
+        activeFriendId={activeFriendId}
         activeMessagesThread={activeMessagesThread} />
       {showAvatarOverlay
         ? (

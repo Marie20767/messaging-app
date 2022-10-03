@@ -3,27 +3,30 @@ import { useState } from 'react';
 import SearchBox from './SearchBox';
 import { allAvatars } from '../../../constants/constants';
 import SettingsPopUpMenu from './SettingsPopUpMenu';
-import DemoUserDisplay from './DemoUserDisplay';
+import FriendDisplay from './FriendDisplay';
+import { getFriendRecipient } from '../../../utils/utils';
 
 const Sidebar = ({
-  isSearching,
   users,
   currentUser,
-  searchResult,
-  activeUserId,
+  friendSearchResult,
+  activeFriendId,
   messageThreads,
-  setActiveUserId,
-  setSearchResult,
+  setActiveFriendId,
+  setFriendSearchResult,
   setCurrentUser,
-  setIsSearching,
   searchInput,
   setSearchInput,
   setShowAvatarOverlay,
   setActiveMessagesThread,
 }) => {
   const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [friendUserNameExists, setFriendUserNameExists] = useState(false);
+  const [messageExists, setMessageExists] = useState(false);
+  const [messageThreadsSearchResults, setMessageThreadSearchResults] = useState([]);
 
-  const usersToDisplay = isSearching ? searchResult : users;
+  const usersToDisplay = isSearching ? friendSearchResult : users;
   const { name, avatarId } = currentUser;
 
   const currentUserAvatar = allAvatars.find((avatar) => avatar.id === avatarId);
@@ -33,27 +36,40 @@ const Sidebar = ({
     setSearchInput(e.target.value);
 
     const usersMatchingSearchInput = users.filter((user) => {
-      if (user.name.toLowerCase().includes(e.target.value.toLowerCase())) {
-        return user;
-      }
-
-      return null;
+      return user.name.toLowerCase().includes(e.target.value.toLowerCase());
     });
 
-    setSearchResult(usersMatchingSearchInput);
+    setFriendUserNameExists(usersMatchingSearchInput.length > 0);
+    setFriendSearchResult(usersMatchingSearchInput);
+
+    const messageThreadsMatchingSearchInput = messageThreads.reduce((acc, currentMessageThread) => {
+      const filteredMessages = currentMessageThread.messages.filter((message) => message.text.toLowerCase().includes(e.target.value.toLowerCase()));
+
+      return [
+        ...acc,
+        ...filteredMessages,
+      ];
+    }, []);
+
+    setMessageExists(messageThreadsMatchingSearchInput.length > 0);
+    setMessageThreadSearchResults(messageThreadsMatchingSearchInput);
   };
+
+  console.log('>>> messageThreadsSearchResults: ', messageThreadsSearchResults);
+  console.log('>>> users: ', users);
 
   return (
     <StyledSidebarContainer>
       <StyledHomePageHeader>
-        <StyledNameAndAvatarContainer>
+        <StyledCurrentUserContainer>
           <img
             src={currentUserAvatar.animal}
             alt="your user avatar"
             className="current-user-avatar clickable"
             onClick={() => setShowSettingsPopUpMenu(!showSettingsPopUpMenu)} />
-          <p className="current-user-name">Hi {name}!</p>
-        </StyledNameAndAvatarContainer>
+          <h4 className="current-user-name">Hi {name}!</h4>
+        </StyledCurrentUserContainer>
+
         {showSettingsPopUpMenu
           ? (
             <SettingsPopUpMenu
@@ -67,31 +83,65 @@ const Sidebar = ({
         <SearchBox
           searchInput={searchInput}
           setSearchInput={setSearchInput}
-          setSearchResult={setSearchResult}
+          setFriendSearchResult={setFriendSearchResult}
           setIsSearching={setIsSearching}
           onChangeSearchInputGetSearchResults={onChangeSearchInputGetSearchResults} />
       </StyledHomePageHeader>
 
-      <StyledDemoUsersContainer>
+      <StyledFriendsContainer>
+        {isSearching && friendUserNameExists
+          ? <h4 className="small-black-title search-result-title">Contacts</h4>
+          : null
+          }
+
+        {friendSearchResult.length === 0 && isSearching && !messageExists
+          ? <p className="no-search-result">{`No result for '${searchInput}'`}</p>
+          : null
+        }
+
         {usersToDisplay.map((user) => {
           return (
-            <DemoUserDisplay
+            <FriendDisplay
               key={user.id}
               id={user.id}
               avatarId={user.avatar_id}
               name={user.name}
-              activeUserId={activeUserId}
-              setActiveUserId={setActiveUserId}
+              activeFriendId={activeFriendId}
+              setActiveFriendId={setActiveFriendId}
               messageThreads={messageThreads}
               setActiveMessagesThread={setActiveMessagesThread} />
           );
         })}
 
-        {searchResult.length === 0 && isSearching
-          ? <p className="no-search-result">{`No result for '${searchInput}'`}</p>
+        {messageExists && isSearching
+          ? (
+            <div>
+              <h4 className="small-black-title search-result-title">Messages</h4>
+              {messageThreadsSearchResults.map((searchResult) => {
+                const friendRecipient = getFriendRecipient(currentUser, users, searchResult);
+
+                console.log('>>> friendRecipient: ', friendRecipient);
+
+                return (
+                  <FriendDisplay
+                    key={searchResult.id}
+                    avatarId={friendRecipient.avatar_id}
+                    name={friendRecipient.name}
+                    id={searchResult.sending_user_id}
+                    isMessageSearchResult
+                    activeFriendId={activeFriendId}
+                    setActiveFriendId={setActiveFriendId}
+                    messageThreads={messageThreads}
+                    setActiveMessagesThread={setActiveMessagesThread}
+                    messageMatchingSearchInput={searchResult.text} />
+                );
+              })}
+            </div>
+          )
           : null
         }
-      </StyledDemoUsersContainer>
+      </StyledFriendsContainer>
+
     </StyledSidebarContainer>
   );
 };
@@ -100,10 +150,6 @@ const StyledSidebarContainer = styled.div`
   width: 400px; 
   background-color: #f8f7f7;
   border-right: 1px solid #e9e9e9;
-
-  .no-search-result {
-    margin: 10px 0 0 15px;
-  }
 
   .current-user-name {
     font-weight: bold;
@@ -118,7 +164,7 @@ const StyledHomePageHeader = styled.div`
   height: 16vh;
 `;
 
-const StyledNameAndAvatarContainer = styled.div`
+const StyledCurrentUserContainer = styled.div`
 display: flex;
 align-items: center;
 padding: 20px 0px 15px 15px;
@@ -132,9 +178,17 @@ img {
   }
 `;
 
-const StyledDemoUsersContainer = styled.div`
+const StyledFriendsContainer = styled.div`
   overflow-y: scroll;
   height: 84vh;
+
+  .search-result-title {
+    margin: 30px 0 20px 15px;
+  }
+
+  .no-search-result {
+    margin: 10px 0 20px 15px;
+  }
 `;
 
 export default Sidebar;

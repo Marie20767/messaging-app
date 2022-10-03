@@ -57,7 +57,7 @@ const LoginScreen = ({ setCurrentUser }) => {
           setLoginError(result.error);
         }
       } catch (e) {
-        console.log(e);
+        console.log('>>> onClickLogin error! ', e);
         setServerError('Something went wrong with your request');
       }
     } else {

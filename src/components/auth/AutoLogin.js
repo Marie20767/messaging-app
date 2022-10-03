@@ -26,7 +26,7 @@ const AutoLogin = ({ children, setCurrentUser }) => {
 
           setLoading(false);
         } catch (e) {
-          console.log(e);
+          console.log('>>> AutoLogin error! ', e);
           navigate('/login');
         }
       }

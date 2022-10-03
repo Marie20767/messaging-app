@@ -8,7 +8,7 @@ const Messages = ({ activeMessagesThread, currentUserId }) => {
   return (
     <StyledMessagesContainer>
       {activeMessagesThread.messages.map((message) => {
-        const messageClassName = message.sending_user_id === parseInt(currentUserId) ? 'from-current-user' : 'from-demo-user';
+        const messageClassName = message.sending_user_id === parseInt(currentUserId) ? 'from-current-user' : 'from-friend';
 
         return (
           <StyledMessageContainer key={message.id} className={messageClassName}>
@@ -24,6 +24,7 @@ const Messages = ({ activeMessagesThread, currentUserId }) => {
 const StyledMessagesContainer = styled.div`
   overflow-y: scroll;
   display: flex;
+  width: 100%;
   flex-direction: column;
   padding: 0px 25px 0px 15px;
 `;
@@ -42,7 +43,7 @@ const StyledMessageContainer = styled.div`
       align-self: flex-end;
     }
 
-  &.from-demo-user {
+  &.from-friend {
     background-color: #e7e6e6;
     align-self: flex-start;
   }

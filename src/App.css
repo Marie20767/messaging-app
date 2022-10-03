@@ -124,6 +124,12 @@ p {
   transform: scale(1.1);
 }
 
+.small-black-title {
+  font-size: 15px;
+  color: black;
+  font-weight: 500;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
 }

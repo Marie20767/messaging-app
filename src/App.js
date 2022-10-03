@@ -21,10 +21,6 @@ import PageNotFound from './components/PageNotFound';
 // REGISTRATION
 // Encrypt password when sending it to back end
 
-// TODO:
-// Messages
-// Handle sending messages on the front end
-
 // TODO: together:
 // Make it so if I go to login, register or welcome screen, if im already logged in it sends me to the home page
 // - Make sure you can't access /home if not logged in

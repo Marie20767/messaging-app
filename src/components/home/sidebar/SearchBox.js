@@ -6,7 +6,7 @@ import { useRef } from 'react';
 const SearchBox = ({
   searchInput,
   setSearchInput,
-  setSearchResult,
+  setFriendSearchResult,
   setIsSearching,
   onChangeSearchInputGetSearchResults,
 }) => {
@@ -18,7 +18,7 @@ const SearchBox = ({
 
   const onClickCloseSearch = () => {
     setSearchInput('');
-    setSearchResult([]);
+    setFriendSearchResult([]);
     setIsSearching(false);
   };
 
