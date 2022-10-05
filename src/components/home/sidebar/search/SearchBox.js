@@ -8,6 +8,8 @@ const SearchBox = ({
   setSearchInput,
   setFriendSearchResult,
   setIsSearching,
+  setActiveFriendId,
+  setSearchResultContactSelected,
   onChangeSearchInputGetSearchResults,
 }) => {
   const ref = useRef(null);
@@ -20,6 +22,9 @@ const SearchBox = ({
     setSearchInput('');
     setFriendSearchResult([]);
     setIsSearching(false);
+    // TODO: change this
+    setActiveFriendId(1);
+    setSearchResultContactSelected(false);
   };
 
   return (

@@ -10,15 +10,13 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [users, setUsers] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [friendSearchResult, setFriendSearchResult] = useState([]);
-  const [activeFriendId, setActiveFriendId] = useState('1');
+  const [activeFriendId, setActiveFriendId] = useState(1); // TODO: at some point need to change this, make it so it's always the ID of the friend that sent the last message
   const [serverError, setServerError] = useState('');
   const [showAvatarOverlay, setShowAvatarOverlay] = useState(false);
   const [messageThreads, setMessageThreads] = useState(null);
   const [activeMessagesThread, setActiveMessagesThread] = useState(null);
 
   const { id, avatarId } = currentUser;
-
-  console.log('>>> users: ', users);
 
   const onClickSaveNewAvatar = async (newAvatarId) => {
     try {

@@ -1,48 +1,81 @@
+/* eslint-disable react/no-array-index-key */
+import React from 'react';
 import styled from 'styled-components';
 import { allAvatars } from '../../../constants/constants';
+import { getFormattedLastFriendMessage, getFormattedMessageSearchResult } from '../../../utils/utils';
 
 const FriendDisplay = ({
   name,
-  id,
   avatarId,
-  messageThreads,
   isMessageSearchResult,
+  searchInput,
   messageMatchingSearchInput,
-  setActiveMessagesThread,
-  activeFriendId,
-  setActiveFriendId,
+  highlighted,
+  lastFriendMessage,
+  onClick,
 }) => {
-  const friendContainerClassName = activeFriendId === id ? 'active-friend' : 'non-active-friend';
   const friendAvatar = allAvatars.find((avatar) => avatar.id === avatarId);
 
-  const onClickSelectFriend = (friendId) => {
-    setActiveFriendId(friendId);
+  // TODO: finish this, put into utils
 
-    const activeMessageThread = messageThreads.find((thread) => thread.friendParticipantId === parseInt(friendId));
+  const renderHighlightedSearchResult = () => {
+    if (!messageMatchingSearchInput) {
+      return null;
+    }
 
-    setActiveMessagesThread(activeMessageThread);
+    const formattedMessage = getFormattedMessageSearchResult(messageMatchingSearchInput, searchInput);
+
+    if (formattedMessage && searchInput) {
+      const regex = new RegExp(searchInput, 'gi');
+      const messageSplitBySearchInput = formattedMessage.split(regex);
+
+      // const matchedMessageResults = formattedMessage.matchAll(regex);
+      // const matchedMessages = [...matchedMessageResults];
+
+      // console.log('>>> matchedMessages: ', matchedMessages);
+
+      // const matchedIndexes = matchedMessages.map((result) => {
+      //   return result.index;
+      // });
+
+      // const highlightedStrings = [];
+      // let startingIndex = 0;
+
+      // matchedIndexes.forEach(matchingIndex => {
+      //   // push into highlightedStrings a substring from 0 to matchingIndex
+      //   // push into highlightedStrings <b>{substring from matchingIndex up until end of search term}</b>
+      //   // update startingIndex to matchingIndex
+      // })
+
+      const highlightedSearchResult = messageSplitBySearchInput.map((string, index) => {
+        if (index === messageSplitBySearchInput.length - 1) {
+          return <span key={`${string}-${index}`}>{string}</span>;
+        }
+
+        return (
+          <React.Fragment key={`${string}-${index}`}>
+            <span>{string}</span>
+            <span className="search-input-match">{searchInput}</span>
+          </React.Fragment>
+        );
+      });
+
+      return highlightedSearchResult;
+    }
+
+    return null;
   };
 
-  const getLastFriendMessage = () => {
-    const friendMessageThread = messageThreads.find((messageThread) => {
-      return messageThread.friendParticipantId === parseInt(id);
-    });
-
-    const lastFriendMessage = friendMessageThread.messages[friendMessageThread.messages.length - 1].text;
-
-    const lastFriendMessageSplitByWords = lastFriendMessage.split(' ');
-
-    return lastFriendMessageSplitByWords;
-  };
+  const formattedLastMessage = lastFriendMessage ? getFormattedLastFriendMessage(lastFriendMessage) : '';
 
   return (
-    <StyledFriendContainer onClick={() => onClickSelectFriend(id)} className={friendContainerClassName}>
+    <StyledFriendContainer onClick={onClick} className={highlighted ? 'active-friend' : 'non-active-friend'}>
       <img src={friendAvatar.animal} alt="Friend avatar" />
       <StyledNameAndMessageContainer>
         <h4 className="small-black-title">{name}</h4>
         {isMessageSearchResult
-          ? <p>{messageMatchingSearchInput}</p>
-          : <p className="last-message">{getLastFriendMessage().length > 13 ? `${getLastFriendMessage().slice(0, 13).join(' ')}...` : getLastFriendMessage().join(' ')}</p>
+          ? <p>{renderHighlightedSearchResult()}</p>
+          : <p className="last-message">{formattedLastMessage}</p>
         }
       </StyledNameAndMessageContainer>
     </StyledFriendContainer>
@@ -79,6 +112,11 @@ const StyledFriendContainer = styled.div`
 const StyledNameAndMessageContainer = styled.div`
   p {
     font-size: 14px;
+  }
+
+  .search-input-match {
+    font-weight: bold;
+    color: #9dbbf8;
   }
   
   .last-message {

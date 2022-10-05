@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import SearchBox from './SearchBox';
+import SearchBox from './search/SearchBox';
 import { allAvatars } from '../../../constants/constants';
 import SettingsPopUpMenu from './SettingsPopUpMenu';
-import FriendDisplay from './FriendDisplay';
-import { getFriendRecipient } from '../../../utils/utils';
+import FriendsList from './FriendsList';
+import SearchResults from './search/SearchResults';
 
 const Sidebar = ({
   users,
@@ -25,8 +25,8 @@ const Sidebar = ({
   const [friendUserNameExists, setFriendUserNameExists] = useState(false);
   const [messageExists, setMessageExists] = useState(false);
   const [messageThreadsSearchResults, setMessageThreadSearchResults] = useState([]);
+  const [searchResultContactSelected, setSearchResultContactSelected] = useState(false);
 
-  const usersToDisplay = isSearching ? friendSearchResult : users;
   const { name, avatarId } = currentUser;
 
   const currentUserAvatar = allAvatars.find((avatar) => avatar.id === avatarId);
@@ -55,9 +55,6 @@ const Sidebar = ({
     setMessageThreadSearchResults(messageThreadsMatchingSearchInput);
   };
 
-  console.log('>>> messageThreadsSearchResults: ', messageThreadsSearchResults);
-  console.log('>>> users: ', users);
-
   return (
     <StyledSidebarContainer>
       <StyledHomePageHeader>
@@ -85,63 +82,39 @@ const Sidebar = ({
           setSearchInput={setSearchInput}
           setFriendSearchResult={setFriendSearchResult}
           setIsSearching={setIsSearching}
+          setActiveFriendId={setActiveFriendId}
+          setSearchResultContactSelected={setSearchResultContactSelected}
           onChangeSearchInputGetSearchResults={onChangeSearchInputGetSearchResults} />
       </StyledHomePageHeader>
 
       <StyledFriendsContainer>
-        {isSearching && friendUserNameExists
-          ? <h4 className="small-black-title search-result-title">Contacts</h4>
-          : null
-          }
-
-        {friendSearchResult.length === 0 && isSearching && !messageExists
-          ? <p className="no-search-result">{`No result for '${searchInput}'`}</p>
-          : null
-        }
-
-        {usersToDisplay.map((user) => {
-          return (
-            <FriendDisplay
-              key={user.id}
-              id={user.id}
-              avatarId={user.avatar_id}
-              name={user.name}
+        {isSearching
+          ? (
+            <SearchResults
+              friendUserNameExists={friendUserNameExists}
+              friendSearchResult={friendSearchResult}
+              messageExists={messageExists}
+              searchInput={searchInput}
+              messageThreads={messageThreads}
+              messageThreadsSearchResults={messageThreadsSearchResults}
+              currentUser={currentUser}
+              users={users}
+              searchResultContactSelected={searchResultContactSelected}
               activeFriendId={activeFriendId}
               setActiveFriendId={setActiveFriendId}
-              messageThreads={messageThreads}
-              setActiveMessagesThread={setActiveMessagesThread} />
-          );
-        })}
-
-        {messageExists && isSearching
-          ? (
-            <div>
-              <h4 className="small-black-title search-result-title">Messages</h4>
-              {messageThreadsSearchResults.map((searchResult) => {
-                const friendRecipient = getFriendRecipient(currentUser, users, searchResult);
-
-                console.log('>>> friendRecipient: ', friendRecipient);
-
-                return (
-                  <FriendDisplay
-                    key={searchResult.id}
-                    avatarId={friendRecipient.avatar_id}
-                    name={friendRecipient.name}
-                    id={searchResult.sending_user_id}
-                    isMessageSearchResult
-                    activeFriendId={activeFriendId}
-                    setActiveFriendId={setActiveFriendId}
-                    messageThreads={messageThreads}
-                    setActiveMessagesThread={setActiveMessagesThread}
-                    messageMatchingSearchInput={searchResult.text} />
-                );
-              })}
-            </div>
+              setActiveMessagesThread={setActiveMessagesThread}
+              setSearchResultContactSelected={setSearchResultContactSelected} />
           )
-          : null
+          : (
+            <FriendsList
+              users={users}
+              messageThreads={messageThreads}
+              activeFriendId={activeFriendId}
+              setActiveFriendId={setActiveFriendId}
+              setActiveMessagesThread={setActiveMessagesThread} />
+          )
         }
       </StyledFriendsContainer>
-
     </StyledSidebarContainer>
   );
 };

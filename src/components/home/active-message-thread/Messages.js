@@ -8,7 +8,7 @@ const Messages = ({ activeMessagesThread, currentUserId }) => {
   return (
     <StyledMessagesContainer>
       {activeMessagesThread.messages.map((message) => {
-        const messageClassName = message.sending_user_id === parseInt(currentUserId) ? 'from-current-user' : 'from-friend';
+        const messageClassName = message.sending_user_id === currentUserId ? 'from-current-user' : 'from-friend';
 
         return (
           <StyledMessageContainer key={message.id} className={messageClassName}>

@@ -8,7 +8,7 @@ const AutoLogin = ({ children, setCurrentUser }) => {
 
   useEffect(() => {
     const getUser = async () => {
-      const currentUserId = parseInt(localStorage.getItem('current-user-id'));
+      const currentUserId = localStorage.getItem('current-user-id');
 
       if (!currentUserId) {
         navigate('/login');
