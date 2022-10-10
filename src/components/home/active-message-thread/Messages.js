@@ -1,6 +1,7 @@
+import React from 'eslint-plugin-import/config/react';
 import styled from 'styled-components';
 
-const Messages = ({ activeMessagesThread, currentUserId }) => {
+const Messages = ({ activeMessagesThread, currentUserId, messagesEndRef }) => {
   if (activeMessagesThread === null) {
     return null;
   }
@@ -11,9 +12,10 @@ const Messages = ({ activeMessagesThread, currentUserId }) => {
         const messageClassName = message.sending_user_id === currentUserId ? 'from-current-user' : 'from-friend';
 
         return (
-          <StyledMessageContainer key={message.id} className={messageClassName}>
+          <StyledMessageContainer className={messageClassName} key={message.id}>
             <p className="text">{message.text}</p>
             <p className="timestamp">{message.timestamp}</p>
+            <div ref={messagesEndRef} />
           </StyledMessageContainer>
         );
       })}

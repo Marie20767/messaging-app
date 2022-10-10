@@ -11,7 +11,7 @@ const MessagesHeader = ({ users, activeFriendId }) => {
     <StyledHeader>
       <StyledNameAndAvatarContainer>
         <img src={activeFriendAvatar?.animal} alt="Avatar" />
-        <h3>{activeFriend?.name}</h3>
+        <h3 className="small-black-title">{activeFriend?.name}</h3>
       </StyledNameAndAvatarContainer>
       <FontAwesomeIcon icon={faTrashCan} fontSize="18px" className="clickable" />
     </StyledHeader>
@@ -30,12 +30,6 @@ const StyledNameAndAvatarContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-
-  h3 {
-    color: black;
-    font-weight: bold;
-    font-size: 17px;
-  }
 
   img {
     height: 40px;

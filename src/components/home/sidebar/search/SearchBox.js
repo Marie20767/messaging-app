@@ -5,26 +5,14 @@ import { useRef } from 'react';
 
 const SearchBox = ({
   searchInput,
-  setSearchInput,
-  setFriendSearchResult,
-  setIsSearching,
-  setActiveFriendId,
-  setSearchResultContactSelected,
-  onChangeSearchInputGetSearchResults,
+  placeholder,
+  onClickCloseSearch,
+  onChange,
 }) => {
   const ref = useRef(null);
 
   const onClickFocusOnSearchBox = () => {
     ref.current.focus();
-  };
-
-  const onClickCloseSearch = () => {
-    setSearchInput('');
-    setFriendSearchResult([]);
-    setIsSearching(false);
-    // TODO: change this
-    setActiveFriendId(1);
-    setSearchResultContactSelected(false);
   };
 
   return (
@@ -33,9 +21,9 @@ const SearchBox = ({
       <input
         ref={ref}
         type="text"
-        placeholder="Search"
+        placeholder={placeholder}
         value={searchInput}
-        onChange={(e) => onChangeSearchInputGetSearchResults(e)} />
+        onChange={onChange} />
       {searchInput !== ''
         ? <FontAwesomeIcon icon={faXmark} className="light-icon x-icon" onClick={onClickCloseSearch} />
         : null

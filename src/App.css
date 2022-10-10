@@ -52,6 +52,12 @@ p {
   font-size: 15px;
 }
 
+.small-black-title {
+    color: black;
+    font-weight: bold;
+    font-size: 17px;
+}
+
 .card-container {
   background-color: #9dbbf8;
   height: 100%;

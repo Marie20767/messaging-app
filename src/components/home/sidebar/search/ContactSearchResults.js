@@ -4,20 +4,8 @@ const ContactSearchResults = ({
   friendSearchResult,
   searchResultContactSelected,
   activeFriendId,
-  messageThreads,
-  setActiveFriendId,
-  setActiveMessagesThread,
-  setSearchResultContactSelected,
+  onClickSelectFriend,
 }) => {
-  const onClickSelectFriend = (friendId) => {
-    setActiveFriendId(friendId);
-    setSearchResultContactSelected(true);
-
-    const activeMessageThread = messageThreads.find((thread) => thread.friendParticipantId === friendId);
-
-    setActiveMessagesThread(activeMessageThread);
-  };
-
   return (
     <>
       {friendSearchResult.map((friend) => {
@@ -29,7 +17,6 @@ const ContactSearchResults = ({
             avatarId={friend.avatar_id}
             highlighted={highlighted}
             name={friend.name}
-            setActiveMessagesThread={setActiveMessagesThread}
             onClick={() => onClickSelectFriend(friend.id)} />
         );
       })}

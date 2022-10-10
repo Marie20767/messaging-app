@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Loading } from 'react-loading-dot/lib';
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
@@ -8,8 +8,6 @@ import { getFormattedMessageThreads } from '../../utils/utils';
 
 const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [users, setUsers] = useState([]);
-  const [searchInput, setSearchInput] = useState('');
-  const [friendSearchResult, setFriendSearchResult] = useState([]);
   const [activeFriendId, setActiveFriendId] = useState(1); // TODO: at some point need to change this, make it so it's always the ID of the friend that sent the last message
   const [serverError, setServerError] = useState('');
   const [showAvatarOverlay, setShowAvatarOverlay] = useState(false);
@@ -17,6 +15,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [activeMessagesThread, setActiveMessagesThread] = useState(null);
 
   const { id, avatarId } = currentUser;
+  const messagesEndRef = useRef(null);
 
   const onClickSaveNewAvatar = async (newAvatarId) => {
     try {
@@ -76,9 +75,17 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     getMessageThreads();
   };
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   useEffect(() => {
     getDemoUsersAndMessagesData();
   }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [activeMessagesThread]);
 
   if (serverError && !showAvatarOverlay) {
     return (
@@ -105,11 +112,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         activeFriendId={activeFriendId}
         messageThreads={messageThreads}
         setActiveFriendId={setActiveFriendId}
-        friendSearchResult={friendSearchResult}
-        setFriendSearchResult={setFriendSearchResult}
         setCurrentUser={setCurrentUser}
-        searchInput={searchInput}
-        setSearchInput={setSearchInput}
         setShowAvatarOverlay={setShowAvatarOverlay}
         setActiveMessagesThread={setActiveMessagesThread} />
 
@@ -117,7 +120,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         users={users}
         currentUserId={id}
         activeFriendId={activeFriendId}
-        activeMessagesThread={activeMessagesThread} />
+        activeMessagesThread={activeMessagesThread}
+        messagesEndRef={messagesEndRef} />
       {showAvatarOverlay
         ? (
           <ChangeAvatarOverlay

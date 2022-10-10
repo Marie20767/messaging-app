@@ -1,70 +1,132 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import SearchBox from './search/SearchBox';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserPlus, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { allAvatars } from '../../../constants/constants';
 import SettingsPopUpMenu from './SettingsPopUpMenu';
-import FriendsList from './FriendsList';
-import SearchResults from './search/SearchResults';
+import FriendsAndSearchSidebar from './FriendsAndSearchSidebar';
+import SearchBox from './search/SearchBox';
+import AddNewFriendSidebar from './AddNewFriendSidebar';
+import MockData from '../../../constants/MockData';
 
 const Sidebar = ({
   users,
   currentUser,
-  friendSearchResult,
   activeFriendId,
   messageThreads,
   setActiveFriendId,
-  setFriendSearchResult,
   setCurrentUser,
-  searchInput,
-  setSearchInput,
   setShowAvatarOverlay,
   setActiveMessagesThread,
 }) => {
   const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const [friendSearchResult, setFriendSearchResult] = useState([]);
   const [friendUserNameExists, setFriendUserNameExists] = useState(false);
   const [messageExists, setMessageExists] = useState(false);
   const [messageThreadsSearchResults, setMessageThreadSearchResults] = useState([]);
   const [searchResultContactSelected, setSearchResultContactSelected] = useState(false);
+  const [isSearchingForNewFriend, setIsSearchingForNewFriend] = useState(false);
+  const [addNewFriendSearchInput, setAddNewFriendSearchInput] = useState('');
+  const [newFriendSearchResult, setNewFriendSearchResult] = useState([]);
+  const [newFriendUserNameExists, setNewFriendUserNameExists] = useState(false);
+  const [searchResultNewFriendSelected, setSearchResultNewFriendSelected] = useState(false);
+  const [activeNewFriendId, setActiveNewFriendId] = useState(null);
+  const [clickedAddNewFriend, setClickedAddNewFriend] = useState(false);
 
   const { name, avatarId } = currentUser;
 
   const currentUserAvatar = allAvatars.find((avatar) => avatar.id === avatarId);
 
   const onChangeSearchInputGetSearchResults = (e) => {
-    setIsSearching(true);
     setSearchInput(e.target.value);
 
-    const usersMatchingSearchInput = users.filter((user) => {
-      return user.name.toLowerCase().includes(e.target.value.toLowerCase());
-    });
+    if (e.target.value === '') {
+      setIsSearching(false);
+      setFriendUserNameExists(false);
+    } else {
+      setIsSearching(true);
 
-    setFriendUserNameExists(usersMatchingSearchInput.length > 0);
-    setFriendSearchResult(usersMatchingSearchInput);
+      const usersMatchingSearchInput = users.filter((user) => {
+        return user.name.toLowerCase().includes(e.target.value.toLowerCase());
+      });
 
-    const messageThreadsMatchingSearchInput = messageThreads.reduce((acc, currentMessageThread) => {
-      const filteredMessages = currentMessageThread.messages.filter((message) => message.text.toLowerCase().includes(e.target.value.toLowerCase()));
+      setFriendUserNameExists(usersMatchingSearchInput.length > 0);
+      setFriendSearchResult(usersMatchingSearchInput);
 
-      return [
-        ...acc,
-        ...filteredMessages,
-      ];
-    }, []);
+      const messageThreadsMatchingSearchInput = messageThreads.reduce((acc, currentMessageThread) => {
+        const filteredMessages = currentMessageThread.messages.filter((message) => message.text.toLowerCase().includes(e.target.value.toLowerCase()));
 
-    setMessageExists(messageThreadsMatchingSearchInput.length > 0);
-    setMessageThreadSearchResults(messageThreadsMatchingSearchInput);
+        return [
+          ...acc,
+          ...filteredMessages,
+        ];
+      }, []);
+
+      setMessageExists(messageThreadsMatchingSearchInput.length > 0);
+      setMessageThreadSearchResults(messageThreadsMatchingSearchInput);
+    }
+  };
+
+  const onChangeSearchInputAddNewFriendGetSearchResults = (e) => {
+    setAddNewFriendSearchInput(e.target.value);
+
+    if (e.target.value === '') {
+      setIsSearchingForNewFriend(false);
+      setNewFriendUserNameExists(false);
+    } else {
+      setIsSearchingForNewFriend(true);
+
+      const usersMatchingSearchInput = MockData.filter((user) => {
+        return user.name.toLowerCase().includes(e.target.value.toLowerCase());
+      });
+
+      setNewFriendUserNameExists(usersMatchingSearchInput.length > 0);
+      setNewFriendSearchResult(usersMatchingSearchInput);
+    }
+  };
+
+  const onClickCloseSearch = () => {
+    setSearchInput('');
+    setFriendSearchResult([]);
+    setIsSearching(false);
+    // TODO: change this
+    setActiveFriendId(1);
+    setSearchResultContactSelected(false);
+  };
+
+  const onClickCloseNewFriendSearch = () => {
+    setAddNewFriendSearchInput('');
+    setIsSearchingForNewFriend(false);
+    setNewFriendSearchResult([]);
+    // TODO: change this
+    setActiveFriendId(1);
+    setActiveNewFriendId(null);
+    setSearchResultNewFriendSelected(false);
+    setClickedAddNewFriend(false);
+    setNewFriendUserNameExists(false);
   };
 
   return (
     <StyledSidebarContainer>
       <StyledHomePageHeader>
         <StyledCurrentUserContainer>
-          <img
-            src={currentUserAvatar.animal}
-            alt="your user avatar"
-            className="current-user-avatar clickable"
-            onClick={() => setShowSettingsPopUpMenu(!showSettingsPopUpMenu)} />
-          <h4 className="current-user-name">Hi {name}!</h4>
+          <StyledAvatarAndNameContainer>
+            <img
+              src={currentUserAvatar.animal}
+              alt="your user avatar"
+              className="current-user-avatar clickable"
+              onClick={() => setShowSettingsPopUpMenu(!showSettingsPopUpMenu)} />
+            <h4 className="current-user-name">Hi {name}!</h4>
+          </StyledAvatarAndNameContainer>
+          <div>
+            <FontAwesomeIcon
+              icon={faUserPlus}
+              fontSize="18px"
+              className="clickable"
+              onClick={() => setClickedAddNewFriend(true)} />
+          </div>
         </StyledCurrentUserContainer>
 
         {showSettingsPopUpMenu
@@ -77,44 +139,66 @@ const Sidebar = ({
           : null
         }
 
-        <SearchBox
-          searchInput={searchInput}
-          setSearchInput={setSearchInput}
-          setFriendSearchResult={setFriendSearchResult}
-          setIsSearching={setIsSearching}
-          setActiveFriendId={setActiveFriendId}
-          setSearchResultContactSelected={setSearchResultContactSelected}
-          onChangeSearchInputGetSearchResults={onChangeSearchInputGetSearchResults} />
+        {clickedAddNewFriend
+          ? (
+            <>
+              <StyledBackHomeContainer className="clickable" onClick={onClickCloseNewFriendSearch}>
+                <FontAwesomeIcon icon={faChevronLeft} className="back-home-icon" />
+                <h3 className="small-black-title">Back home</h3>
+              </StyledBackHomeContainer>
+              <SearchBox
+                searchInput={addNewFriendSearchInput}
+                isSearchingForNewFriend={isSearchingForNewFriend}
+                placeholder="Search by username"
+                onClickCloseSearch={onClickCloseNewFriendSearch}
+                onChange={onChangeSearchInputAddNewFriendGetSearchResults} />
+            </>
+          )
+          : (
+            <SearchBox
+              searchInput={searchInput}
+              placeholder="Search"
+              onClickCloseSearch={onClickCloseSearch}
+              onChange={onChangeSearchInputGetSearchResults} />
+          )
+        }
       </StyledHomePageHeader>
 
       <StyledFriendsContainer>
-        {isSearching
+        {!clickedAddNewFriend
           ? (
-            <SearchResults
-              friendUserNameExists={friendUserNameExists}
-              friendSearchResult={friendSearchResult}
-              messageExists={messageExists}
-              searchInput={searchInput}
-              messageThreads={messageThreads}
-              messageThreadsSearchResults={messageThreadsSearchResults}
-              currentUser={currentUser}
+            <FriendsAndSearchSidebar
               users={users}
-              searchResultContactSelected={searchResultContactSelected}
+              currentUser={currentUser}
+              isSearching={isSearching}
+              friendSearchResult={friendSearchResult}
+              friendUserNameExists={friendUserNameExists}
+              messageExists={messageExists}
+              messageThreadsSearchResults={messageThreadsSearchResults}
+              searchInput={searchInput}
               activeFriendId={activeFriendId}
               setActiveFriendId={setActiveFriendId}
+              messageThreads={messageThreads}
               setActiveMessagesThread={setActiveMessagesThread}
+              searchResultContactSelected={searchResultContactSelected}
               setSearchResultContactSelected={setSearchResultContactSelected} />
           )
           : (
-            <FriendsList
-              users={users}
-              messageThreads={messageThreads}
-              activeFriendId={activeFriendId}
-              setActiveFriendId={setActiveFriendId}
+            <AddNewFriendSidebar
+              isSearchingForNewFriend={isSearchingForNewFriend}
+              clickedAddNewFriend={clickedAddNewFriend}
+              searchInput={addNewFriendSearchInput}
+              friendSearchResult={newFriendSearchResult}
+              friendUserNameExists={newFriendUserNameExists}
+              searchResultNewFriendSelected={searchResultNewFriendSelected}
+              activeNewFriendId={activeNewFriendId}
+              setActiveNewFriendId={setActiveNewFriendId}
+              setSearchResultNewFriendSelected={setSearchResultNewFriendSelected}
               setActiveMessagesThread={setActiveMessagesThread} />
           )
         }
       </StyledFriendsContainer>
+
     </StyledSidebarContainer>
   );
 };
@@ -138,15 +222,33 @@ const StyledHomePageHeader = styled.div`
 `;
 
 const StyledCurrentUserContainer = styled.div`
-display: flex;
-align-items: center;
-padding: 20px 0px 15px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 30px;
+`;
 
-img {
+const StyledBackHomeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 20px 0px 15px 15px;
+
+  .back-home-icon {
+    margin-right: 5px;
+  }
+`;
+
+const StyledAvatarAndNameContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  padding: 20px 0px 15px 15px;
+
+  img {
   margin-right: 10px;
-}
+  }
 
-.current-user-avatar {
+  .current-user-avatar {
     height: 40px;
   }
 `;

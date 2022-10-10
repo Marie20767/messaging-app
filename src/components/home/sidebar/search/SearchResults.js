@@ -17,21 +17,31 @@ const SearchResults = ({
   setActiveMessagesThread,
   setSearchResultContactSelected,
 }) => {
+  const onClickSelectFriend = (friendId) => {
+    setActiveFriendId(friendId);
+    setSearchResultContactSelected(true);
+
+    const activeMessageThread = messageThreads.find((thread) => thread.friendParticipantId === friendId);
+
+    setActiveMessagesThread(activeMessageThread);
+  };
+
+  const noSearchResultText = `No result for '${searchInput}'`;
+
   return (
     <>
       <SearchResultsHeader
+        title="Contacts"
         friendUserNameExists={friendUserNameExists}
         friendSearchResult={friendSearchResult}
-        messageExists={messageExists}
-        searchInput={searchInput} />
+        variableExists={messageExists}
+        noSearchResultText={noSearchResultText} />
       <ContactSearchResults
         friendSearchResult={friendSearchResult}
-        messageThreads={messageThreads}
         activeFriendId={activeFriendId}
         searchResultContactSelected={searchResultContactSelected}
-        setActiveFriendId={setActiveFriendId}
         setActiveMessagesThread={setActiveMessagesThread}
-        setSearchResultContactSelected={setSearchResultContactSelected} />
+        onClickSelectFriend={onClickSelectFriend} />
       <MessageSearchResults
         messageExists={messageExists}
         messageThreadsSearchResults={messageThreadsSearchResults}
