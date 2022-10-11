@@ -7,7 +7,7 @@ const MessageSearchResults = ({
   messageExists,
   messageThreadsSearchResults,
   currentUser,
-  users,
+  friends,
   searchInput,
   messageThreads,
   setActiveMessagesThread,
@@ -35,7 +35,7 @@ const MessageSearchResults = ({
           <div>
             <h4 className="small-black-title search-result-title">Messages</h4>
             {messageThreadsSearchResults.map((searchResult) => {
-              const friendMessageSearchResult = getFriendMessageSearchResult(currentUser, users, searchResult);
+              const friendMessageSearchResult = getFriendMessageSearchResult(currentUser, friends, searchResult);
               const highlighted = selectedMessageId === searchResult.id;
 
               return (

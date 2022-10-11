@@ -3,7 +3,7 @@ import SearchResults from './search/SearchResults';
 import FriendsList from './FriendsList';
 
 const FriendsAndSearchSidebar = ({
-  users,
+  friends,
   currentUser,
   isSearching,
   searchInput,
@@ -30,7 +30,7 @@ const FriendsAndSearchSidebar = ({
             messageThreads={messageThreads}
             messageThreadsSearchResults={messageThreadsSearchResults}
             currentUser={currentUser}
-            users={users}
+            friends={friends}
             searchResultContactSelected={searchResultContactSelected}
             activeFriendId={activeFriendId}
             setActiveFriendId={setActiveFriendId}
@@ -39,7 +39,7 @@ const FriendsAndSearchSidebar = ({
         )
         : (
           <FriendsList
-            users={users}
+            friends={friends}
             messageThreads={messageThreads}
             activeFriendId={activeFriendId}
             setActiveFriendId={setActiveFriendId}

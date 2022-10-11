@@ -30,7 +30,7 @@ const getFormattedMessageThreads = (messageThreadsResults, currentUserId) => {
   return finalMessageThread;
 };
 
-const getFriendMessageSearchResult = (currentUser, users, searchResult) => {
+const getFriendMessageSearchResult = (currentUser, friends, searchResult) => {
   const {
     sending_user_id,
     recipient_user_id,
@@ -38,7 +38,7 @@ const getFriendMessageSearchResult = (currentUser, users, searchResult) => {
 
   const friend_id = currentUser.id === recipient_user_id ? sending_user_id : recipient_user_id;
 
-  return users.find((user) => {
+  return friends.find((user) => {
     return user.id === friend_id;
   });
 };

@@ -6,6 +6,7 @@ import { useRef } from 'react';
 const SearchBox = ({
   searchInput,
   placeholder,
+  autoFocus = false,
   onClickCloseSearch,
   onChange,
 }) => {
@@ -22,6 +23,7 @@ const SearchBox = ({
         ref={ref}
         type="text"
         placeholder={placeholder}
+        autoFocus={autoFocus}
         value={searchInput}
         onChange={onChange} />
       {searchInput !== ''

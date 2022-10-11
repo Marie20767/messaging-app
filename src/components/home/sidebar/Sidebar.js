@@ -10,7 +10,7 @@ import AddNewFriendSidebar from './AddNewFriendSidebar';
 import MockData from '../../../constants/MockData';
 
 const Sidebar = ({
-  users,
+  friends,
   currentUser,
   activeFriendId,
   messageThreads,
@@ -18,6 +18,7 @@ const Sidebar = ({
   setCurrentUser,
   setShowAvatarOverlay,
   setActiveMessagesThread,
+  setIsAddingNewFriend,
 }) => {
   const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
   const [searchInput, setSearchInput] = useState('');
@@ -48,12 +49,12 @@ const Sidebar = ({
     } else {
       setIsSearching(true);
 
-      const usersMatchingSearchInput = users.filter((user) => {
+      const friendsMatchingSearchInput = friends.filter((user) => {
         return user.name.toLowerCase().includes(e.target.value.toLowerCase());
       });
 
-      setFriendUserNameExists(usersMatchingSearchInput.length > 0);
-      setFriendSearchResult(usersMatchingSearchInput);
+      setFriendUserNameExists(friendsMatchingSearchInput.length > 0);
+      setFriendSearchResult(friendsMatchingSearchInput);
 
       const messageThreadsMatchingSearchInput = messageThreads.reduce((acc, currentMessageThread) => {
         const filteredMessages = currentMessageThread.messages.filter((message) => message.text.toLowerCase().includes(e.target.value.toLowerCase()));
@@ -78,12 +79,12 @@ const Sidebar = ({
     } else {
       setIsSearchingForNewFriend(true);
 
-      const usersMatchingSearchInput = MockData.filter((user) => {
+      const friendsMatchingSearchInput = MockData.filter((user) => {
         return user.name.toLowerCase().includes(e.target.value.toLowerCase());
       });
 
-      setNewFriendUserNameExists(usersMatchingSearchInput.length > 0);
-      setNewFriendSearchResult(usersMatchingSearchInput);
+      setNewFriendUserNameExists(friendsMatchingSearchInput.length > 0);
+      setNewFriendSearchResult(friendsMatchingSearchInput);
     }
   };
 
@@ -147,6 +148,7 @@ const Sidebar = ({
                 <h3 className="small-black-title">Back home</h3>
               </StyledBackHomeContainer>
               <SearchBox
+                autoFocus
                 searchInput={addNewFriendSearchInput}
                 isSearchingForNewFriend={isSearchingForNewFriend}
                 placeholder="Search by username"
@@ -168,7 +170,7 @@ const Sidebar = ({
         {!clickedAddNewFriend
           ? (
             <FriendsAndSearchSidebar
-              users={users}
+              friends={friends}
               currentUser={currentUser}
               isSearching={isSearching}
               friendSearchResult={friendSearchResult}
@@ -193,6 +195,7 @@ const Sidebar = ({
               searchResultNewFriendSelected={searchResultNewFriendSelected}
               activeNewFriendId={activeNewFriendId}
               setActiveNewFriendId={setActiveNewFriendId}
+              setIsAddingNewFriend={setIsAddingNewFriend}
               setSearchResultNewFriendSelected={setSearchResultNewFriendSelected}
               setActiveMessagesThread={setActiveMessagesThread} />
           )

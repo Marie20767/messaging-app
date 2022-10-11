@@ -5,14 +5,16 @@ import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
 import ActiveMessagesThread from './active-message-thread/ActiveMessagesThread';
 import Sidebar from './sidebar/Sidebar';
 import { getFormattedMessageThreads } from '../../utils/utils';
+import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
 
 const HomeScreen = ({ currentUser, setCurrentUser }) => {
-  const [users, setUsers] = useState([]);
+  const [friends, setFriends] = useState([]);
   const [activeFriendId, setActiveFriendId] = useState(1); // TODO: at some point need to change this, make it so it's always the ID of the friend that sent the last message
   const [serverError, setServerError] = useState('');
   const [showAvatarOverlay, setShowAvatarOverlay] = useState(false);
   const [messageThreads, setMessageThreads] = useState(null);
   const [activeMessagesThread, setActiveMessagesThread] = useState(null);
+  const [isAddingNewFriend, setIsAddingNewFriend] = useState(false);
 
   const { id, avatarId } = currentUser;
   const messagesEndRef = useRef(null);
@@ -42,16 +44,14 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     }
   };
 
-  const getDemoUsers = async () => {
+  const getFriends = async () => {
     try {
-      const response = await fetch('http://localhost:3001/users');
-      const userResults = await response.json();
+      const response = await fetch(`http://localhost:3001/friends/${id}`);
+      const friendResults = await response.json();
 
-      const allUsersMinusNewRegisteredUser = userResults.filter((user) => user.id !== id);
-
-      setUsers(allUsersMinusNewRegisteredUser);
+      setFriends(friendResults);
     } catch (e) {
-      console.log('>>> getDemoUsers error: ', e);
+      console.log('>>> getFriends error: ', e);
       setServerError('Something went wrong with your request');
     }
   };
@@ -70,8 +70,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     }
   };
 
-  const getDemoUsersAndMessagesData = () => {
-    getDemoUsers();
+  const getFriendsAndMessagesData = () => {
+    getFriends();
     getMessageThreads();
   };
 
@@ -80,7 +80,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   };
 
   useEffect(() => {
-    getDemoUsersAndMessagesData();
+    getFriendsAndMessagesData();
   }, []);
 
   useEffect(() => {
@@ -91,12 +91,12 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     return (
       <div className="full-screen-error-container">
         <h2>{serverError}</h2>
-        <button type="button" onClick={getDemoUsersAndMessagesData}>Retry</button>
+        <button type="button" onClick={getFriendsAndMessagesData}>Retry</button>
       </div>
     );
   }
 
-  if (!users.length || !messageThreads) {
+  if (!friends.length || !messageThreads) {
     return (
       <div className="card-container">
         <Loading background="#ea738dff" margin="8px" size="18px" duration="0.6s" />
@@ -107,17 +107,18 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   return (
     <StyledHomeScreenContainer>
       <Sidebar
-        users={users}
+        friends={friends}
         currentUser={currentUser}
         activeFriendId={activeFriendId}
         messageThreads={messageThreads}
         setActiveFriendId={setActiveFriendId}
         setCurrentUser={setCurrentUser}
         setShowAvatarOverlay={setShowAvatarOverlay}
-        setActiveMessagesThread={setActiveMessagesThread} />
+        setActiveMessagesThread={setActiveMessagesThread}
+        setIsAddingNewFriend={setIsAddingNewFriend} />
 
       <ActiveMessagesThread
-        users={users}
+        friends={friends}
         currentUserId={id}
         activeFriendId={activeFriendId}
         activeMessagesThread={activeMessagesThread}
@@ -129,6 +130,12 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
             avatarId={avatarId}
             serverError={serverError}
             onClickSaveNewAvatar={onClickSaveNewAvatar} />
+        )
+        : null
+      }
+      {isAddingNewFriend
+        ? (
+          <AddNewFriendOverlay setIsAddingNewFriend={setIsAddingNewFriend} />
         )
         : null
       }

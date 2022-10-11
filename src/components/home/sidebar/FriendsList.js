@@ -2,7 +2,7 @@ import FriendDisplay from './FriendDisplay';
 
 const FriendsList = ({
   messageThreads,
-  users,
+  friends,
   activeFriendId,
   setActiveFriendId,
   setActiveMessagesThread,
@@ -27,7 +27,7 @@ const FriendsList = ({
 
   return (
     <>
-      {users.map((user) => {
+      {friends.map((user) => {
         const lastFriendMessage = getLastFriendMessage(user.id);
         const highlighted = user.id === activeFriendId;
 

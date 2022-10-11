@@ -1,8 +1,4 @@
 const SearchResultsHeader = ({ friendUserNameExists, title, searchInput, friendSearchResult, variableExists, noSearchResultText }) => {
-  console.log('>>> friendSearchResult.length: ', friendSearchResult.length);
-  console.log('>>> friendUserNameExists: ', friendUserNameExists);
-  console.log('>>> variableExists: ', variableExists);
-
   return (
     <>
       {searchInput !== '' && friendUserNameExists

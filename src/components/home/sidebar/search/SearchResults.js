@@ -10,7 +10,7 @@ const SearchResults = ({
   messageThreads,
   messageThreadsSearchResults,
   currentUser,
-  users,
+  friends,
   activeFriendId,
   searchResultContactSelected,
   setActiveFriendId,
@@ -46,7 +46,7 @@ const SearchResults = ({
         messageExists={messageExists}
         messageThreadsSearchResults={messageThreadsSearchResults}
         currentUser={currentUser}
-        users={users}
+        friends={friends}
         messageThreads={messageThreads}
         searchInput={searchInput}
         setActiveMessagesThread={setActiveMessagesThread}

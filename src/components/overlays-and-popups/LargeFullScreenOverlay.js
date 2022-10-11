@@ -2,48 +2,25 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 
-const FullScreenOverlay = ({ children, onClick }) => {
+const LargeFullScreenOverlay = ({ children, onClick }) => {
   return (
-    <StyledFullScreenOverlayContainer>
-      <StyledOverlay />
+    <div className="full-screen-overlay-container">
+      <div className="overlay" />
       <StyledOverlayContent>
-        <StyledXIconContainer>
+        <div className="x-mark-overlay-container">
           <FontAwesomeIcon
             icon={faXmark}
             onClick={onClick}
             className="light-icon x-icon"
             fontSize="26px" />
-        </StyledXIconContainer>
+        </div>
         <StyledTitleAvatarsAndButtonContainer>
           {children}
         </StyledTitleAvatarsAndButtonContainer>
       </StyledOverlayContent>
-    </StyledFullScreenOverlayContainer>
+    </div>
   );
 };
-
-const StyledFullScreenOverlayContainer = styled.div`
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-`;
-
-const StyledOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-`;
 
 const StyledOverlayContent = styled.div`
   display: flex;
@@ -57,12 +34,6 @@ const StyledOverlayContent = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
 `;
 
-const StyledXIconContainer = styled.div`
-  display: flex;
-  align-self: flex-end;
-  margin: 0px 20px 0 0;
-`;
-
 const StyledTitleAvatarsAndButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -71,4 +42,4 @@ const StyledTitleAvatarsAndButtonContainer = styled.div`
   align-items: center;
 `;
 
-export default FullScreenOverlay;
+export default LargeFullScreenOverlay;

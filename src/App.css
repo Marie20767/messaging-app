@@ -136,6 +136,35 @@ p {
   font-weight: 500;
 }
 
+.full-screen-overlay-container {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.x-mark-overlay-container {
+  display: flex;
+  align-self: flex-end;
+  margin: 0px 20px 0 0;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
 }

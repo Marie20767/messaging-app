@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-no-useless-fragment */
-import { useState } from 'react';
 import styled from 'styled-components';
 import ContactSearchResults from './search/ContactSearchResults';
 import SearchResultsHeader from './search/SearchResultsHeader';
@@ -10,13 +9,12 @@ const AddNewFriendSidebar = ({
   friendSearchResult,
   friendUserNameExists,
   clickedAddNewFriend,
+  setIsAddingNewFriend,
   activeNewFriendId,
   setActiveNewFriendId,
   searchResultNewFriendSelected,
   setSearchResultNewFriendSelected,
 }) => {
-  const [isAddingNewFriend, setIsAddingNewFriend] = useState(false);
-
   const noSearchResultText = `User called '${searchInput}' doesn't exist. Ask your friend to register first.`;
 
   const onClickSelectFriend = (friendId) => {
@@ -44,7 +42,7 @@ const AddNewFriendSidebar = ({
             onClickSelectFriend={onClickSelectFriend} />
         )
         : null
-    }
+      }
     </StyledAddNewFriendSidebarContainer>
   );
 };

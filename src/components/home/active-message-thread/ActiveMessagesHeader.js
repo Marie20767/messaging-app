@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { demoUsersAvatars } from '../../../constants/constants';
 
-const MessagesHeader = ({ users, activeFriendId }) => {
-  const activeFriend = users.find((user) => user.id === activeFriendId);
+const MessagesHeader = ({ friends, activeFriendId }) => {
+  const activeFriend = friends.find((user) => user.id === activeFriendId);
   const activeFriendAvatar = demoUsersAvatars.find((avatar) => avatar.id === activeFriend.avatar_id);
 
   return (

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { avatars } from '../../../constants/constants';
 import PickAvatar from '../../avatar/PickAvatar';
-import FullScreenOverlay from '../../overlays-and-popups/FullScreenOverlay';
+import LargeFullScreenOverlay from '../../overlays-and-popups/LargeFullScreenOverlay';
 
 const ChangeAvatarOverlay = ({ avatarId, setShowAvatarOverlay, serverError, onClickSaveNewAvatar }) => {
   const [newSelectedAvatarId, setNewSelectedAvatarId] = useState(avatarId);
@@ -14,7 +14,7 @@ const ChangeAvatarOverlay = ({ avatarId, setShowAvatarOverlay, serverError, onCl
   };
 
   return (
-    <FullScreenOverlay onClick={() => setShowAvatarOverlay(false)}>
+    <LargeFullScreenOverlay onClick={() => setShowAvatarOverlay(false)}>
       <PickAvatar
         avatarId={newSelectedAvatarId}
         avatars1={firstFourAvatars}
@@ -23,7 +23,7 @@ const ChangeAvatarOverlay = ({ avatarId, setShowAvatarOverlay, serverError, onCl
         isOverlay
         onClickSelectAvatar={onClickSelectNewAvatar} />
       <button type="button" onClick={() => onClickSaveNewAvatar(newSelectedAvatarId)}>Save</button>
-    </FullScreenOverlay>
+    </LargeFullScreenOverlay>
   );
 };
 

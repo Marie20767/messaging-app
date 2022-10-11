@@ -3,11 +3,11 @@ import MessagesHeader from './ActiveMessagesHeader';
 import Messages from './Messages';
 import MessageInputField from './MessageInputField';
 
-const ActiveMessagesThread = ({ users, currentUserId, activeFriendId, activeMessagesThread, messagesEndRef }) => {
+const ActiveMessagesThread = ({ friends, currentUserId, activeFriendId, activeMessagesThread, messagesEndRef }) => {
   return (
     <StyledMessagesThreadContainer>
       <MessagesHeader
-        users={users}
+        friends={friends}
         activeFriendId={activeFriendId} />
       <Messages
         activeMessagesThread={activeMessagesThread}
