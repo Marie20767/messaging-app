@@ -4,6 +4,8 @@ import Messages from './Messages';
 import MessageInputField from './MessageInputField';
 
 const ActiveMessagesThread = ({ friends, currentUserId, activeFriendId, activeMessagesThread, messagesEndRef }) => {
+  // const activeMessagesThread = messageThreads.find((thread) => thread.friendParticipantId === activeFriendId);
+
   return (
     <StyledMessagesThreadContainer>
       <MessagesHeader

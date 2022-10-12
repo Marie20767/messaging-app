@@ -8,17 +8,18 @@ const AddNewFriendSidebar = ({
   searchInput,
   friendSearchResult,
   friendUserNameExists,
-  clickedAddNewFriend,
   setIsAddingNewFriend,
   activeNewFriendId,
   setActiveNewFriendId,
   searchResultNewFriendSelected,
   setSearchResultNewFriendSelected,
+  setAddNewFriendError,
 }) => {
   const noSearchResultText = `User called '${searchInput}' doesn't exist. Ask your friend to register first.`;
 
   const onClickSelectFriend = (friendId) => {
     setActiveNewFriendId(friendId);
+    setAddNewFriendError(null);
     setSearchResultNewFriendSelected(true);
     setIsAddingNewFriend(true);
   };
@@ -27,11 +28,9 @@ const AddNewFriendSidebar = ({
     <StyledAddNewFriendSidebarContainer>
       <SearchResultsHeader
         title="Add Friend"
+        hasSearchResults={friendSearchResult?.length}
         searchInput={searchInput}
-        clickedAddNewFriend={clickedAddNewFriend}
         friendUserNameExists={friendUserNameExists}
-        variableExists={friendUserNameExists}
-        friendSearchResult={friendSearchResult}
         noSearchResultText={noSearchResultText} />
       {isSearchingForNewFriend
         ? (

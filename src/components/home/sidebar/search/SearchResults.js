@@ -28,13 +28,15 @@ const SearchResults = ({
 
   const noSearchResultText = `No result for '${searchInput}'`;
 
+  const hasSearchResults = messageThreadsSearchResults?.length > 0 || friendSearchResult?.length > 0;
+
   return (
     <>
       <SearchResultsHeader
         title="Contacts"
+        hasSearchResults={hasSearchResults}
         friendUserNameExists={friendUserNameExists}
-        friendSearchResult={friendSearchResult}
-        variableExists={messageExists}
+        searchInput={searchInput}
         noSearchResultText={noSearchResultText} />
       <ContactSearchResults
         friendSearchResult={friendSearchResult}

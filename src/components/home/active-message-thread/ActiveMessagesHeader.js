@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { demoUsersAvatars } from '../../../constants/constants';
+import { allAvatars } from '../../../constants/constants';
 
 const MessagesHeader = ({ friends, activeFriendId }) => {
   const activeFriend = friends.find((user) => user.id === activeFriendId);
-  const activeFriendAvatar = demoUsersAvatars.find((avatar) => avatar.id === activeFriend.avatar_id);
+  const activeFriendAvatar = allAvatars.find((avatar) => avatar.id === activeFriend.avatar_id);
+
+  console.log('>>> activeFriendId: ', activeFriendId);
 
   return (
     <StyledHeader>

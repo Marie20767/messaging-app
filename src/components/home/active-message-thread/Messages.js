@@ -1,9 +1,16 @@
 import React from 'eslint-plugin-import/config/react';
 import styled from 'styled-components';
+import NewFriendWelcomeMessage from '../../../images/new-friend-welcome-message.png';
 
 const Messages = ({ activeMessagesThread, currentUserId, messagesEndRef }) => {
   if (activeMessagesThread === null) {
-    return null;
+    return (
+      <StyledEmptyMessagesThreadContainer>
+        <h3>No messages here yet...</h3>
+        <h3>Don&apos;t be shy, send a message!</h3>
+        <img src={NewFriendWelcomeMessage} alt="Waving bear" />
+      </StyledEmptyMessagesThreadContainer>
+    );
   }
 
   return (
@@ -22,6 +29,21 @@ const Messages = ({ activeMessagesThread, currentUserId, messagesEndRef }) => {
     </StyledMessagesContainer>
   );
 };
+
+const StyledEmptyMessagesThreadContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h3 {
+    padding-bottom: 10px;
+  }
+
+  img {
+    height: 100px;
+    margin-top: 30px;
+  }
+`;
 
 const StyledMessagesContainer = styled.div`
   overflow-y: scroll;

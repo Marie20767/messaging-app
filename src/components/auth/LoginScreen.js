@@ -53,6 +53,7 @@ const LoginScreen = ({ setCurrentUser }) => {
 
           // Go to home screen here instead of using <Link> to make sure the newest current-user-id gets passed
           navigate('/home');
+          setLoginError(null);
         } else {
           setLoginError(result.error);
         }

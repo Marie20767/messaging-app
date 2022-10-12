@@ -7,18 +7,34 @@ import SettingsPopUpMenu from './SettingsPopUpMenu';
 import FriendsAndSearchSidebar from './FriendsAndSearchSidebar';
 import SearchBox from './search/SearchBox';
 import AddNewFriendSidebar from './AddNewFriendSidebar';
-import MockData from '../../../constants/MockData';
 
 const Sidebar = ({
   friends,
   currentUser,
   activeFriendId,
+  activeNewFriendId,
+  setActiveNewFriendId,
+  addNewFriendSearchInput,
+  setAddNewFriendSearchInput,
+  isSearchingForNewFriend,
+  setIsSearchingForNewFriend,
+  newFriendSearchResult,
+  setNewFriendSearchResult,
+  searchResultNewFriendSelected,
+  setSearchResultNewFriendSelected,
+  clickedAddNewFriend,
+  setClickedAddNewFriend,
+  newFriendUserNameExists,
+  setNewFriendUserNameExists,
+  nonFriendUsers,
   messageThreads,
   setActiveFriendId,
   setCurrentUser,
   setShowAvatarOverlay,
   setActiveMessagesThread,
   setIsAddingNewFriend,
+  setAddNewFriendError,
+  onClickCloseNewFriendSearch,
 }) => {
   const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
   const [searchInput, setSearchInput] = useState('');
@@ -28,13 +44,6 @@ const Sidebar = ({
   const [messageExists, setMessageExists] = useState(false);
   const [messageThreadsSearchResults, setMessageThreadSearchResults] = useState([]);
   const [searchResultContactSelected, setSearchResultContactSelected] = useState(false);
-  const [isSearchingForNewFriend, setIsSearchingForNewFriend] = useState(false);
-  const [addNewFriendSearchInput, setAddNewFriendSearchInput] = useState('');
-  const [newFriendSearchResult, setNewFriendSearchResult] = useState([]);
-  const [newFriendUserNameExists, setNewFriendUserNameExists] = useState(false);
-  const [searchResultNewFriendSelected, setSearchResultNewFriendSelected] = useState(false);
-  const [activeNewFriendId, setActiveNewFriendId] = useState(null);
-  const [clickedAddNewFriend, setClickedAddNewFriend] = useState(false);
 
   const { name, avatarId } = currentUser;
 
@@ -79,12 +88,16 @@ const Sidebar = ({
     } else {
       setIsSearchingForNewFriend(true);
 
-      const friendsMatchingSearchInput = MockData.filter((user) => {
-        return user.name.toLowerCase().includes(e.target.value.toLowerCase());
-      });
+      if (nonFriendUsers.length > 0) {
+        const friendsMatchingSearchInput = nonFriendUsers.filter((user) => {
+          return user.name.toLowerCase().includes(e.target.value.toLowerCase());
+        });
 
-      setNewFriendUserNameExists(friendsMatchingSearchInput.length > 0);
-      setNewFriendSearchResult(friendsMatchingSearchInput);
+        setNewFriendUserNameExists(friendsMatchingSearchInput?.length > 0);
+        setNewFriendSearchResult(friendsMatchingSearchInput);
+      } else {
+        setNewFriendUserNameExists(false);
+      }
     }
   };
 
@@ -95,18 +108,6 @@ const Sidebar = ({
     // TODO: change this
     setActiveFriendId(1);
     setSearchResultContactSelected(false);
-  };
-
-  const onClickCloseNewFriendSearch = () => {
-    setAddNewFriendSearchInput('');
-    setIsSearchingForNewFriend(false);
-    setNewFriendSearchResult([]);
-    // TODO: change this
-    setActiveFriendId(1);
-    setActiveNewFriendId(null);
-    setSearchResultNewFriendSelected(false);
-    setClickedAddNewFriend(false);
-    setNewFriendUserNameExists(false);
   };
 
   return (
@@ -188,7 +189,6 @@ const Sidebar = ({
           : (
             <AddNewFriendSidebar
               isSearchingForNewFriend={isSearchingForNewFriend}
-              clickedAddNewFriend={clickedAddNewFriend}
               searchInput={addNewFriendSearchInput}
               friendSearchResult={newFriendSearchResult}
               friendUserNameExists={newFriendUserNameExists}
@@ -197,7 +197,8 @@ const Sidebar = ({
               setActiveNewFriendId={setActiveNewFriendId}
               setIsAddingNewFriend={setIsAddingNewFriend}
               setSearchResultNewFriendSelected={setSearchResultNewFriendSelected}
-              setActiveMessagesThread={setActiveMessagesThread} />
+              setActiveMessagesThread={setActiveMessagesThread}
+              setAddNewFriendError={setAddNewFriendError} />
           )
         }
       </StyledFriendsContainer>

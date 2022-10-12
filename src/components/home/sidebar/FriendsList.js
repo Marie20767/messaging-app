@@ -20,9 +20,14 @@ const FriendsList = ({
       return messageThread.friendParticipantId === id;
     });
 
-    const lastFriendMessage = friendMessageThread.messages[friendMessageThread.messages.length - 1].text;
+    if (!friendMessageThread) {
+      return null;
+    }
 
-    return lastFriendMessage;
+    const friendMessages = friendMessageThread.messages || [];
+    const lastFriendMessage = friendMessages[friendMessages.length - 1];
+
+    return lastFriendMessage?.text;
   };
 
   return (

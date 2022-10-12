@@ -1,4 +1,10 @@
-const SearchResultsHeader = ({ friendUserNameExists, title, searchInput, friendSearchResult, variableExists, noSearchResultText }) => {
+const SearchResultsHeader = ({
+  friendUserNameExists,
+  title,
+  searchInput,
+  noSearchResultText,
+  hasSearchResults,
+}) => {
   return (
     <>
       {searchInput !== '' && friendUserNameExists
@@ -6,15 +12,13 @@ const SearchResultsHeader = ({ friendUserNameExists, title, searchInput, friendS
         : null
       }
 
-      {friendSearchResult.length === 0 && !variableExists && searchInput !== ''
+      {searchInput !== '' && !hasSearchResults
         ? <p className="no-search-result">{noSearchResultText}</p>
         : null
       }
     </>
-
   );
 };
-
 
 export default SearchResultsHeader;
 
