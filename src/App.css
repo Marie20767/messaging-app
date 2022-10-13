@@ -32,6 +32,13 @@ input {
 
 input:-webkit-autofill { 
   background-clip: text;
+  -webkit-text-fill-color:  #919190;
+}
+
+footer {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #919190;
 }
 
 button {

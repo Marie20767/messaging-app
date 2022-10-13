@@ -86,7 +86,7 @@ const StyledFriendContainer = styled.div`
   display: flex;
   align-items: center;
   height: 90px;
-  padding: 15px 0 15px 10px;
+  padding: 15px 10px 20px 10px;
   margin: 0 5px 0 15px;
   cursor: pointer;
 

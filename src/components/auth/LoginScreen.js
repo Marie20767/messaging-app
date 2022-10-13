@@ -97,7 +97,7 @@ const LoginScreen = ({ setCurrentUser }) => {
           : null
         }
         <button type="button" onClick={onClickLogin}>Log in</button>
-        <p>No account? <Link to="/register" className="auth-a-tag">Register</Link></p>
+        <footer>No account? <Link to="/register" className="auth-a-tag">Register</Link></footer>
       </StyledLoginScreenContainer>
     </div>
   );

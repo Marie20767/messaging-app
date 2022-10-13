@@ -14,9 +14,6 @@ const FriendsAndSearchSidebar = ({
   activeFriendId,
   setActiveFriendId,
   messageThreads,
-  setActiveMessagesThread,
-  searchResultContactSelected,
-  setSearchResultContactSelected,
 }) => {
   return (
     <>
@@ -31,19 +28,14 @@ const FriendsAndSearchSidebar = ({
             messageThreadsSearchResults={messageThreadsSearchResults}
             currentUser={currentUser}
             friends={friends}
-            searchResultContactSelected={searchResultContactSelected}
-            activeFriendId={activeFriendId}
-            setActiveFriendId={setActiveFriendId}
-            setActiveMessagesThread={setActiveMessagesThread}
-            setSearchResultContactSelected={setSearchResultContactSelected} />
+            setActiveFriendId={setActiveFriendId} />
         )
         : (
           <FriendsList
             friends={friends}
             messageThreads={messageThreads}
             activeFriendId={activeFriendId}
-            setActiveFriendId={setActiveFriendId}
-            setActiveMessagesThread={setActiveMessagesThread} />
+            setActiveFriendId={setActiveFriendId} />
         )
         }
     </>

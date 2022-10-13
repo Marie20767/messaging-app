@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import ContactSearchResults from './ContactSearchResults';
 import MessageSearchResults from './MessageSearchResults';
 import SearchResultsHeader from './SearchResultsHeader';
@@ -11,19 +12,13 @@ const SearchResults = ({
   messageThreadsSearchResults,
   currentUser,
   friends,
-  activeFriendId,
-  searchResultContactSelected,
   setActiveFriendId,
-  setActiveMessagesThread,
-  setSearchResultContactSelected,
 }) => {
+  const [activeSearchResultId, setActiveSearchResultId] = useState(null);
+
   const onClickSelectFriend = (friendId) => {
+    setActiveSearchResultId(friendId);
     setActiveFriendId(friendId);
-    setSearchResultContactSelected(true);
-
-    const activeMessageThread = messageThreads.find((thread) => thread.friendParticipantId === friendId);
-
-    setActiveMessagesThread(activeMessageThread);
   };
 
   const noSearchResultText = `No result for '${searchInput}'`;
@@ -40,9 +35,7 @@ const SearchResults = ({
         noSearchResultText={noSearchResultText} />
       <ContactSearchResults
         friendSearchResult={friendSearchResult}
-        activeFriendId={activeFriendId}
-        searchResultContactSelected={searchResultContactSelected}
-        setActiveMessagesThread={setActiveMessagesThread}
+        activeSearchResultId={activeSearchResultId}
         onClickSelectFriend={onClickSelectFriend} />
       <MessageSearchResults
         messageExists={messageExists}
@@ -51,8 +44,9 @@ const SearchResults = ({
         friends={friends}
         messageThreads={messageThreads}
         searchInput={searchInput}
-        setActiveMessagesThread={setActiveMessagesThread}
-        setActiveFriendId={setActiveFriendId} />
+        setActiveFriendId={setActiveFriendId}
+        activeSearchResultId={activeSearchResultId}
+        setActiveSearchResultId={setActiveSearchResultId} />
     </>
   );
 };

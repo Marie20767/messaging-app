@@ -16,7 +16,6 @@ import PageNotFound from './components/PageNotFound';
 // STYLING
 // Fix sidebar view on large laptop screens
 // Have it so the messagesInputField doesn't grow in width but in height the more you type (use textarea?)
-// Have scrollbar start at the last message
 
 // TODO:
 // REGISTRATION

@@ -2,14 +2,13 @@ import FriendDisplay from '../FriendDisplay';
 
 const ContactSearchResults = ({
   friendSearchResult,
-  searchResultContactSelected,
-  activeFriendId,
+  activeSearchResultId,
   onClickSelectFriend,
 }) => {
   return (
     <>
       {friendSearchResult.map((friend) => {
-        const highlighted = (friend.id === activeFriendId) && searchResultContactSelected;
+        const highlighted = friend.id === activeSearchResultId;
 
         return (
           <FriendDisplay

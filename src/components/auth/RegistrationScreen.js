@@ -133,12 +133,6 @@ const StyledRegistrationCardContainer = styled.div`
     font-size: 17px;
   }
 
-  footer {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #919190;
-  }
-
   button {
     margin-top: 10px;
   }

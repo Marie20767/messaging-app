@@ -1,10 +1,21 @@
 import styled from 'styled-components';
+import { useEffect, useRef } from 'react';
 import MessagesHeader from './ActiveMessagesHeader';
 import Messages from './Messages';
 import MessageInputField from './MessageInputField';
 
-const ActiveMessagesThread = ({ friends, currentUserId, activeFriendId, activeMessagesThread, messagesEndRef }) => {
-  // const activeMessagesThread = messageThreads.find((thread) => thread.friendParticipantId === activeFriendId);
+const ActiveMessagesThread = ({ friends, currentUserId, activeFriendId, messageThreads }) => {
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [activeFriendId]);
+
+  const activeMessagesThread = messageThreads.find((thread) => thread.friendParticipantId === activeFriendId);
 
   return (
     <StyledMessagesThreadContainer>

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import NewFriendWelcomeMessage from '../../../images/new-friend-welcome-message.png';
 
 const Messages = ({ activeMessagesThread, currentUserId, messagesEndRef }) => {
-  if (activeMessagesThread === null) {
+  if (!activeMessagesThread) {
     return (
       <StyledEmptyMessagesThreadContainer>
         <h3>No messages here yet...</h3>
@@ -40,8 +40,8 @@ const StyledEmptyMessagesThreadContainer = styled.div`
   }
 
   img {
-    height: 100px;
-    margin-top: 30px;
+    height: 70px;
+    margin-top: 5px;
   }
 `;
 

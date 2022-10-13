@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { getFriendMessageSearchResult } from '../../../../utils/utils';
 import FriendDisplay from '../FriendDisplay';
 /* eslint-disable react/jsx-no-useless-fragment */
@@ -10,13 +9,12 @@ const MessageSearchResults = ({
   friends,
   searchInput,
   messageThreads,
-  setActiveMessagesThread,
   setActiveFriendId,
+  activeSearchResultId,
+  setActiveSearchResultId,
 }) => {
-  const [selectedMessageId, setSelectedMessageId] = useState(null);
-
   const onClickSelectMessageResult = (messageId) => {
-    setSelectedMessageId(messageId);
+    setActiveSearchResultId(messageId);
 
     const activeMessageThread = messageThreads.find((thread) => {
       const threadHasMessage = thread.messages.some((message) => message.id === messageId);
@@ -24,7 +22,6 @@ const MessageSearchResults = ({
       return threadHasMessage;
     });
 
-    setActiveMessagesThread(activeMessageThread);
     setActiveFriendId(activeMessageThread.friendParticipantId);
   };
 
@@ -36,7 +33,7 @@ const MessageSearchResults = ({
             <h4 className="small-black-title search-result-title">Messages</h4>
             {messageThreadsSearchResults.map((searchResult) => {
               const friendMessageSearchResult = getFriendMessageSearchResult(currentUser, friends, searchResult);
-              const highlighted = selectedMessageId === searchResult.id;
+              const highlighted = activeSearchResultId === searchResult.id;
 
               return (
                 <FriendDisplay

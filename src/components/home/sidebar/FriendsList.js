@@ -5,16 +5,7 @@ const FriendsList = ({
   friends,
   activeFriendId,
   setActiveFriendId,
-  setActiveMessagesThread,
 }) => {
-  const onClickSelectFriend = (friendId) => {
-    setActiveFriendId(friendId);
-
-    const activeMessageThread = messageThreads.find((thread) => thread.friendParticipantId === friendId);
-
-    setActiveMessagesThread(activeMessageThread);
-  };
-
   const getLastFriendMessage = (id) => {
     const friendMessageThread = messageThreads.find((messageThread) => {
       return messageThread.friendParticipantId === id;
@@ -42,8 +33,7 @@ const FriendsList = ({
             avatarId={user.avatar_id}
             name={user.name}
             highlighted={highlighted}
-            setActiveMessagesThread={setActiveMessagesThread}
-            onClick={() => onClickSelectFriend(user.id)}
+            onClick={() => setActiveFriendId(user.id)}
             lastFriendMessage={lastFriendMessage} />
         );
       })}

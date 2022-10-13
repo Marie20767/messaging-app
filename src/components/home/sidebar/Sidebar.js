@@ -16,12 +16,8 @@ const Sidebar = ({
   setActiveNewFriendId,
   addNewFriendSearchInput,
   setAddNewFriendSearchInput,
-  isSearchingForNewFriend,
-  setIsSearchingForNewFriend,
   newFriendSearchResult,
   setNewFriendSearchResult,
-  searchResultNewFriendSelected,
-  setSearchResultNewFriendSelected,
   clickedAddNewFriend,
   setClickedAddNewFriend,
   newFriendUserNameExists,
@@ -31,10 +27,7 @@ const Sidebar = ({
   setActiveFriendId,
   setCurrentUser,
   setShowAvatarOverlay,
-  setActiveMessagesThread,
-  setIsAddingNewFriend,
   setAddNewFriendError,
-  onClickCloseNewFriendSearch,
 }) => {
   const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
   const [searchInput, setSearchInput] = useState('');
@@ -43,7 +36,6 @@ const Sidebar = ({
   const [friendUserNameExists, setFriendUserNameExists] = useState(false);
   const [messageExists, setMessageExists] = useState(false);
   const [messageThreadsSearchResults, setMessageThreadSearchResults] = useState([]);
-  const [searchResultContactSelected, setSearchResultContactSelected] = useState(false);
 
   const { name, avatarId } = currentUser;
 
@@ -82,22 +74,15 @@ const Sidebar = ({
   const onChangeSearchInputAddNewFriendGetSearchResults = (e) => {
     setAddNewFriendSearchInput(e.target.value);
 
-    if (e.target.value === '') {
-      setIsSearchingForNewFriend(false);
-      setNewFriendUserNameExists(false);
+    if (nonFriendUsers.length > 0) {
+      const friendsMatchingSearchInput = nonFriendUsers.filter((user) => {
+        return user.name.toLowerCase().includes(e.target.value.toLowerCase());
+      });
+
+      setNewFriendUserNameExists(friendsMatchingSearchInput?.length > 0);
+      setNewFriendSearchResult(friendsMatchingSearchInput);
     } else {
-      setIsSearchingForNewFriend(true);
-
-      if (nonFriendUsers.length > 0) {
-        const friendsMatchingSearchInput = nonFriendUsers.filter((user) => {
-          return user.name.toLowerCase().includes(e.target.value.toLowerCase());
-        });
-
-        setNewFriendUserNameExists(friendsMatchingSearchInput?.length > 0);
-        setNewFriendSearchResult(friendsMatchingSearchInput);
-      } else {
-        setNewFriendUserNameExists(false);
-      }
+      setNewFriendUserNameExists(false);
     }
   };
 
@@ -107,7 +92,16 @@ const Sidebar = ({
     setIsSearching(false);
     // TODO: change this
     setActiveFriendId(1);
-    setSearchResultContactSelected(false);
+  };
+
+  const onClickCloseNewFriendSearch = () => {
+    setAddNewFriendSearchInput('');
+    setNewFriendSearchResult([]);
+    // TODO: change this
+    setActiveFriendId(1);
+    setActiveNewFriendId(null);
+    setClickedAddNewFriend(false);
+    setNewFriendUserNameExists(false);
   };
 
   return (
@@ -151,7 +145,6 @@ const Sidebar = ({
               <SearchBox
                 autoFocus
                 searchInput={addNewFriendSearchInput}
-                isSearchingForNewFriend={isSearchingForNewFriend}
                 placeholder="Search by username"
                 onClickCloseSearch={onClickCloseNewFriendSearch}
                 onChange={onChangeSearchInputAddNewFriendGetSearchResults} />
@@ -181,23 +174,15 @@ const Sidebar = ({
               searchInput={searchInput}
               activeFriendId={activeFriendId}
               setActiveFriendId={setActiveFriendId}
-              messageThreads={messageThreads}
-              setActiveMessagesThread={setActiveMessagesThread}
-              searchResultContactSelected={searchResultContactSelected}
-              setSearchResultContactSelected={setSearchResultContactSelected} />
+              messageThreads={messageThreads} />
           )
           : (
             <AddNewFriendSidebar
-              isSearchingForNewFriend={isSearchingForNewFriend}
               searchInput={addNewFriendSearchInput}
               friendSearchResult={newFriendSearchResult}
               friendUserNameExists={newFriendUserNameExists}
-              searchResultNewFriendSelected={searchResultNewFriendSelected}
               activeNewFriendId={activeNewFriendId}
               setActiveNewFriendId={setActiveNewFriendId}
-              setIsAddingNewFriend={setIsAddingNewFriend}
-              setSearchResultNewFriendSelected={setSearchResultNewFriendSelected}
-              setActiveMessagesThread={setActiveMessagesThread}
               setAddNewFriendError={setAddNewFriendError} />
           )
         }

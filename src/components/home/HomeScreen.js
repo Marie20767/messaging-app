@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Loading } from 'react-loading-dot/lib';
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
@@ -7,38 +7,21 @@ import Sidebar from './sidebar/Sidebar';
 import { getFormattedMessageThreads } from '../../utils/utils';
 import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
 
-// TODO: remove activeMessagesThread as a state variable, calculate it in the ActiveMessagesThread component instead
-// Make sure to remove all references to setActiveMessagesThread
-// then check to see if this fixes the bug where you add Draco, select Hermione then select Draco (because activeMessageThread state
-// isn't getting reset to null here then it breaks, but if you calculate activeMessageThread using messageThreads and activeFriendId then
-// the only things that need to be set are these bits of state)
-
-// Lesson here - if you can 'derive' a particular bit of state from some state that already exists then don't create another state for it
-
 const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [friends, setFriends] = useState([]);
   const [nonFriendUsers, setNonFriendUsers] = useState([]);
   const [activeFriendId, setActiveFriendId] = useState(1); // TODO: at some point need to change this, make it so it's always the ID of the friend that sent the last message
-  const [serverError, setServerError] = useState('');
+  const [activeNewFriendId, setActiveNewFriendId] = useState(null);
   const [showAvatarOverlay, setShowAvatarOverlay] = useState(false);
   const [messageThreads, setMessageThreads] = useState(null);
-  const [activeMessagesThread, setActiveMessagesThread] = useState(null);
-  const [isAddingNewFriend, setIsAddingNewFriend] = useState(false);
-  const [activeNewFriendId, setActiveNewFriendId] = useState(null);
-  const [addNewFriendError, setAddNewFriendError] = useState(null);
   const [addNewFriendSearchInput, setAddNewFriendSearchInput] = useState('');
-  const [isSearchingForNewFriend, setIsSearchingForNewFriend] = useState(false);
   const [newFriendSearchResult, setNewFriendSearchResult] = useState([]);
-  const [searchResultNewFriendSelected, setSearchResultNewFriendSelected] = useState(false);
   const [clickedAddNewFriend, setClickedAddNewFriend] = useState(false);
   const [newFriendUserNameExists, setNewFriendUserNameExists] = useState(false);
-
-  console.log('>>> activeFriendId: ', activeFriendId);
-  console.log('>>> messageThreads: ', messageThreads);
-  console.log('>>> activeMessagesThread: ', activeMessagesThread);
+  const [addNewFriendError, setAddNewFriendError] = useState(null);
+  const [serverError, setServerError] = useState('');
 
   const { id, avatarId } = currentUser;
-  const messagesEndRef = useRef(null);
 
   const onClickSaveNewAvatar = async (newAvatarId) => {
     try {
@@ -105,14 +88,6 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       const formattedMessageThreadsResults = getFormattedMessageThreads(messageThreadsResults, id);
 
       setMessageThreads(formattedMessageThreadsResults);
-
-      const hasMessageThread = formattedMessageThreadsResults.some((messageThread) => messageThread.friendParticipantId === activeFriendId);
-
-      if (hasMessageThread) {
-        setActiveMessagesThread(formattedMessageThreadsResults[0]);
-      } else {
-        setActiveMessagesThread(null);
-      }
     } catch (e) {
       console.log('>>> getMessageThreads error: ', e);
       setServerError('Something went wrong with your request');
@@ -124,72 +99,9 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     getMessageThreads();
   };
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   useEffect(() => {
     getFriendsAndMessagesData();
   }, []);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [activeMessagesThread]);
-
-  const onClickCloseNewFriendSearch = () => {
-    setAddNewFriendSearchInput('');
-    setIsSearchingForNewFriend(false);
-    setNewFriendSearchResult([]);
-    setIsAddingNewFriend(false);
-    // TODO: change this
-    setActiveFriendId(1);
-    setActiveNewFriendId(null);
-    setSearchResultNewFriendSelected(false);
-    setClickedAddNewFriend(false);
-    setNewFriendUserNameExists(false);
-  };
-
-  const onClickAddNewFriend = async () => {
-    try {
-      const response = await fetch('http://localhost:3001/add_friend', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          user_id: id,
-          friend_id: activeNewFriendId,
-        }),
-      });
-
-      const newFriendResult = await response.json();
-
-      if (!newFriendResult.error) {
-        const newFriend = nonFriendUsers.find((user) => user.id === activeNewFriendId);
-
-        const newFriends = [
-          newFriend,
-          ...friends,
-        ];
-
-        setFriends(newFriends);
-        setAddNewFriendError(null);
-        setActiveFriendId(activeNewFriendId);
-        setAddNewFriendSearchInput('');
-        setIsSearchingForNewFriend(false);
-        setNewFriendSearchResult([]);
-        setSearchResultNewFriendSelected(false);
-        setClickedAddNewFriend(false);
-        setNewFriendUserNameExists(false);
-        setIsAddingNewFriend(false);
-        setActiveMessagesThread(null);
-        console.log('>>> SET ACTIVE THREAD TO NUll!!');
-      } else {
-        setAddNewFriendError(newFriendResult.error);
-      }
-    } catch (e) {
-      console.log(e);
-      setAddNewFriendError('Friend could not be added');
-    }
-  };
 
   if (serverError && !showAvatarOverlay) {
     return (
@@ -219,12 +131,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         setActiveNewFriendId={setActiveNewFriendId}
         addNewFriendSearchInput={addNewFriendSearchInput}
         setAddNewFriendSearchInput={setAddNewFriendSearchInput}
-        isSearchingForNewFriend={isSearchingForNewFriend}
-        setIsSearchingForNewFriend={setIsSearchingForNewFriend}
         newFriendSearchResult={newFriendSearchResult}
         setNewFriendSearchResult={setNewFriendSearchResult}
-        searchResultNewFriendSelected={searchResultNewFriendSelected}
-        setSearchResultNewFriendSelected={setSearchResultNewFriendSelected}
         clickedAddNewFriend={clickedAddNewFriend}
         setClickedAddNewFriend={setClickedAddNewFriend}
         newFriendUserNameExists={newFriendUserNameExists}
@@ -233,17 +141,13 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         setActiveFriendId={setActiveFriendId}
         setCurrentUser={setCurrentUser}
         setShowAvatarOverlay={setShowAvatarOverlay}
-        setActiveMessagesThread={setActiveMessagesThread}
-        setIsAddingNewFriend={setIsAddingNewFriend}
-        setAddNewFriendError={setAddNewFriendError}
-        onClickCloseNewFriendSearch={onClickCloseNewFriendSearch} />
+        setAddNewFriendError={setAddNewFriendError} />
 
       <ActiveMessagesThread
         friends={friends}
         currentUserId={id}
         activeFriendId={activeFriendId}
-        activeMessagesThread={activeMessagesThread}
-        messagesEndRef={messagesEndRef} />
+        messageThreads={messageThreads} />
       {showAvatarOverlay
         ? (
           <ChangeAvatarOverlay
@@ -254,12 +158,22 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         )
         : null
       }
-      {isAddingNewFriend
+      {activeNewFriendId !== null
         ? (
           <AddNewFriendOverlay
+            id={id}
             addNewFriendError={addNewFriendError}
-            setIsAddingNewFriend={setIsAddingNewFriend}
-            onClickAddNewFriend={onClickAddNewFriend} />
+            nonFriendUsers={nonFriendUsers}
+            friends={friends}
+            setFriends={setFriends}
+            activeNewFriendId={activeNewFriendId}
+            setActiveNewFriendId={setActiveNewFriendId}
+            setAddNewFriendError={setAddNewFriendError}
+            setActiveFriendId={setActiveFriendId}
+            setAddNewFriendSearchInput={setAddNewFriendSearchInput}
+            setNewFriendSearchResult={setNewFriendSearchResult}
+            setClickedAddNewFriend={setClickedAddNewFriend}
+            setNewFriendUserNameExists={setNewFriendUserNameExists} />
         )
         : null
       }
