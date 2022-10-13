@@ -60,4 +60,44 @@ const getFormattedMessageSearchResult = (string, searchInput) => {
   return indexOfSearchResult < 13 ? `${splitString.slice(0, 13).join(' ')}${suffix}` : `${suffix}${splitString.slice(indexOfSearchResult - 12, indexOfSearchResult + 5).join(' ')}${suffix}`;
 };
 
-export { getFormattedMessageThreads, getFriendMessageSearchResult, getFormattedLastFriendMessage, getFormattedMessageSearchResult };
+const renderHighlightedSearchResult = (messageMatchingSearchInput, searchInput) => {
+  if (!messageMatchingSearchInput) {
+    return null;
+  }
+
+  const formattedMessage = getFormattedMessageSearchResult(messageMatchingSearchInput, searchInput);
+
+  let startingIndex = 0;
+  const text = [];
+
+  const regex = new RegExp(searchInput, 'gi');
+
+  if (formattedMessage && searchInput) {
+    const searchMatches = [...formattedMessage.matchAll(regex)];
+
+    console.log('>>> searchMatches: ', searchMatches);
+
+    const indexesOfMatchingSearchTerm = searchMatches.map((searchMatch) => {
+      return searchMatch.index;
+    });
+
+    indexesOfMatchingSearchTerm.forEach((index) => {
+      const messageUpToSearchMatch = formattedMessage.substring(startingIndex, index);
+      const searchMatch = formattedMessage.substring(index, index + searchInput.length);
+
+      startingIndex = index + searchInput.length;
+      text.push(messageUpToSearchMatch);
+      text.push(searchMatch);
+    });
+
+    const messageFromSearchMatchToMessageEnd = formattedMessage.substring(startingIndex, formattedMessage.length - 1);
+
+    text.push(messageFromSearchMatchToMessageEnd);
+  }
+
+  console.log('>>> text: ', text);
+
+  return text;
+};
+
+export { getFormattedMessageThreads, getFriendMessageSearchResult, getFormattedLastFriendMessage, getFormattedMessageSearchResult, renderHighlightedSearchResult };

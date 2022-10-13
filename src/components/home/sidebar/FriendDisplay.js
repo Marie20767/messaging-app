@@ -2,7 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { allAvatars } from '../../../constants/constants';
-import { getFormattedLastFriendMessage, getFormattedMessageSearchResult } from '../../../utils/utils';
+import { getFormattedLastFriendMessage, renderHighlightedSearchResult } from '../../../utils/utils';
 
 const FriendDisplay = ({
   name,
@@ -16,55 +16,21 @@ const FriendDisplay = ({
 }) => {
   const friendAvatar = allAvatars.find((avatar) => avatar.id === avatarId);
 
-  // TODO: finish this, put into utils
+  const getHighlightedSearchResult = () => {
+    const messageSplitBySearchMatch = renderHighlightedSearchResult(messageMatchingSearchInput, searchInput);
 
-  const renderHighlightedSearchResult = () => {
-    if (!messageMatchingSearchInput) {
-      return null;
-    }
+    const highlightedMessage = messageSplitBySearchMatch.map((substring) => {
+      if (substring.toLowerCase() === searchInput.toLowerCase()) {
+        return <strong className="search-input-match">{substring}</strong>;
+      }
 
-    const formattedMessage = getFormattedMessageSearchResult(messageMatchingSearchInput, searchInput);
+      return substring;
+    });
 
-    if (formattedMessage && searchInput) {
-      const regex = new RegExp(searchInput, 'gi');
-      const messageSplitBySearchInput = formattedMessage.split(regex);
-
-      // const matchedMessageResults = formattedMessage.matchAll(regex);
-      // const matchedMessages = [...matchedMessageResults];
-
-      // console.log('>>> matchedMessages: ', matchedMessages);
-
-      // const matchedIndexes = matchedMessages.map((result) => {
-      //   return result.index;
-      // });
-
-      // const highlightedStrings = [];
-      // let startingIndex = 0;
-
-      // matchedIndexes.forEach(matchingIndex => {
-      //   // push into highlightedStrings a substring from 0 to matchingIndex
-      //   // push into highlightedStrings <b>{substring from matchingIndex up until end of search term}</b>
-      //   // update startingIndex to matchingIndex
-      // })
-
-      const highlightedSearchResult = messageSplitBySearchInput.map((string, index) => {
-        if (index === messageSplitBySearchInput.length - 1) {
-          return <span key={`${string}-${index}`}>{string}</span>;
-        }
-
-        return (
-          <React.Fragment key={`${string}-${index}`}>
-            <span>{string}</span>
-            <span className="search-input-match">{searchInput}</span>
-          </React.Fragment>
-        );
-      });
-
-      return highlightedSearchResult;
-    }
-
-    return null;
+    return highlightedMessage;
   };
+
+  renderHighlightedSearchResult(messageMatchingSearchInput, searchInput);
 
   const formattedLastMessage = lastFriendMessage ? getFormattedLastFriendMessage(lastFriendMessage) : '';
 
@@ -74,7 +40,7 @@ const FriendDisplay = ({
       <StyledNameAndMessageContainer>
         <h4 className="small-black-title">{name}</h4>
         {isMessageSearchResult
-          ? <p>{renderHighlightedSearchResult()}</p>
+          ? <p>{getHighlightedSearchResult()}</p>
           : <p className="last-message">{formattedLastMessage}</p>
         }
       </StyledNameAndMessageContainer>
