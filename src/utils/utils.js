@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const getFormattedMessageThreads = (messageThreadsResults, currentUserId) => {
   const threadsToMessagesMap = messageThreadsResults.reduce((acc, currentMessage) => {
     return {
@@ -75,8 +77,6 @@ const renderHighlightedSearchResult = (messageMatchingSearchInput, searchInput) 
   if (formattedMessage && searchInput) {
     const searchMatches = [...formattedMessage.matchAll(regex)];
 
-    console.log('>>> searchMatches: ', searchMatches);
-
     const indexesOfMatchingSearchTerm = searchMatches.map((searchMatch) => {
       return searchMatch.index;
     });
@@ -90,14 +90,42 @@ const renderHighlightedSearchResult = (messageMatchingSearchInput, searchInput) 
       text.push(searchMatch);
     });
 
-    const messageFromSearchMatchToMessageEnd = formattedMessage.substring(startingIndex, formattedMessage.length - 1);
+    const messageFromSearchMatchToMessageEnd = formattedMessage.substring(startingIndex, formattedMessage.length);
 
     text.push(messageFromSearchMatchToMessageEnd);
   }
 
-  console.log('>>> text: ', text);
-
   return text;
 };
 
-export { getFormattedMessageThreads, getFriendMessageSearchResult, getFormattedLastFriendMessage, getFormattedMessageSearchResult, renderHighlightedSearchResult };
+const getFormattedDateAndTime = (message) => {
+  return moment(message.timestamp).format('LLLL');
+};
+
+const getFormattedMessageTime = (message) => {
+  const formattedDateAndTime = getFormattedDateAndTime(message);
+  const formattedTime = moment(formattedDateAndTime).format('HH:mm');
+
+  return formattedTime;
+};
+
+const oneHourAgo = moment().subtract(1, 'hours');
+
+const checkIfMessageSentMoreThanOneHourAgo = (message) => {
+  return moment(getFormattedDateAndTime(message)).isBefore(oneHourAgo);
+};
+
+const getMinutesIfLessThanOneHourAgo = (message) => {
+  return getFormattedDateAndTime(message).fromNow();
+};
+
+export {
+  getFormattedMessageThreads,
+  getFriendMessageSearchResult,
+  getFormattedLastFriendMessage,
+  getFormattedMessageSearchResult,
+  renderHighlightedSearchResult,
+  getFormattedMessageTime,
+  checkIfMessageSentMoreThanOneHourAgo,
+  getMinutesIfLessThanOneHourAgo,
+};
