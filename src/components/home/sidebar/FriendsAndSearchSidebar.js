@@ -13,6 +13,8 @@ const FriendsAndSearchSidebar = ({
   messageExists,
   activeFriendId,
   setActiveFriendId,
+  activeSearchResultIds,
+  setActiveSearchResultIds,
   messageThreads,
 }) => {
   return (
@@ -28,7 +30,9 @@ const FriendsAndSearchSidebar = ({
             messageThreadsSearchResults={messageThreadsSearchResults}
             currentUser={currentUser}
             friends={friends}
-            setActiveFriendId={setActiveFriendId} />
+            setActiveFriendId={setActiveFriendId}
+            activeSearchResultIds={activeSearchResultIds}
+            setActiveSearchResultIds={setActiveSearchResultIds} />
         )
         : (
           <FriendsList

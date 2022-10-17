@@ -19,9 +19,9 @@ const FriendDisplay = ({
   const getHighlightedSearchResult = () => {
     const messageSplitBySearchMatch = renderHighlightedSearchResult(messageMatchingSearchInput, searchInput);
 
-    const highlightedMessage = messageSplitBySearchMatch.map((substring) => {
+    const highlightedMessage = messageSplitBySearchMatch.map((substring, index) => {
       if (substring.toLowerCase() === searchInput.toLowerCase()) {
-        return <strong className="search-input-match">{substring}</strong>;
+        return <strong key={`${substring}-${index}`} className="search-input-match">{substring}</strong>;
       }
 
       return substring;
@@ -83,7 +83,7 @@ const StyledNameAndMessageContainer = styled.div`
 
   .search-input-match {
     font-weight: bold;
-    color: #9dbbf8;
+    color: black;
   }
   
   .last-message {

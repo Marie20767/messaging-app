@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import ContactSearchResults from './ContactSearchResults';
 import MessageSearchResults from './MessageSearchResults';
 import SearchResultsHeader from './SearchResultsHeader';
@@ -10,14 +9,14 @@ const SearchResults = ({
   searchInput,
   messageThreads,
   messageThreadsSearchResults,
+  activeSearchResultIds,
+  setActiveSearchResultIds,
   currentUser,
   friends,
   setActiveFriendId,
 }) => {
-  const [activeSearchResultId, setActiveSearchResultId] = useState(null);
-
   const onClickSelectFriend = (friendId) => {
-    setActiveSearchResultId(friendId);
+    setActiveSearchResultIds({ friendId });
     setActiveFriendId(friendId);
   };
 
@@ -35,7 +34,7 @@ const SearchResults = ({
         noSearchResultText={noSearchResultText} />
       <ContactSearchResults
         friendSearchResult={friendSearchResult}
-        activeSearchResultId={activeSearchResultId}
+        activeSearchResultIds={activeSearchResultIds}
         onClickSelectFriend={onClickSelectFriend} />
       <MessageSearchResults
         messageExists={messageExists}
@@ -45,8 +44,8 @@ const SearchResults = ({
         messageThreads={messageThreads}
         searchInput={searchInput}
         setActiveFriendId={setActiveFriendId}
-        activeSearchResultId={activeSearchResultId}
-        setActiveSearchResultId={setActiveSearchResultId} />
+        activeSearchResultIds={activeSearchResultIds}
+        setActiveSearchResultIds={setActiveSearchResultIds} />
     </>
   );
 };

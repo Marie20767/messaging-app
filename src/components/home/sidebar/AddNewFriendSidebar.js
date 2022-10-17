@@ -31,7 +31,7 @@ const AddNewFriendSidebar = ({
 
             <ContactSearchResults
               friendSearchResult={friendSearchResult}
-              activeSearchResultId={activeNewFriendId}
+              activeSearchResultIds={activeNewFriendId}
               onClickSelectFriend={onClickSelectFriend} />
           </>
         )

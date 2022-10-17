@@ -15,95 +15,47 @@ const Messages = ({ activeMessagesThread, currentUserId, messagesEndRef }) => {
     );
   }
 
-  console.log('>>> activeMessagesThread: ', activeMessagesThread);
+  const messagesGroupedByDateSent = {};
 
-  const messagesGroupedByDateSent = activeMessagesThread.messages.reduce((acc, message) => {
-    // console.log('>>> message: ', message);
+  for (let i = 0; i < activeMessagesThread.messages.length; i++) {
+    const message = activeMessagesThread.messages[i];
     const messageDate = moment(message.timestamp).format('ddd ll');
 
-    console.log('>>> acc: ', acc);
-
-    if (acc[messageDate]) {
-      return {
-        ...acc,
-        [messageDate]: [
-          ...acc[messageDate],
-          message,
-        ],
-      };
+    if (messagesGroupedByDateSent[messageDate]) {
+      messagesGroupedByDateSent[messageDate].push(message);
+    } else {
+      messagesGroupedByDateSent[messageDate] = [message];
     }
+  }
 
-    return {
-      ...acc,
-      [messageDate]: [
-        message,
-      ],
-    };
-  }, {});
-
-  console.log('>>> messagesGroupedByDateSent: ', messagesGroupedByDateSent);
-
-  // [
-  //   { text: '2 days ago' }
-  //   { text: 'hbygb' },
-  //   { text: 'first of yest' }
-  //   { text: 'hbygb' },
-  //   { text: 'firsy og today' },
-  //   { text: 'hbygb' },
-  // ]
-
-  // {
-  //   messageSentDate: [
-  //     {
-  //       message
-  //     },
-  //     {
-  //       message
-  //     },
-  //     {message
-  //     },
-  //   ]
-  //   messageSentDate [
-  //     {
-  //       message
-  //     }
-  //   ]
-  // }
-
-  // [
-  //     [{ text: 'meesg frm 2 days ago' }, { text: 'hbygb' }]
-  //     [{ text: 'yest' }, { text: 'hbygb' }]
-  //
-  //     Today
-  //     [{ text: 'today', timestamp: '2022-10-14T13:14:16.797Z' }, { text: 'hbygb' }, { text: 'hbygbjb' }]
-  // ]
-
-  // [
-  //   {
-
-  //   }
-  // ]
-
-  // If the message is the same date as today's date we need TODAY
-  // If it's one day less we need YESTERDAY
-  // Otherwise we need WEEKDAY and DATE e.g. WED 14 Oct
-
-  // const messageDate = moment(formattedDateAndTime).format('ddd ll');
-  // const isToday = moment().isSame(messageDate, 'day');
-  // const isYesterday = moment(formattedDateAndTime).isSame((moment().subtract(1, 'days')), 'day');
+  const datesGroupedMessagesSent = Object.keys(messagesGroupedByDateSent);
 
   return (
     <StyledMessagesContainer>
-      {activeMessagesThread.messages.map((message) => {
-        console.log('>>> message: ', message);
+      {datesGroupedMessagesSent.map((date) => {
+        const messages = messagesGroupedByDateSent[date];
 
-        return (
-          <Message
-            key={message.id}
-            message={message}
-            currentUserId={currentUserId}
-            messagesEndRef={messagesEndRef} />
-        );
+        return messages.map((message, index) => {
+          if (index === 0) {
+            return (
+              <Message
+                isFirstMessage
+                date={date}
+                key={message.id}
+                message={message}
+                currentUserId={currentUserId}
+                messagesEndRef={messagesEndRef} />
+            );
+          }
+
+          return (
+            <Message
+              key={message.id}
+              message={message}
+              currentUserId={currentUserId}
+              messagesEndRef={messagesEndRef} />
+          );
+        });
       })}
     </StyledMessagesContainer>
   );
@@ -130,6 +82,13 @@ const StyledMessagesContainer = styled.div`
   width: 100%;
   flex-direction: column;
   padding: 0px 25px 0px 15px;
+  display: flex;
+
+  h4 {
+    font-size: 13px;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 export default Messages;

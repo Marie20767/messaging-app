@@ -10,11 +10,11 @@ const MessageSearchResults = ({
   searchInput,
   messageThreads,
   setActiveFriendId,
-  activeSearchResultId,
-  setActiveSearchResultId,
+  activeSearchResultIds,
+  setActiveSearchResultIds,
 }) => {
   const onClickSelectMessageResult = (messageId) => {
-    setActiveSearchResultId(messageId);
+    setActiveSearchResultIds({ messageId });
 
     const activeMessageThread = messageThreads.find((thread) => {
       const threadHasMessage = thread.messages.some((message) => message.id === messageId);
@@ -33,7 +33,7 @@ const MessageSearchResults = ({
             <h4 className="small-black-title search-result-title">Messages</h4>
             {messageThreadsSearchResults.map((searchResult) => {
               const friendMessageSearchResult = getFriendMessageSearchResult(currentUser, friends, searchResult);
-              const highlighted = activeSearchResultId === searchResult.id;
+              const highlighted = activeSearchResultIds?.messageId === searchResult.id;
 
               return (
                 <FriendDisplay

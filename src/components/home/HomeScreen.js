@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Loading } from 'react-loading-dot/lib';
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
@@ -13,6 +13,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [activeFriendId, setActiveFriendId] = useState(1); // TODO: at some point need to change this, make it so it's always the ID of the friend that sent the last message
   const [activeNewFriendId, setActiveNewFriendId] = useState(null);
   const [showAvatarOverlay, setShowAvatarOverlay] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [messageThreads, setMessageThreads] = useState(null);
   const [addNewFriendSearchInput, setAddNewFriendSearchInput] = useState('');
   const [newFriendSearchResult, setNewFriendSearchResult] = useState([]);
@@ -20,8 +21,21 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [newFriendUserNameExists, setNewFriendUserNameExists] = useState(false);
   const [addNewFriendError, setAddNewFriendError] = useState(null);
   const [serverError, setServerError] = useState('');
+  const [activeSearchResultIds, setActiveSearchResultIds] = useState(null);
 
   const { id, avatarId } = currentUser;
+
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    if (!isSearching || activeSearchResultIds?.friendId) {
+      scrollToBottom();
+    }
+  }, [activeFriendId, isSearching, activeSearchResultIds, messageThreads]);
 
   const onClickSaveNewAvatar = async (newAvatarId) => {
     try {
@@ -129,6 +143,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         activeFriendId={activeFriendId}
         activeNewFriendId={activeNewFriendId}
         setActiveNewFriendId={setActiveNewFriendId}
+        activeSearchResultIds={activeSearchResultIds}
+        setActiveSearchResultIds={setActiveSearchResultIds}
         addNewFriendSearchInput={addNewFriendSearchInput}
         setAddNewFriendSearchInput={setAddNewFriendSearchInput}
         newFriendSearchResult={newFriendSearchResult}
@@ -138,6 +154,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         newFriendUserNameExists={newFriendUserNameExists}
         setNewFriendUserNameExists={setNewFriendUserNameExists}
         messageThreads={messageThreads}
+        isSearching={isSearching}
+        setIsSearching={setIsSearching}
         setActiveFriendId={setActiveFriendId}
         setCurrentUser={setCurrentUser}
         setShowAvatarOverlay={setShowAvatarOverlay}
@@ -147,7 +165,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         friends={friends}
         currentUserId={id}
         activeFriendId={activeFriendId}
-        messageThreads={messageThreads} />
+        messageThreads={messageThreads}
+        messagesEndRef={messagesEndRef} />
       {showAvatarOverlay
         ? (
           <ChangeAvatarOverlay

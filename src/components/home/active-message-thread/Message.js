@@ -1,19 +1,30 @@
 import styled from 'styled-components';
-import { checkIfMessageSentMoreThanOneHourAgo, getFormattedMessageTime, getMinutesIfLessThanOneHourAgo } from '../../../utils/utils';
+import {
+  checkIfMessageSentMoreThanOneHourAgo,
+  getFormattedMessageTime,
+  getMinutesIfLessThanOneHourAgo,
+} from '../../../utils/utils';
+import DateContainer from './DateContainer';
 
-const Message = ({ message, currentUserId, messagesEndRef }) => {
+const Message = ({ message, isFirstMessage, date, currentUserId, messagesEndRef }) => {
   const messageClassName = message.sending_user_id === currentUserId ? 'from-current-user' : 'from-friend';
   const isMoreThanAnHourAgo = checkIfMessageSentMoreThanOneHourAgo(message);
 
   return (
-    <StyledMessageContainer className={messageClassName} key={message.id}>
-      <p className="text">{message.text}</p>
-      {isMoreThanAnHourAgo
-        ? <p className="timestamp">{getFormattedMessageTime(message)}</p>
-        : <p className="timestamp">{getMinutesIfLessThanOneHourAgo(message)}</p>
+    <>
+      {isFirstMessage
+        ? <DateContainer date={date} message={message} />
+        : null
       }
-      <div ref={messagesEndRef} />
-    </StyledMessageContainer>
+      <StyledMessageContainer className={messageClassName} key={message.id}>
+        <p className="text">{message.text}</p>
+        {isMoreThanAnHourAgo
+          ? <p className="timestamp">{getFormattedMessageTime(message)}</p>
+          : <p className="timestamp">{getMinutesIfLessThanOneHourAgo(message)}</p>
+        }
+        <div ref={messagesEndRef} />
+      </StyledMessageContainer>
+    </>
   );
 };
 

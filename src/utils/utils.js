@@ -119,6 +119,19 @@ const getMinutesIfLessThanOneHourAgo = (message) => {
   return getFormattedDateAndTime(message).fromNow();
 };
 
+const reference = moment();
+
+const today = reference.clone().startOf('day');
+const yesterday = reference.clone().subtract(1, 'days').startOf('day');
+
+const isToday = (momentDate) => {
+  return momentDate.isSame(today, 'd');
+};
+
+const isYesterday = (momentDate) => {
+  return momentDate.isSame(yesterday, 'd');
+};
+
 export {
   getFormattedMessageThreads,
   getFriendMessageSearchResult,
@@ -128,4 +141,6 @@ export {
   getFormattedMessageTime,
   checkIfMessageSentMoreThanOneHourAgo,
   getMinutesIfLessThanOneHourAgo,
+  isToday,
+  isYesterday,
 };

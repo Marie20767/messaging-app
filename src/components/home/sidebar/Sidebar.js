@@ -22,16 +22,19 @@ const Sidebar = ({
   setClickedAddNewFriend,
   newFriendUserNameExists,
   setNewFriendUserNameExists,
+  activeSearchResultIds,
+  setActiveSearchResultIds,
   nonFriendUsers,
   messageThreads,
   setActiveFriendId,
+  isSearching,
+  setIsSearching,
   setCurrentUser,
   setShowAvatarOverlay,
   setAddNewFriendError,
 }) => {
   const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
   const [searchInput, setSearchInput] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
   const [friendSearchResult, setFriendSearchResult] = useState([]);
   const [friendUserNameExists, setFriendUserNameExists] = useState(false);
   const [messageExists, setMessageExists] = useState(false);
@@ -92,6 +95,7 @@ const Sidebar = ({
     setIsSearching(false);
     // TODO: change this
     setActiveFriendId(1);
+    setActiveSearchResultIds(null);
   };
 
   const onClickCloseNewFriendSearch = () => {
@@ -174,6 +178,8 @@ const Sidebar = ({
               searchInput={searchInput}
               activeFriendId={activeFriendId}
               setActiveFriendId={setActiveFriendId}
+              activeSearchResultIds={activeSearchResultIds}
+              setActiveSearchResultIds={setActiveSearchResultIds}
               messageThreads={messageThreads} />
           )
           : (
