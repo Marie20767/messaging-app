@@ -1,16 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Loading } from 'react-loading-dot/lib';
+import io from 'socket.io-client';
+import moment from 'moment';
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
 import ActiveMessagesThread from './active-message-thread/ActiveMessagesThread';
 import Sidebar from './sidebar/Sidebar';
 import { getFormattedMessageThreads } from '../../utils/utils';
 import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
 
+const socket = io.connect('http://localhost:3001');
+
 const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [friends, setFriends] = useState([]);
   const [nonFriendUsers, setNonFriendUsers] = useState([]);
-  const [activeFriendId, setActiveFriendId] = useState(1); // TODO: at some point need to change this, make it so it's always the ID of the friend that sent the last message
+  const [activeFriendId, setActiveFriendId] = useState(null);
   const [activeNewFriendId, setActiveNewFriendId] = useState(null);
   const [showAvatarOverlay, setShowAvatarOverlay] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -22,6 +26,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [addNewFriendError, setAddNewFriendError] = useState(null);
   const [serverError, setServerError] = useState('');
   const [activeSearchResultIds, setActiveSearchResultIds] = useState(null);
+  const [newMessageInput, setNewMessageInput] = useState('');
 
   const { id, avatarId } = currentUser;
 
@@ -89,6 +94,12 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
       setFriends(friendResults);
       getNonFriendUsers(friendResults);
+      setActiveFriendId(friendResults[0].id);
+
+      // Make each friend join a room with the currentUser
+      friendResults.forEach((friend) => {
+        socket.emit('join_room', { sending_user_id: id, recipient_user_id: friend.id });
+      });
     } catch (e) {
       console.log('>>> getFriends error: ', e);
       setServerError('Something went wrong with your request');
@@ -116,6 +127,30 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   useEffect(() => {
     getFriendsAndMessagesData();
   }, []);
+
+  useEffect(() => {
+    const onReceiveMessage = (data) => {
+      const updatedMessageThreads = messageThreads.map((messageThread) => {
+        if (messageThread.friendParticipantId === data.sending_user_id) {
+          messageThread.messages.push({
+            id: moment().toISOString(),
+            ...data,
+          });
+        }
+
+        return messageThread;
+      });
+
+      setMessageThreads(updatedMessageThreads);
+    };
+
+    // Listen to receive message event to check when you've received a new message
+    socket.on('receive_message', onReceiveMessage);
+
+    return () => {
+      socket.off('receive_message', onReceiveMessage);
+    };
+  }, [messageThreads]);
 
   if (serverError && !showAvatarOverlay) {
     return (
@@ -166,7 +201,11 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         currentUserId={id}
         activeFriendId={activeFriendId}
         messageThreads={messageThreads}
-        messagesEndRef={messagesEndRef} />
+        messagesEndRef={messagesEndRef}
+        newMessageInput={newMessageInput}
+        setNewMessageInput={setNewMessageInput}
+        setMessageThreads={setMessageThreads} />
+
       {showAvatarOverlay
         ? (
           <ChangeAvatarOverlay

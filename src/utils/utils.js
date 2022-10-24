@@ -116,7 +116,7 @@ const checkIfMessageSentMoreThanOneHourAgo = (message) => {
 };
 
 const getMinutesIfLessThanOneHourAgo = (message) => {
-  return getFormattedDateAndTime(message).fromNow();
+  return moment(getFormattedDateAndTime(message)).fromNow();
 };
 
 const reference = moment();

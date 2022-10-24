@@ -1,9 +1,14 @@
 import styled from 'styled-components';
 
-const MessageInputField = () => {
+const MessageInputField = ({ onKeyDown, newMessageInput, setNewMessageInput }) => {
   return (
     <StyledMessageInputFieldContainer>
-      <input type="text" placeholder="Message" />
+      <input
+        type="text"
+        placeholder="Message"
+        value={newMessageInput}
+        onChange={(e) => setNewMessageInput(e.target.value)}
+        onKeyDown={onKeyDown} />
     </StyledMessageInputFieldContainer>
   );
 };

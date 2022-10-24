@@ -9,9 +9,6 @@ import LoginScreen from './components/auth/LoginScreen';
 import AutoLogin from './components/auth/AutoLogin';
 import PageNotFound from './components/PageNotFound';
 
-// Command to set up the database again:
-// psql -h localhost -p 5432 -U marieimpens -d react_message_app -f db/init.sql (in the api)
-
 // TODO:
 // STYLING
 // Fix sidebar view on large laptop screens

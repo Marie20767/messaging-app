@@ -93,16 +93,14 @@ const Sidebar = ({
     setSearchInput('');
     setFriendSearchResult([]);
     setIsSearching(false);
-    // TODO: change this
-    setActiveFriendId(1);
+    setActiveFriendId(friends[0].id);
     setActiveSearchResultIds(null);
   };
 
   const onClickCloseNewFriendSearch = () => {
     setAddNewFriendSearchInput('');
     setNewFriendSearchResult([]);
-    // TODO: change this
-    setActiveFriendId(1);
+    setActiveFriendId(friends[0].id);
     setActiveNewFriendId(null);
     setClickedAddNewFriend(false);
     setNewFriendUserNameExists(false);

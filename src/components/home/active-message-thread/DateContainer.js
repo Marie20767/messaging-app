@@ -30,6 +30,10 @@ const StyledDateContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
+
+  h4 {
+    margin-top: 40px;
+  }
 `;
 
 export default DateContainer;
