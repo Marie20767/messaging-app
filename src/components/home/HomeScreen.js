@@ -29,7 +29,6 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [newMessageInput, setNewMessageInput] = useState('');
 
   const { id, avatarId } = currentUser;
-
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -94,6 +93,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
       setFriends(friendResults);
       getNonFriendUsers(friendResults);
+
+      // TODO: sort the friends according to the last message sent
       setActiveFriendId(friendResults[0].id);
 
       // Make each friend join a room with the currentUser
@@ -222,6 +223,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
             id={id}
             addNewFriendError={addNewFriendError}
             nonFriendUsers={nonFriendUsers}
+            messageThreads={messageThreads}
+            setMessageThreads={setMessageThreads}
             friends={friends}
             setFriends={setFriends}
             activeNewFriendId={activeNewFriendId}

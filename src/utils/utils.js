@@ -22,9 +22,11 @@ const getFormattedMessageThreads = (messageThreadsResults, currentUserId) => {
 
   const finalMessageThread = arraysOfMessagesPerThread.map((messageThread) => {
     const messageSentByParticipant = messageThread.find((message) => message.sending_user_id !== currentUserId);
+    const messageSentByUser = messageThread.find((message) => message.sending_user_id === currentUserId);
 
     return {
-      friendParticipantId: messageSentByParticipant.sending_user_id,
+      friendParticipantId: messageSentByParticipant?.sending_user_id || messageSentByUser?.recipient_user_id,
+      threadId: messageSentByParticipant?.thread_id || messageSentByUser?.thread_id,
       messages: messageThread,
     };
   });

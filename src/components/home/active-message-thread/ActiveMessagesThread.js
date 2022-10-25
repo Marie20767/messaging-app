@@ -19,9 +19,13 @@ const ActiveMessagesThread = ({
 
   const activeMessagesThread = messageThreads.find((thread) => thread.friendParticipantId === activeFriendId);
 
+  console.log('>>> messageThreads: ', messageThreads);
+
+  console.log('>>> activeMessagesThread: ', activeMessagesThread);
+
   const handleEnterKeySendMessage = (e) => {
     const newMessageInfo = {
-      thread_id: activeMessagesThread.messages[0].thread_id,
+      thread_id: activeMessagesThread.threadId,
       sending_user_id: currentUserId,
       recipient_user_id: activeFriendId,
       text: newMessageInput,

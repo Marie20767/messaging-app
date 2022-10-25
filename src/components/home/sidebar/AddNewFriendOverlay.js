@@ -1,9 +1,12 @@
+import io from 'socket.io-client';
 import styled from 'styled-components';
 import SmallFullScreenOverlay from '../../overlays-and-popups/SmallFullScreenOverlay';
 
 const AddNewFriendOverlay = ({
   id,
   nonFriendUsers,
+  messageThreads,
+  setMessageThreads,
   friends,
   setFriends,
   activeNewFriendId,
@@ -16,6 +19,8 @@ const AddNewFriendOverlay = ({
   setClickedAddNewFriend,
   setNewFriendUserNameExists,
 }) => {
+  const socket = io.connect('http://localhost:3001');
+
   const onClickAddNewFriend = async () => {
     try {
       const response = await fetch('http://localhost:3001/add_friend', {
@@ -32,6 +37,9 @@ const AddNewFriendOverlay = ({
       if (!newFriendResult.error) {
         const newFriend = nonFriendUsers.find((user) => user.id === activeNewFriendId);
 
+        // Make new friend join a new room with currentUser
+        socket.emit('join_room', { sending_user_id: id, recipient_user_id: newFriend.id });
+
         const newFriends = [
           newFriend,
           ...friends,
@@ -45,6 +53,15 @@ const AddNewFriendOverlay = ({
         setNewFriendSearchResult([]);
         setClickedAddNewFriend(false);
         setNewFriendUserNameExists(false);
+
+        setMessageThreads([
+          ...messageThreads,
+          {
+            friendParticipantId: newFriendResult.friend_id,
+            threadId: newFriendResult.thread_id,
+            messages: [],
+          },
+        ]);
       } else {
         setAddNewFriendError(newFriendResult.error);
       }

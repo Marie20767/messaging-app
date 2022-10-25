@@ -15,8 +15,7 @@ import PageNotFound from './components/PageNotFound';
 // Have it so the messagesInputField doesn't grow in width but in height the more you type (use textarea?)
 
 // TODO:
-// REGISTRATION
-// Encrypt password when sending it to back end
+// Fix now bug (showing 1 min instead of now)
 
 // TODO: together:
 // Make it so if I go to login, register or welcome screen, if im already logged in it sends me to the home page

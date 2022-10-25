@@ -5,7 +5,9 @@ import NewFriendWelcomeMessage from '../../../images/new-friend-welcome-message.
 import Message from './Message';
 
 const Messages = ({ activeMessagesThread, currentUserId, messagesEndRef }) => {
-  if (!activeMessagesThread) {
+  const filteredActiveMessages = activeMessagesThread?.messages?.filter((message) => message.text !== '');
+
+  if (!filteredActiveMessages?.length) {
     return (
       <StyledEmptyMessagesThreadContainer>
         <h3>No messages here yet...</h3>
@@ -17,8 +19,8 @@ const Messages = ({ activeMessagesThread, currentUserId, messagesEndRef }) => {
 
   const messagesGroupedByDateSent = {};
 
-  for (let i = 0; i < activeMessagesThread.messages.length; i++) {
-    const message = activeMessagesThread.messages[i];
+  for (let i = 0; i < filteredActiveMessages.length; i++) {
+    const message = filteredActiveMessages[i];
     const messageDate = moment(message.timestamp).format('ddd ll');
 
     if (messagesGroupedByDateSent[messageDate]) {
