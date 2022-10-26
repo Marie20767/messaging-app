@@ -1,20 +1,14 @@
 import React from 'eslint-plugin-import/config/react';
 import moment from 'moment';
 import styled from 'styled-components';
-import NewFriendWelcomeMessage from '../../../images/new-friend-welcome-message.png';
+import EmptyMessagesThread from './EmptyMessagesThread';
 import Message from './Message';
 
 const Messages = ({ activeMessagesThread, currentUserId, messagesEndRef }) => {
   const filteredActiveMessages = activeMessagesThread?.messages?.filter((message) => message.text !== '');
 
   if (!filteredActiveMessages?.length) {
-    return (
-      <StyledEmptyMessagesThreadContainer>
-        <h3>No messages here yet...</h3>
-        <h3>Don&apos;t be shy, send a message!</h3>
-        <img src={NewFriendWelcomeMessage} alt="Waving bear" />
-      </StyledEmptyMessagesThreadContainer>
-    );
+    return <EmptyMessagesThread title1="No messages here yet..." title2="Don&apos;t be shy, send a message!" />;
   }
 
   const messagesGroupedByDateSent = {};
@@ -62,21 +56,6 @@ const Messages = ({ activeMessagesThread, currentUserId, messagesEndRef }) => {
     </StyledMessagesContainer>
   );
 };
-
-const StyledEmptyMessagesThreadContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  h3 {
-    padding-bottom: 10px;
-  }
-
-  img {
-    height: 70px;
-    margin-top: 5px;
-  }
-`;
 
 const StyledMessagesContainer = styled.div`
   overflow-y: scroll;

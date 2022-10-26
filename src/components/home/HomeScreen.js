@@ -6,13 +6,13 @@ import moment from 'moment';
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
 import ActiveMessagesThread from './active-message-thread/ActiveMessagesThread';
 import Sidebar from './sidebar/Sidebar';
-import { getFormattedMessageThreads } from '../../utils/utils';
+import { getFormattedMessageThreads, getFriendsSortedByMessageSent } from '../../utils/utils';
 import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
 
 const socket = io.connect('http://localhost:3001');
 
 const HomeScreen = ({ currentUser, setCurrentUser }) => {
-  const [friends, setFriends] = useState([]);
+  const [friends, setFriends] = useState(null);
   const [nonFriendUsers, setNonFriendUsers] = useState([]);
   const [activeFriendId, setActiveFriendId] = useState(null);
   const [activeNewFriendId, setActiveNewFriendId] = useState(null);
@@ -71,22 +71,26 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       const response = await fetch('http://localhost:3001/users');
       const userResults = await response.json();
 
-      const usersMinusFriends = userResults.filter((userResult) => {
-        if (userResult.id === id || friendResults.some((friendResult) => friendResult.id === userResult.id)) {
-          return false;
-        }
+      if (!friendResults.length) {
+        setNonFriendUsers(userResults);
+      } else {
+        const usersMinusFriends = userResults.filter((userResult) => {
+          if (userResult.id === id || friendResults.some((friendResult) => friendResult.id === userResult.id)) {
+            return false;
+          }
 
-        return true;
-      });
+          return true;
+        });
 
-      setNonFriendUsers(usersMinusFriends);
+        setNonFriendUsers(usersMinusFriends);
+      }
     } catch (e) {
       console.log('>>> getNonFriends error: ', e);
       setServerError('Something went wrong with your request');
     }
   };
 
-  const getFriends = async () => {
+  const getFriends = async (formattedMessageThreads) => {
     try {
       const response = await fetch(`http://localhost:3001/friends/${id}`);
       const friendResults = await response.json();
@@ -94,35 +98,47 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       setFriends(friendResults);
       getNonFriendUsers(friendResults);
 
-      // TODO: sort the friends according to the last message sent
-      setActiveFriendId(friendResults[0].id);
+      if (!friendResults.length) {
+        setActiveFriendId(null);
+      } else {
+        // Make each friend join a room with the currentUser
+        friendResults.forEach((friend) => {
+          socket.emit('join_room', { sending_user_id: id, recipient_user_id: friend.id });
+        });
 
-      // Make each friend join a room with the currentUser
-      friendResults.forEach((friend) => {
-        socket.emit('join_room', { sending_user_id: id, recipient_user_id: friend.id });
-      });
+        const sortedFriends = getFriendsSortedByMessageSent(formattedMessageThreads, friendResults);
+
+        setActiveFriendId(sortedFriends[0].id);
+      }
     } catch (e) {
       console.log('>>> getFriends error: ', e);
       setServerError('Something went wrong with your request');
     }
   };
 
-  const getMessageThreads = async () => {
+  const getMessageThreadsAndFriends = async () => {
     try {
       const response = await fetch(`http://localhost:3001/messages/${id}`);
       const messageThreadsResults = await response.json();
-      const formattedMessageThreadsResults = getFormattedMessageThreads(messageThreadsResults, id);
 
-      setMessageThreads(formattedMessageThreadsResults);
+      if (!messageThreadsResults.length) {
+        setMessageThreads(messageThreadsResults);
+      } else {
+        const formattedMessageThreadsResults = getFormattedMessageThreads(messageThreadsResults, id);
+
+        getFriends(formattedMessageThreadsResults);
+
+        setMessageThreads(formattedMessageThreadsResults);
+      }
     } catch (e) {
-      console.log('>>> getMessageThreads error: ', e);
+      console.log('>>> getMessageThreadsAndFriends error: ', e);
       setServerError('Something went wrong with your request');
     }
   };
 
   const getFriendsAndMessagesData = () => {
-    getFriends();
-    getMessageThreads();
+    // getFriends();
+    getMessageThreadsAndFriends();
   };
 
   useEffect(() => {
@@ -162,7 +178,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     );
   }
 
-  if (!friends.length || !messageThreads) {
+  if (!friends || !messageThreads) {
     return (
       <div className="card-container">
         <Loading background="#ea738dff" margin="8px" size="18px" duration="0.6s" />

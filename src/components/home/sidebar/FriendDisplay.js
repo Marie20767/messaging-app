@@ -1,4 +1,6 @@
 /* eslint-disable react/no-array-index-key */
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faPaw } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import styled from 'styled-components';
 import { allAvatars } from '../../../constants/constants';
@@ -43,6 +45,7 @@ const FriendDisplay = ({
           ? <p>{getHighlightedSearchResult()}</p>
           : <p className="last-message">{formattedLastMessage}</p>
         }
+        {/* <FontAwesomeIcon icon={faPaw} fontSize="13px" /> */}
       </StyledNameAndMessageContainer>
     </StyledFriendContainer>
   );

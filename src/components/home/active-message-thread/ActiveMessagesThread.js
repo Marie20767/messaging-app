@@ -4,6 +4,7 @@ import moment from 'moment';
 import MessagesHeader from './ActiveMessagesHeader';
 import Messages from './Messages';
 import MessageInputField from './MessageInputField';
+import EmptyMessagesThread from './EmptyMessagesThread';
 
 const ActiveMessagesThread = ({
   friends,
@@ -17,11 +18,11 @@ const ActiveMessagesThread = ({
 }) => {
   const socket = io.connect('http://localhost:3001');
 
+  if (!messageThreads.length) {
+    return <EmptyMessagesThread title1="No friends here yet..." title2="Don&apos;t be shy, add a friend first!" />;
+  }
+
   const activeMessagesThread = messageThreads.find((thread) => thread.friendParticipantId === activeFriendId);
-
-  console.log('>>> messageThreads: ', messageThreads);
-
-  console.log('>>> activeMessagesThread: ', activeMessagesThread);
 
   const handleEnterKeySendMessage = (e) => {
     const newMessageInfo = {

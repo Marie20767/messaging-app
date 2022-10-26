@@ -134,6 +134,35 @@ const isYesterday = (momentDate) => {
   return momentDate.isSame(yesterday, 'd');
 };
 
+const getFriendsSortedByMessageSent = (messageThreads, friends) => {
+  const lastMessages = messageThreads.map((messageThread) => {
+    const lastIndex = messageThread.messages.length - 1;
+
+    return messageThread.messages[lastIndex];
+  });
+
+  friends.sort((friendA, friendB) => {
+    const friendALastMessage = lastMessages.find((message) => message.sending_user_id === friendA.id || message.recipient_user_id === friendA.id);
+    const friendBLastMessage = lastMessages.find((message) => message.sending_user_id === friendB.id || message.recipient_user_id === friendB.id);
+
+    if (!friendALastMessage) {
+      return 1;
+    }
+
+    if (!friendBLastMessage) {
+      return -1;
+    }
+
+    if (moment(friendALastMessage.timestamp).isBefore(moment(friendBLastMessage.timestamp))) {
+      return 1;
+    }
+
+    return -1;
+  });
+
+  return friends;
+};
+
 export {
   getFormattedMessageThreads,
   getFriendMessageSearchResult,
@@ -145,4 +174,5 @@ export {
   getMinutesIfLessThanOneHourAgo,
   isToday,
   isYesterday,
+  getFriendsSortedByMessageSent,
 };

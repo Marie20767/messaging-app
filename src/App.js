@@ -14,9 +14,6 @@ import PageNotFound from './components/PageNotFound';
 // Fix sidebar view on large laptop screens
 // Have it so the messagesInputField doesn't grow in width but in height the more you type (use textarea?)
 
-// TODO:
-// Fix now bug (showing 1 min instead of now)
-
 // TODO: together:
 // Make it so if I go to login, register or welcome screen, if im already logged in it sends me to the home page
 // - Make sure you can't access /home if not logged in

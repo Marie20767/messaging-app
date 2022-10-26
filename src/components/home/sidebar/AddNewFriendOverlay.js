@@ -1,3 +1,4 @@
+import moment from 'moment';
 import io from 'socket.io-client';
 import styled from 'styled-components';
 import SmallFullScreenOverlay from '../../overlays-and-popups/SmallFullScreenOverlay';
@@ -59,7 +60,12 @@ const AddNewFriendOverlay = ({
           {
             friendParticipantId: newFriendResult.friend_id,
             threadId: newFriendResult.thread_id,
-            messages: [],
+            messages: [{
+              text: '',
+              timestamp: moment().toISOString(),
+              sending_user_id: newFriendResult.friend_id,
+              recipient_user_id: id,
+            }],
           },
         ]);
       } else {

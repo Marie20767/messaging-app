@@ -1,3 +1,4 @@
+import { getFriendsSortedByMessageSent } from '../../../utils/utils';
 import FriendDisplay from './FriendDisplay';
 
 const FriendsList = ({
@@ -21,9 +22,11 @@ const FriendsList = ({
     return lastFriendMessage?.text;
   };
 
+  const sortedFriends = getFriendsSortedByMessageSent(messageThreads, friends);
+
   return (
     <>
-      {friends.map((user) => {
+      {sortedFriends.map((user) => {
         const lastFriendMessage = getLastFriendMessage(user.id);
         const highlighted = user.id === activeFriendId;
 
