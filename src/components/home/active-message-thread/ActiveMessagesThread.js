@@ -31,6 +31,7 @@ const ActiveMessagesThread = ({
       recipient_user_id: activeFriendId,
       text: newMessageInput,
       timestamp: moment().toISOString(),
+      read: false,
     };
 
     if (e.keyCode === 13) {

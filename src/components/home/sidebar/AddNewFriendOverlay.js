@@ -65,6 +65,7 @@ const AddNewFriendOverlay = ({
               timestamp: moment().toISOString(),
               sending_user_id: newFriendResult.friend_id,
               recipient_user_id: id,
+              read: true,
             }],
           },
         ]);

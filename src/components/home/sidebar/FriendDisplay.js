@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faPaw } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaw } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import styled from 'styled-components';
 import { allAvatars } from '../../../constants/constants';
@@ -9,6 +9,7 @@ import { getFormattedLastFriendMessage, renderHighlightedSearchResult } from '..
 const FriendDisplay = ({
   name,
   avatarId,
+  hasUnreadMessage,
   isMessageSearchResult,
   searchInput,
   messageMatchingSearchInput,
@@ -40,12 +41,20 @@ const FriendDisplay = ({
     <StyledFriendContainer onClick={onClick} className={highlighted ? 'active-friend' : 'non-active-friend'}>
       <img src={friendAvatar.animal} alt="Friend avatar" />
       <StyledNameAndMessageContainer>
-        <h4 className="small-black-title">{name}</h4>
-        {isMessageSearchResult
-          ? <p>{getHighlightedSearchResult()}</p>
-          : <p className="last-message">{formattedLastMessage}</p>
+        <div>
+          <h4 className="small-black-title">{name}</h4>
+          {isMessageSearchResult
+            ? <p>{getHighlightedSearchResult()}</p>
+            : <p className="last-message">{formattedLastMessage}</p>
         }
-        {/* <FontAwesomeIcon icon={faPaw} fontSize="13px" /> */}
+        </div>
+        <div className="unread-icon-container">
+          {hasUnreadMessage
+            ? <FontAwesomeIcon icon={faPaw} fontSize="14px" className="unread-icon" />
+            : null
+          }
+        </div>
+
       </StyledNameAndMessageContainer>
     </StyledFriendContainer>
   );
@@ -80,6 +89,18 @@ const StyledFriendContainer = styled.div`
 `;
 
 const StyledNameAndMessageContainer = styled.div`
+  display: flex;
+
+  .unread-icon-container {
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+  }
+
+  .unread-icon {
+    color: #ea738dff;
+  }
+
   p {
     font-size: 14px;
   }

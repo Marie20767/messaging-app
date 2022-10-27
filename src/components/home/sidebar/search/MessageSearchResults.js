@@ -1,10 +1,12 @@
-import { getFriendMessageSearchResult } from '../../../../utils/utils';
+import { getFriendMessageSearchResult, onUpdateReadMessages } from '../../../../utils/utils';
 import FriendDisplay from '../FriendDisplay';
 /* eslint-disable react/jsx-no-useless-fragment */
 
 const MessageSearchResults = ({
   messageExists,
   messageThreadsSearchResults,
+  friendIdsUnreadMessages,
+  setFriendIdsUnreadMessages,
   currentUser,
   friends,
   searchInput,
@@ -16,13 +18,15 @@ const MessageSearchResults = ({
   const onClickSelectMessageResult = (messageId) => {
     setActiveSearchResultIds({ messageId });
 
-    const activeMessageThread = messageThreads.find((thread) => {
+    const activeMessagesThread = messageThreads.find((thread) => {
       const threadHasMessage = thread.messages.some((message) => message.id === messageId);
 
       return threadHasMessage;
     });
 
-    setActiveFriendId(activeMessageThread.friendParticipantId);
+    setActiveFriendId(activeMessagesThread.friendParticipantId);
+
+    onUpdateReadMessages(friendIdsUnreadMessages, activeMessagesThread.friendParticipantId, setFriendIdsUnreadMessages, messageThreads);
   };
 
   return (

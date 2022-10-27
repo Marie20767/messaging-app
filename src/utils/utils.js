@@ -13,6 +13,7 @@ const getFormattedMessageThreads = (messageThreadsResults, currentUserId) => {
           recipient_user_id: currentMessage.recipient_user_id,
           text: currentMessage.text,
           timestamp: currentMessage.timestamp,
+          read: currentMessage.read,
         },
       ],
     };
@@ -163,6 +164,26 @@ const getFriendsSortedByMessageSent = (messageThreads, friends) => {
   return friends;
 };
 
+const onUpdateReadMessages = async (friendIdsUnreadMessages, friendId, setFriendIdsUnreadMessages, messageThreads) => {
+  const updatedFriendIdsUnreadMessages = friendIdsUnreadMessages.filter((id) => friendId !== id);
+
+  setFriendIdsUnreadMessages(updatedFriendIdsUnreadMessages);
+
+  const { threadId } = messageThreads.find((messageThread) => messageThread.friendParticipantId === friendId);
+
+  try {
+    await fetch('http://localhost:3001/update_message_read', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        thread_id: threadId,
+      }),
+    });
+  } catch (e) {
+    console.log('>>> onClickSelectFriendError! ', e);
+  }
+};
+
 export {
   getFormattedMessageThreads,
   getFriendMessageSearchResult,
@@ -175,4 +196,5 @@ export {
   isToday,
   isYesterday,
   getFriendsSortedByMessageSent,
+  onUpdateReadMessages,
 };

@@ -1,9 +1,11 @@
-import { getFriendsSortedByMessageSent } from '../../../utils/utils';
+import { getFriendsSortedByMessageSent, onUpdateReadMessages } from '../../../utils/utils';
 import FriendDisplay from './FriendDisplay';
 
 const FriendsList = ({
   messageThreads,
   friends,
+  friendIdsUnreadMessages,
+  setFriendIdsUnreadMessages,
   activeFriendId,
   setActiveFriendId,
 }) => {
@@ -24,19 +26,26 @@ const FriendsList = ({
 
   const sortedFriends = getFriendsSortedByMessageSent(messageThreads, friends);
 
+  const onClickSelectFriend = (userId) => {
+    setActiveFriendId(userId);
+    onUpdateReadMessages(friendIdsUnreadMessages, userId, setFriendIdsUnreadMessages, messageThreads);
+  };
+
   return (
     <>
       {sortedFriends.map((user) => {
         const lastFriendMessage = getLastFriendMessage(user.id);
         const highlighted = user.id === activeFriendId;
+        const hasUnreadMessage = friendIdsUnreadMessages.includes(user.id);
 
         return (
           <FriendDisplay
             key={user.id}
+            hasUnreadMessage={hasUnreadMessage}
             avatarId={user.avatar_id}
             name={user.name}
             highlighted={highlighted}
-            onClick={() => setActiveFriendId(user.id)}
+            onClick={() => onClickSelectFriend(user.id)}
             lastFriendMessage={lastFriendMessage} />
         );
       })}

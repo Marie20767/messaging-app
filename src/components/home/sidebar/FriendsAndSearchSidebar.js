@@ -6,6 +6,8 @@ const FriendsAndSearchSidebar = ({
   friends,
   currentUser,
   isSearching,
+  friendIdsUnreadMessages,
+  setFriendIdsUnreadMessages,
   searchInput,
   friendSearchResult,
   friendUserNameExists,
@@ -24,6 +26,8 @@ const FriendsAndSearchSidebar = ({
           <SearchResults
             friendUserNameExists={friendUserNameExists}
             friendSearchResult={friendSearchResult}
+            friendIdsUnreadMessages={friendIdsUnreadMessages}
+            setFriendIdsUnreadMessages={setFriendIdsUnreadMessages}
             messageExists={messageExists}
             searchInput={searchInput}
             messageThreads={messageThreads}
@@ -37,6 +41,8 @@ const FriendsAndSearchSidebar = ({
         : (
           <FriendsList
             friends={friends}
+            friendIdsUnreadMessages={friendIdsUnreadMessages}
+            setFriendIdsUnreadMessages={setFriendIdsUnreadMessages}
             messageThreads={messageThreads}
             activeFriendId={activeFriendId}
             setActiveFriendId={setActiveFriendId} />

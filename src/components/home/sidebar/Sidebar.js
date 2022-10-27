@@ -12,6 +12,8 @@ const Sidebar = ({
   friends,
   currentUser,
   activeFriendId,
+  friendIdsUnreadMessages,
+  setFriendIdsUnreadMessages,
   activeNewFriendId,
   setActiveNewFriendId,
   addNewFriendSearchInput,
@@ -168,6 +170,8 @@ const Sidebar = ({
             <FriendsAndSearchSidebar
               friends={friends}
               currentUser={currentUser}
+              friendIdsUnreadMessages={friendIdsUnreadMessages}
+              setFriendIdsUnreadMessages={setFriendIdsUnreadMessages}
               isSearching={isSearching}
               friendSearchResult={friendSearchResult}
               friendUserNameExists={friendUserNameExists}

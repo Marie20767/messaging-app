@@ -1,3 +1,4 @@
+import { onUpdateReadMessages } from '../../../../utils/utils';
 import ContactSearchResults from './ContactSearchResults';
 import MessageSearchResults from './MessageSearchResults';
 import SearchResultsHeader from './SearchResultsHeader';
@@ -5,6 +6,8 @@ import SearchResultsHeader from './SearchResultsHeader';
 const SearchResults = ({
   friendUserNameExists,
   friendSearchResult,
+  friendIdsUnreadMessages,
+  setFriendIdsUnreadMessages,
   messageExists,
   searchInput,
   messageThreads,
@@ -18,6 +21,8 @@ const SearchResults = ({
   const onClickSelectFriend = (friendId) => {
     setActiveSearchResultIds({ friendId });
     setActiveFriendId(friendId);
+
+    onUpdateReadMessages(friendIdsUnreadMessages, friendId, setFriendIdsUnreadMessages, messageThreads);
   };
 
   const noSearchResultText = `No result for '${searchInput}'`;
@@ -39,6 +44,8 @@ const SearchResults = ({
       <MessageSearchResults
         messageExists={messageExists}
         messageThreadsSearchResults={messageThreadsSearchResults}
+        friendIdsUnreadMessages={friendIdsUnreadMessages}
+        setFriendIdsUnreadMessages={setFriendIdsUnreadMessages}
         currentUser={currentUser}
         friends={friends}
         messageThreads={messageThreads}

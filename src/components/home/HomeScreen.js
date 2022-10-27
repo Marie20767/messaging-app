@@ -27,6 +27,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [serverError, setServerError] = useState('');
   const [activeSearchResultIds, setActiveSearchResultIds] = useState(null);
   const [newMessageInput, setNewMessageInput] = useState('');
+  const [friendIdsUnreadMessages, setFriendIdsUnreadMessages] = useState([]);
 
   const { id, avatarId } = currentUser;
   const messagesEndRef = useRef(null);
@@ -68,6 +69,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
   const getNonFriendUsers = async (friendResults) => {
     try {
+      // Already get all the users that are not in the friend list so when currentUser looks for a new friend, the data is already there
       const response = await fetch('http://localhost:3001/users');
       const userResults = await response.json();
 
@@ -106,9 +108,21 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
           socket.emit('join_room', { sending_user_id: id, recipient_user_id: friend.id });
         });
 
+        // Sort friends according to last message sent
         const sortedFriends = getFriendsSortedByMessageSent(formattedMessageThreads, friendResults);
 
         setActiveFriendId(sortedFriends[0].id);
+
+        // Handle notification for unread messages
+        const friendIdsWithUnreadMessages = [];
+
+        formattedMessageThreads.forEach((messageThread) => {
+          if (messageThread.friendParticipantId !== sortedFriends[0].id && messageThread.messages.some((message) => message.read === false)) {
+            friendIdsWithUnreadMessages.push(messageThread.friendParticipantId);
+          }
+        });
+
+        setFriendIdsUnreadMessages(friendIdsWithUnreadMessages);
       }
     } catch (e) {
       console.log('>>> getFriends error: ', e);
@@ -121,15 +135,13 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       const response = await fetch(`http://localhost:3001/messages/${id}`);
       const messageThreadsResults = await response.json();
 
-      if (!messageThreadsResults.length) {
-        setMessageThreads(messageThreadsResults);
-      } else {
-        const formattedMessageThreadsResults = getFormattedMessageThreads(messageThreadsResults, id);
+      const sanitisedMessageThreads = messageThreadsResults || [];
 
-        getFriends(formattedMessageThreadsResults);
+      const formattedMessageThreadsResults = getFormattedMessageThreads(sanitisedMessageThreads, id);
 
-        setMessageThreads(formattedMessageThreadsResults);
-      }
+      getFriends(formattedMessageThreadsResults);
+
+      setMessageThreads(formattedMessageThreadsResults);
     } catch (e) {
       console.log('>>> getMessageThreadsAndFriends error: ', e);
       setServerError('Something went wrong with your request');
@@ -137,7 +149,6 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   };
 
   const getFriendsAndMessagesData = () => {
-    // getFriends();
     getMessageThreadsAndFriends();
   };
 
@@ -191,6 +202,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       <Sidebar
         friends={friends}
         currentUser={currentUser}
+        friendIdsUnreadMessages={friendIdsUnreadMessages}
+        setFriendIdsUnreadMessages={setFriendIdsUnreadMessages}
         nonFriendUsers={nonFriendUsers}
         activeFriendId={activeFriendId}
         activeNewFriendId={activeNewFriendId}
