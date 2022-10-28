@@ -37,6 +37,10 @@ const FriendDisplay = ({
 
   const formattedLastMessage = lastFriendMessage ? getFormattedLastFriendMessage(lastFriendMessage) : '';
 
+  if (!friendAvatar) {
+    return null;
+  }
+
   return (
     <StyledFriendContainer onClick={onClick} className={highlighted ? 'active-friend' : 'non-active-friend'}>
       <img src={friendAvatar.animal} alt="Friend avatar" />

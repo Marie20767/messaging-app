@@ -53,7 +53,7 @@ const RegistrationScreen = ({ setCurrentUser }) => {
         setCurrentUser({
           id: newUserId,
           name: userNameInput,
-          avatarId,
+          avatar_id: avatarId,
         });
 
         setShowFormInvalidErrorMessage(false);

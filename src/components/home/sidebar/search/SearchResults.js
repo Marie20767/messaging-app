@@ -6,11 +6,10 @@ import SearchResultsHeader from './SearchResultsHeader';
 const SearchResults = ({
   friendUserNameExists,
   friendSearchResult,
-  friendIdsUnreadMessages,
-  setFriendIdsUnreadMessages,
   messageExists,
   searchInput,
   messageThreads,
+  setMessageThreads,
   messageThreadsSearchResults,
   activeSearchResultIds,
   setActiveSearchResultIds,
@@ -22,7 +21,7 @@ const SearchResults = ({
     setActiveSearchResultIds({ friendId });
     setActiveFriendId(friendId);
 
-    onUpdateReadMessages(friendIdsUnreadMessages, friendId, setFriendIdsUnreadMessages, messageThreads);
+    onUpdateReadMessages(friendId, messageThreads, setMessageThreads);
   };
 
   const noSearchResultText = `No result for '${searchInput}'`;
@@ -44,11 +43,10 @@ const SearchResults = ({
       <MessageSearchResults
         messageExists={messageExists}
         messageThreadsSearchResults={messageThreadsSearchResults}
-        friendIdsUnreadMessages={friendIdsUnreadMessages}
-        setFriendIdsUnreadMessages={setFriendIdsUnreadMessages}
         currentUser={currentUser}
         friends={friends}
         messageThreads={messageThreads}
+        setMessageThreads={setMessageThreads}
         searchInput={searchInput}
         setActiveFriendId={setActiveFriendId}
         activeSearchResultIds={activeSearchResultIds}

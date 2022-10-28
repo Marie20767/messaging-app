@@ -164,12 +164,15 @@ const getFriendsSortedByMessageSent = (messageThreads, friends) => {
   return friends;
 };
 
-const onUpdateReadMessages = async (friendIdsUnreadMessages, friendId, setFriendIdsUnreadMessages, messageThreads) => {
-  const updatedFriendIdsUnreadMessages = friendIdsUnreadMessages.filter((id) => friendId !== id);
+const findFriendMessageThread = (id, messageThreads) => {
+  return messageThreads.find((messageThread) => {
+    return messageThread.friendParticipantId === id;
+  });
+};
 
-  setFriendIdsUnreadMessages(updatedFriendIdsUnreadMessages);
-
-  const { threadId } = messageThreads.find((messageThread) => messageThread.friendParticipantId === friendId);
+const onUpdateReadMessages = async (friendId, messageThreads, setMessageThreads) => {
+  const friendMessageThread = findFriendMessageThread(friendId, messageThreads);
+  const { threadId } = friendMessageThread;
 
   try {
     await fetch('http://localhost:3001/update_message_read', {
@@ -182,6 +185,28 @@ const onUpdateReadMessages = async (friendIdsUnreadMessages, friendId, setFriend
   } catch (e) {
     console.log('>>> onClickSelectFriendError! ', e);
   }
+
+  const updatedFriendMessages = friendMessageThread.messages.map((message) => {
+    return {
+      ...message,
+      read: true,
+    };
+  });
+
+  const updatedMessageThreads = messageThreads.map((messageThread) => {
+    if (messageThread.friendParticipantId === friendMessageThread.friendParticipantId) {
+      return {
+        ...messageThread,
+        messages: [
+          ...updatedFriendMessages,
+        ],
+      };
+    }
+
+    return messageThread;
+  });
+
+  setMessageThreads(updatedMessageThreads);
 };
 
 export {
@@ -197,4 +222,5 @@ export {
   isYesterday,
   getFriendsSortedByMessageSent,
   onUpdateReadMessages,
+  findFriendMessageThread,
 };

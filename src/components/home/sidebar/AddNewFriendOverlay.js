@@ -1,10 +1,10 @@
 import moment from 'moment';
-import io from 'socket.io-client';
 import styled from 'styled-components';
+import { getSocket } from '../../../utils/socket-io';
 import SmallFullScreenOverlay from '../../overlays-and-popups/SmallFullScreenOverlay';
 
 const AddNewFriendOverlay = ({
-  id,
+  currentUser,
   nonFriendUsers,
   messageThreads,
   setMessageThreads,
@@ -20,7 +20,7 @@ const AddNewFriendOverlay = ({
   setClickedAddNewFriend,
   setNewFriendUserNameExists,
 }) => {
-  const socket = io.connect('http://localhost:3001');
+  const { id } = currentUser;
 
   const onClickAddNewFriend = async () => {
     try {
@@ -39,7 +39,32 @@ const AddNewFriendOverlay = ({
         const newFriend = nonFriendUsers.find((user) => user.id === activeNewFriendId);
 
         // Make new friend join a new room with currentUser
-        socket.emit('join_room', { sending_user_id: id, recipient_user_id: newFriend.id });
+        getSocket().emit('join_room', { sending_user_id: id, recipient_user_id: newFriend.id });
+
+        const newFriendEmptyMessageThread = {
+          friendParticipantId: newFriendResult.friend_id,
+          threadId: newFriendResult.thread_id,
+          messages: [{
+            text: '',
+            timestamp: moment().toISOString(),
+            sending_user_id: newFriendResult.friend_id,
+            recipient_user_id: id,
+            read: true,
+          }],
+        };
+
+        // To make sure the friend that got added sees the new chat without having to refresh and
+        // get data from the back end
+        getSocket().emit('add_friend', {
+          current_user: currentUser,
+          new_friend_id: newFriend.id,
+          // set the friendParticipantId to the current user id because this gets sent to the friend
+          // that was added and inserted into their message threads
+          message_thread: {
+            ...newFriendEmptyMessageThread,
+            friendParticipantId: id,
+          },
+        });
 
         const newFriends = [
           newFriend,
@@ -57,17 +82,7 @@ const AddNewFriendOverlay = ({
 
         setMessageThreads([
           ...messageThreads,
-          {
-            friendParticipantId: newFriendResult.friend_id,
-            threadId: newFriendResult.thread_id,
-            messages: [{
-              text: '',
-              timestamp: moment().toISOString(),
-              sending_user_id: newFriendResult.friend_id,
-              recipient_user_id: id,
-              read: true,
-            }],
-          },
+          newFriendEmptyMessageThread,
         ]);
       } else {
         setAddNewFriendError(newFriendResult.error);

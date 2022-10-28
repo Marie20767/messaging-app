@@ -21,7 +21,7 @@ const AutoLogin = ({ children, setCurrentUser }) => {
           setCurrentUser({
             id: userResult.id,
             name: userResult.name,
-            avatarId: userResult.avatar_id,
+            avatar_id: userResult.avatar_id,
           });
 
           setLoading(false);

@@ -1,15 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Loading } from 'react-loading-dot/lib';
-import io from 'socket.io-client';
 import moment from 'moment';
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
 import ActiveMessagesThread from './active-message-thread/ActiveMessagesThread';
 import Sidebar from './sidebar/Sidebar';
-import { getFormattedMessageThreads, getFriendsSortedByMessageSent } from '../../utils/utils';
+import { getFormattedMessageThreads, getFriendsSortedByMessageSent, onUpdateReadMessages } from '../../utils/utils';
 import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
-
-const socket = io.connect('http://localhost:3001');
+import { getSocket } from '../../utils/socket-io';
 
 const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [friends, setFriends] = useState(null);
@@ -27,9 +25,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [serverError, setServerError] = useState('');
   const [activeSearchResultIds, setActiveSearchResultIds] = useState(null);
   const [newMessageInput, setNewMessageInput] = useState('');
-  const [friendIdsUnreadMessages, setFriendIdsUnreadMessages] = useState([]);
 
-  const { id, avatarId } = currentUser;
+  const { id, avatar_id } = currentUser;
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -56,7 +53,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       if (!result.error) {
         setCurrentUser({
           ...currentUser,
-          avatarId: newAvatarId,
+          avatar_id: newAvatarId,
         });
 
         setShowAvatarOverlay(false);
@@ -105,24 +102,14 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       } else {
         // Make each friend join a room with the currentUser
         friendResults.forEach((friend) => {
-          socket.emit('join_room', { sending_user_id: id, recipient_user_id: friend.id });
+          getSocket().emit('join_room', { sending_user_id: id, recipient_user_id: friend.id });
         });
 
         // Sort friends according to last message sent
         const sortedFriends = getFriendsSortedByMessageSent(formattedMessageThreads, friendResults);
 
         setActiveFriendId(sortedFriends[0].id);
-
-        // Handle notification for unread messages
-        const friendIdsWithUnreadMessages = [];
-
-        formattedMessageThreads.forEach((messageThread) => {
-          if (messageThread.friendParticipantId !== sortedFriends[0].id && messageThread.messages.some((message) => message.read === false)) {
-            friendIdsWithUnreadMessages.push(messageThread.friendParticipantId);
-          }
-        });
-
-        setFriendIdsUnreadMessages(friendIdsWithUnreadMessages);
+        onUpdateReadMessages(sortedFriends[0].id, formattedMessageThreads, setMessageThreads);
       }
     } catch (e) {
       console.log('>>> getFriends error: ', e);
@@ -153,6 +140,9 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   };
 
   useEffect(() => {
+    // Make the current user join the add_friend_room so that when they add a friend, the friend
+    // doesn't have to refresh the page and get the data from the back end to see the new chat
+    getSocket().emit('join_add_friend_room', { current_user_id: id });
     getFriendsAndMessagesData();
   }, []);
 
@@ -173,12 +163,40 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     };
 
     // Listen to receive message event to check when you've received a new message
-    socket.on('receive_message', onReceiveMessage);
+    getSocket().on('receive_message', onReceiveMessage);
 
     return () => {
-      socket.off('receive_message', onReceiveMessage);
+      // Stop listening to receive_message event when messageThreads change to ensure
+      // the onReceiveMessage function always has the latest messageThreads
+      getSocket().off('receive_message', onReceiveMessage);
     };
   }, [messageThreads]);
+
+  useEffect(() => {
+    const onReceivedAddedAsNewFriend = (data) => {
+      // Someone else has just added me as a friend
+      // So now I want to put them in my friends list and add their empty messageThread
+      const updatedFriends = [
+        data.current_user,
+        ...friends,
+      ];
+
+      setFriends(updatedFriends);
+      setMessageThreads([
+        ...messageThreads,
+        data.message_thread,
+      ]);
+
+      if (!activeFriendId) {
+        setActiveFriendId(data.current_user.id);
+      }
+    };
+    getSocket().on('received_add_new_friend', onReceivedAddedAsNewFriend);
+
+    return () => {
+      getSocket().off('received_add_new_friend', onReceivedAddedAsNewFriend);
+    };
+  }, [friends]);
 
   if (serverError && !showAvatarOverlay) {
     return (
@@ -202,8 +220,6 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       <Sidebar
         friends={friends}
         currentUser={currentUser}
-        friendIdsUnreadMessages={friendIdsUnreadMessages}
-        setFriendIdsUnreadMessages={setFriendIdsUnreadMessages}
         nonFriendUsers={nonFriendUsers}
         activeFriendId={activeFriendId}
         activeNewFriendId={activeNewFriendId}
@@ -219,6 +235,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         newFriendUserNameExists={newFriendUserNameExists}
         setNewFriendUserNameExists={setNewFriendUserNameExists}
         messageThreads={messageThreads}
+        setMessageThreads={setMessageThreads}
         isSearching={isSearching}
         setIsSearching={setIsSearching}
         setActiveFriendId={setActiveFriendId}
@@ -240,7 +257,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         ? (
           <ChangeAvatarOverlay
             setShowAvatarOverlay={setShowAvatarOverlay}
-            avatarId={avatarId}
+            avatarId={avatar_id}
             serverError={serverError}
             onClickSaveNewAvatar={onClickSaveNewAvatar} />
         )
@@ -249,7 +266,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       {activeNewFriendId !== null
         ? (
           <AddNewFriendOverlay
-            id={id}
+            currentUser={currentUser}
             addNewFriendError={addNewFriendError}
             nonFriendUsers={nonFriendUsers}
             messageThreads={messageThreads}

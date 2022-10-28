@@ -5,12 +5,11 @@ import FriendDisplay from '../FriendDisplay';
 const MessageSearchResults = ({
   messageExists,
   messageThreadsSearchResults,
-  friendIdsUnreadMessages,
-  setFriendIdsUnreadMessages,
   currentUser,
   friends,
   searchInput,
   messageThreads,
+  setMessageThreads,
   setActiveFriendId,
   activeSearchResultIds,
   setActiveSearchResultIds,
@@ -26,7 +25,7 @@ const MessageSearchResults = ({
 
     setActiveFriendId(activeMessagesThread.friendParticipantId);
 
-    onUpdateReadMessages(friendIdsUnreadMessages, activeMessagesThread.friendParticipantId, setFriendIdsUnreadMessages, messageThreads);
+    onUpdateReadMessages(activeMessagesThread.friendParticipantId, messageThreads, setMessageThreads);
   };
 
   return (

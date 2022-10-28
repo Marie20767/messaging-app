@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import io from 'socket.io-client';
 import moment from 'moment';
 import MessagesHeader from './ActiveMessagesHeader';
 import Messages from './Messages';
 import MessageInputField from './MessageInputField';
 import EmptyMessagesThread from './EmptyMessagesThread';
+import { getSocket } from '../../../utils/socket-io';
 
 const ActiveMessagesThread = ({
   friends,
@@ -16,8 +16,6 @@ const ActiveMessagesThread = ({
   setNewMessageInput,
   setMessageThreads,
 }) => {
-  const socket = io.connect('http://localhost:3001');
-
   if (!messageThreads.length) {
     return <EmptyMessagesThread title1="No friends here yet..." title2="Don&apos;t be shy, add a friend first!" />;
   }
@@ -35,7 +33,7 @@ const ActiveMessagesThread = ({
     };
 
     if (e.keyCode === 13) {
-      socket.emit('send_message', { ...newMessageInfo });
+      getSocket().emit('send_message', { ...newMessageInfo });
 
       activeMessagesThread.messages.push({ id: moment().toISOString(), ...newMessageInfo });
 

@@ -12,8 +12,6 @@ const Sidebar = ({
   friends,
   currentUser,
   activeFriendId,
-  friendIdsUnreadMessages,
-  setFriendIdsUnreadMessages,
   activeNewFriendId,
   setActiveNewFriendId,
   addNewFriendSearchInput,
@@ -28,6 +26,7 @@ const Sidebar = ({
   setActiveSearchResultIds,
   nonFriendUsers,
   messageThreads,
+  setMessageThreads,
   setActiveFriendId,
   isSearching,
   setIsSearching,
@@ -42,9 +41,9 @@ const Sidebar = ({
   const [messageExists, setMessageExists] = useState(false);
   const [messageThreadsSearchResults, setMessageThreadSearchResults] = useState([]);
 
-  const { name, avatarId } = currentUser;
+  const { name, avatar_id } = currentUser;
 
-  const currentUserAvatar = allAvatars.find((avatar) => avatar.id === avatarId);
+  const currentUserAvatar = allAvatars.find((avatar) => avatar.id === avatar_id);
 
   const onChangeSearchInputGetSearchResults = (e) => {
     setSearchInput(e.target.value);
@@ -170,8 +169,6 @@ const Sidebar = ({
             <FriendsAndSearchSidebar
               friends={friends}
               currentUser={currentUser}
-              friendIdsUnreadMessages={friendIdsUnreadMessages}
-              setFriendIdsUnreadMessages={setFriendIdsUnreadMessages}
               isSearching={isSearching}
               friendSearchResult={friendSearchResult}
               friendUserNameExists={friendUserNameExists}
@@ -182,7 +179,8 @@ const Sidebar = ({
               setActiveFriendId={setActiveFriendId}
               activeSearchResultIds={activeSearchResultIds}
               setActiveSearchResultIds={setActiveSearchResultIds}
-              messageThreads={messageThreads} />
+              messageThreads={messageThreads}
+              setMessageThreads={setMessageThreads} />
           )
           : (
             <AddNewFriendSidebar

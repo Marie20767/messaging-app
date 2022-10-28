@@ -3,6 +3,7 @@ import { allAvatars } from '../../../constants/constants';
 
 const MessagesHeader = ({ friends, activeFriendId }) => {
   const activeFriend = friends.find((user) => user.id === activeFriendId);
+
   const activeFriendAvatar = allAvatars.find((avatar) => avatar.id === activeFriend?.avatar_id);
 
   return (

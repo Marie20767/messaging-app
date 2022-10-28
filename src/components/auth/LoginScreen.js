@@ -48,7 +48,7 @@ const LoginScreen = ({ setCurrentUser }) => {
           setCurrentUser({
             id: result.id,
             name: result.name,
-            avatarId: result.avatar_id,
+            avatar_id: result.avatar_id,
           });
 
           // Go to home screen here instead of using <Link> to make sure the newest current-user-id gets passed
