@@ -13,8 +13,10 @@ const Messages = ({ activeMessagesThread, currentUserId, messagesEndRef }) => {
 
   const messagesGroupedByDateSent = {};
 
-  for (let i = 0; i < filteredActiveMessages.length; i++) {
-    const message = filteredActiveMessages[i];
+  const sortedActiveMessages = filteredActiveMessages.sort((messageA, messageB) => new Date(messageA.timestamp) - new Date(messageB.timestamp));
+
+  for (let i = 0; i < sortedActiveMessages.length; i++) {
+    const message = sortedActiveMessages[i];
     const messageDate = moment(message.timestamp).format('ddd ll');
 
     if (messagesGroupedByDateSent[messageDate]) {
