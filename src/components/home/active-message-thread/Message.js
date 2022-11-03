@@ -1,27 +1,37 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import {
-  checkIfMessageSentMoreThanOneHourAgo,
-  getFormattedMessageTime,
-  getMinutesIfLessThanOneHourAgo,
-} from '../../../utils/utils';
-import DateContainer from './DateContainer';
+import { useInterval } from '../../../hooks/useInterval';
+import { checkIfMessageSentMoreThanOneHourAgo } from '../../../utils/utils';
+import MessageDateContainer from './MessageDateContainer';
+import MessageTimestamp from './MessageTimestamp';
 
 const Message = ({ message, isFirstMessage, date, currentUserId, messagesEndRef }) => {
+  const [timestampKey, setTimestampKey] = useState(`${Date.now()}`);
+  const [isMoreThanAnHourAgo, setIsMoreThanAnHourAgo] = useState(checkIfMessageSentMoreThanOneHourAgo(message));
   const messageClassName = message.sending_user_id === currentUserId ? 'from-current-user' : 'from-friend';
-  const isMoreThanAnHourAgo = checkIfMessageSentMoreThanOneHourAgo(message);
+
+  // Every minute, the messages should re-render to update the timestamp if message is less than 1 hour ago
+  const intervalIdRef = useInterval(() => {
+    setIsMoreThanAnHourAgo(checkIfMessageSentMoreThanOneHourAgo(message));
+
+    setTimestampKey(`${Date.now()}`);
+  }, 60000);
+
+  useEffect(() => {
+    if (isMoreThanAnHourAgo) {
+      clearInterval(intervalIdRef.current);
+    }
+  }, [isMoreThanAnHourAgo]);
 
   return (
     <>
       {isFirstMessage
-        ? <DateContainer date={date} message={message} />
+        ? <MessageDateContainer date={date} message={message} />
         : null
       }
       <StyledMessageContainer className={messageClassName} key={message.id}>
         <p className="text">{message.text}</p>
-        {isMoreThanAnHourAgo
-          ? <p className="timestamp">{getFormattedMessageTime(message)}</p>
-          : <p className="timestamp">{getMinutesIfLessThanOneHourAgo(message)}</p>
-        }
+        <MessageTimestamp key={timestampKey} isMoreThanAnHourAgo={isMoreThanAnHourAgo} message={message} />
         <div ref={messagesEndRef} />
       </StyledMessageContainer>
     </>

@@ -2,7 +2,7 @@ import moment from 'moment';
 import styled from 'styled-components';
 import { isToday, isYesterday } from '../../../utils/utils';
 
-const DateContainer = ({ date, message }) => {
+const MessageDateContainer = ({ date, message }) => {
   if (isToday(moment(message.timestamp))) {
     return (
       <StyledDateContainer>
@@ -36,4 +36,4 @@ const StyledDateContainer = styled.div`
   }
 `;
 
-export default DateContainer;
+export default MessageDateContainer;

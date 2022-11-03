@@ -1,6 +1,5 @@
 import { getFriendMessageSearchResult, onUpdateReadMessages } from '../../../../utils/utils';
 import FriendDisplay from '../FriendDisplay';
-/* eslint-disable react/jsx-no-useless-fragment */
 
 const MessageSearchResults = ({
   messageExists,
@@ -28,34 +27,31 @@ const MessageSearchResults = ({
     onUpdateReadMessages(activeMessagesThread.friendParticipantId, messageThreads, setMessageThreads);
   };
 
-  return (
-    <>
-      {messageExists
-        ? (
-          <div>
-            <h4 className="small-black-title search-result-title">Messages</h4>
-            {messageThreadsSearchResults.map((searchResult) => {
-              const friendMessageSearchResult = getFriendMessageSearchResult(currentUser, friends, searchResult);
-              const highlighted = activeSearchResultIds?.messageId === searchResult.id;
+  if (!messageExists) {
+    return null;
+  }
 
-              return (
-                <FriendDisplay
-                  key={searchResult.id}
-                  avatarId={friendMessageSearchResult.avatar_id}
-                  name={friendMessageSearchResult.name}
-                  highlighted={highlighted}
-                  id={currentUser.id === searchResult.recipient_user_id ? searchResult.sending_user_id : searchResult.recipient_user_id}
-                  isMessageSearchResult
-                  searchInput={searchInput}
-                  messageMatchingSearchInput={searchResult.text}
-                  onClick={() => onClickSelectMessageResult(searchResult.id)} />
-              );
-            })}
-          </div>
-        )
-        : null
-        }
-    </>
+  return (
+    <div>
+      <h4 className="small-black-title search-result-title">Messages</h4>
+      {messageThreadsSearchResults.map((searchResult) => {
+        const friendMessageSearchResult = getFriendMessageSearchResult(currentUser, friends, searchResult);
+        const highlighted = activeSearchResultIds?.messageId === searchResult.id;
+
+        return (
+          <FriendDisplay
+            key={searchResult.id}
+            avatarId={friendMessageSearchResult.avatar_id}
+            name={friendMessageSearchResult.name}
+            highlighted={highlighted}
+            id={currentUser.id === searchResult.recipient_user_id ? searchResult.sending_user_id : searchResult.recipient_user_id}
+            isMessageSearchResult
+            searchInput={searchInput}
+            messageMatchingSearchInput={searchResult.text}
+            onClick={() => onClickSelectMessageResult(searchResult.id)} />
+        );
+      })}
+    </div>
   );
 };
 

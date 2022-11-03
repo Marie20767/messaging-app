@@ -112,9 +112,9 @@ const getFormattedMessageTime = (message) => {
   return formattedTime;
 };
 
-const oneHourAgo = moment().subtract(1, 'hours');
-
 const checkIfMessageSentMoreThanOneHourAgo = (message) => {
+  const oneHourAgo = moment().subtract(1, 'hours');
+
   return moment(getFormattedDateAndTime(message)).isBefore(oneHourAgo);
 };
 

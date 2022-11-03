@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-useless-fragment */
 import styled from 'styled-components';
 import ContactSearchResults from './search/ContactSearchResults';
 import SearchResultsHeader from './search/SearchResultsHeader';

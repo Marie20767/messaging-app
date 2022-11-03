@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 import moment from 'moment';
-import { useState } from 'react';
 import MessagesHeader from './ActiveMessagesHeader';
 import Messages from './Messages';
 import MessageInputField from './MessageInputField';
 import EmptyMessagesThread from './EmptyMessagesThread';
 import { getSocket } from '../../../utils/socket-io';
-import { useInterval } from '../../../hooks/useInterval';
 
 const ActiveMessagesThread = ({
   friends,
@@ -18,8 +16,6 @@ const ActiveMessagesThread = ({
   setNewMessageInput,
   setMessageThreads,
 }) => {
-  const [messagesKey, setMessagesKey] = useState(`${Date.now()}`);
-
   if (!messageThreads.length) {
     return <EmptyMessagesThread title1="No friends here yet..." title2="Don&apos;t be shy, add a friend first!" />;
   }
@@ -54,18 +50,12 @@ const ActiveMessagesThread = ({
     }
   };
 
-  // Every minute, the messages should re-render to update the timestamp
-  useInterval(() => {
-    setMessagesKey(`${Date.now()}`);
-  }, 60000);
-
   return (
     <StyledMessagesThreadContainer>
       <MessagesHeader
         friends={friends}
         activeFriendId={activeFriendId} />
       <Messages
-        key={messagesKey}
         activeMessagesThread={activeMessagesThread}
         currentUserId={currentUserId}
         messagesEndRef={messagesEndRef} />
