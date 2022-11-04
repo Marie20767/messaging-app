@@ -104,7 +104,7 @@ const LoginScreen = ({ setCurrentUser }) => {
 };
 
 const StyledLoginScreenContainer = styled.div`
-  height: 40%;
+  height: 45%;
   width: 40%;
   background-color: white;
   border-radius: 12px;

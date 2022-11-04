@@ -37,6 +37,7 @@ const FriendsAndSearchSidebar = ({
 
   return (
     <FriendsList
+      currentUser={currentUser}
       friends={friends}
       messageThreads={messageThreads}
       setMessageThreads={setMessageThreads}

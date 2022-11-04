@@ -209,6 +209,10 @@ const onUpdateReadMessages = async (friendId, messageThreads, setMessageThreads)
   setMessageThreads(updatedMessageThreads);
 };
 
+const getSortedMessages = (messages) => {
+  return messages?.sort((messageA, messageB) => new Date(messageA.timestamp) - new Date(messageB.timestamp)) || [];
+};
+
 export {
   getFormattedMessageThreads,
   getFriendMessageSearchResult,
@@ -223,4 +227,5 @@ export {
   getFriendsSortedByMessageSent,
   onUpdateReadMessages,
   findFriendMessageThread,
+  getSortedMessages,
 };

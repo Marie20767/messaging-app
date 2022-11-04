@@ -1,6 +1,6 @@
-import React from 'eslint-plugin-import/config/react';
 import moment from 'moment';
 import styled from 'styled-components';
+import { getSortedMessages } from '../../../utils/utils';
 import EmptyMessagesThread from './EmptyMessagesThread';
 import Message from './Message';
 
@@ -13,7 +13,7 @@ const Messages = ({ activeMessagesThread, currentUserId, messagesEndRef }) => {
 
   const messagesGroupedByDateSent = {};
 
-  const sortedActiveMessages = filteredActiveMessages.sort((messageA, messageB) => new Date(messageA.timestamp) - new Date(messageB.timestamp));
+  const sortedActiveMessages = getSortedMessages(filteredActiveMessages);
 
   for (let i = 0; i < sortedActiveMessages.length; i++) {
     const message = sortedActiveMessages[i];

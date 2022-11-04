@@ -14,7 +14,7 @@ const FriendDisplay = ({
   searchInput,
   messageMatchingSearchInput,
   highlighted,
-  lastFriendMessage,
+  lastFriendMessageText,
   onClick,
 }) => {
   const friendAvatar = allAvatars.find((avatar) => avatar.id === avatarId);
@@ -35,7 +35,7 @@ const FriendDisplay = ({
 
   renderHighlightedSearchResult(messageMatchingSearchInput, searchInput);
 
-  const formattedLastMessage = lastFriendMessage ? getFormattedLastFriendMessage(lastFriendMessage) : '';
+  const formattedLastMessage = lastFriendMessageText ? getFormattedLastFriendMessage(lastFriendMessageText) : '';
 
   if (!friendAvatar) {
     return null;
@@ -94,11 +94,13 @@ const StyledFriendContainer = styled.div`
 
 const StyledNameAndMessageContainer = styled.div`
   display: flex;
+  width: 100%;
+  justify-content: space-between;
 
   .unread-icon-container {
     display: flex;
     align-items: center;
-    margin-right: 5px;
+    margin-right: 15px;
   }
 
   .unread-icon {

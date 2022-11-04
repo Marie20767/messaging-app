@@ -8,7 +8,7 @@ moment.updateLocale('en', {
     ss: 'now',
     m: '%dmin',
     mm: '%dmin',
-    h: '%d hour',
+    h: '%dh',
     hh: '%d hours',
     d: 'a day',
     dd: '%d days',

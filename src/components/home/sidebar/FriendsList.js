@@ -1,15 +1,20 @@
-import { findFriendMessageThread, getFriendsSortedByMessageSent, onUpdateReadMessages } from '../../../utils/utils';
+import { findFriendMessageThread, getFriendsSortedByMessageSent, getSortedMessages, onUpdateReadMessages } from '../../../utils/utils';
 import FriendDisplay from './FriendDisplay';
 
 const FriendsList = ({
+  currentUser,
   messageThreads,
   setMessageThreads,
   friends,
   activeFriendId,
   setActiveFriendId,
 }) => {
-  const getLastFriendMessage = (id) => {
-    const friendMessageThread = findFriendMessageThread(id, messageThreads);
+  const { id } = currentUser;
+
+  console.log('>>> messageThreads: ', messageThreads);
+
+  const getLastFriendMessage = (userId) => {
+    const friendMessageThread = findFriendMessageThread(userId, messageThreads);
 
     if (!friendMessageThread) {
       return null;
@@ -33,14 +38,21 @@ const FriendsList = ({
   return (
     <>
       {sortedFriends.map((user) => {
-        const lastFriendMessage = getLastFriendMessage(user.id);
+        const lastFriendMessageText = getLastFriendMessage(user.id);
         const highlighted = user.id === activeFriendId;
         let hasUnreadMessage = false;
 
-        const friendMessageThread = findFriendMessageThread(user.id, messageThreads);
-        const friendHasUnreadMessages = friendMessageThread.messages.some((message) => message.read === false);
+        const sanitisedFriendMessageThread = findFriendMessageThread(user.id, messageThreads) || {};
 
-        if (friendHasUnreadMessages && friendMessageThread.friendParticipantId !== activeFriendId) {
+        const sortedFriendMessageThread = getSortedMessages(sanitisedFriendMessageThread.messages);
+
+        const lastFriendMessage = sortedFriendMessageThread[sortedFriendMessageThread.length - 1];
+
+        const friendHasUnreadMessages = sanitisedFriendMessageThread?.messages?.some((message) => message.read === false);
+        const friendIsNotActiveFriend = sanitisedFriendMessageThread?.friendParticipantId !== activeFriendId;
+        const lastMessageIsNotSentByCurrentUser = lastFriendMessage?.sending_user_id !== id;
+
+        if (friendHasUnreadMessages && friendIsNotActiveFriend && lastMessageIsNotSentByCurrentUser) {
           hasUnreadMessage = true;
         }
 
@@ -52,7 +64,7 @@ const FriendsList = ({
             name={user.name}
             highlighted={highlighted}
             onClick={() => onClickSelectFriend(user.id, hasUnreadMessage)}
-            lastFriendMessage={lastFriendMessage} />
+            lastFriendMessageText={lastFriendMessageText} />
         );
       })}
     </>

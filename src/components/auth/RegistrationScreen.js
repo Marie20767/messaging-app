@@ -127,7 +127,7 @@ const StyledRegistrationCardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 35px 0px;
+  padding: 50px 0px;
 
   h3 {
     font-size: 17px;

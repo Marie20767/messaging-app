@@ -49,7 +49,9 @@ const StyledMessageContainer = styled.div`
   .timestamp {
       font-size: 11px;
       margin-left: 7px;
-      align-self: flex-end;
+      width: 30px;
+      align-self: center;
+      text-align: center;
     }
 
   &.from-friend {

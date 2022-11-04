@@ -29,6 +29,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const { id, avatar_id } = currentUser;
   const messagesEndRef = useRef(null);
 
+  console.log('>>> messageThreads: ', messageThreads);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
