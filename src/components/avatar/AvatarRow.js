@@ -31,6 +31,7 @@ const StyledAvatarContainer = styled.div`
     img {
       height: 70px;
       cursor: pointer;
+      margin-bottom: 10px;
     }
   }
 

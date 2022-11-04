@@ -119,10 +119,9 @@ const RegistrationScreen = ({ setCurrentUser }) => {
 };
 
 const StyledRegistrationCardContainer = styled.div`
-  height: 80%;
-  width: 40%;
+  width: 100%;
+  height: 500px;
   background-color: white;
-  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -130,11 +129,29 @@ const StyledRegistrationCardContainer = styled.div`
   padding: 50px 0px;
 
   h3 {
-    font-size: 17px;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    height: 80%;
+    width: 40%;
+    border-radius: 12px;
+
+    h3 {
+      font-size: 18px;
+      margin: 0;  
+    }
   }
 
   button {
     margin-top: 10px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    button {
+      margin-top: 0;
+    }
   }
 `;
 

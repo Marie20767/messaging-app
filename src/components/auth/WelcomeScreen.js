@@ -23,18 +23,32 @@ const WelcomeScreen = () => {
 };
 
 const StyledWelcomeScreenCard = styled.div`
-  height: 40%;
-  width: 40%;
+  height: 300px;
+  width: 100%;
   background-color: white;
-  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  padding: 30px 0;
+  padding: 30px 60px;
+
+  h3 {
+    text-align: center;
+  }
   
   .login-button {
     margin-right: 15px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    height: 40%;
+    width: 40%;
+    border-radius: 12px;
+    padding: 30px 0;
+
+    h3 {
+      text-align: unset;
+    }
   }
 `;
 

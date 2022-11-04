@@ -105,15 +105,20 @@ const LoginScreen = ({ setCurrentUser }) => {
 };
 
 const StyledLoginScreenContainer = styled.div`
-  height: 45%;
-  width: 40%;
+  height: 300px;
+  width: 100%;
   background-color: white;
-  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
   padding: 20px 0;
+
+  @media screen and (min-width: 1024px) {
+    height: 45%;
+    width: 40%;
+    border-radius: 12px;
+  }
 `;
 
 export default LoginScreen;
