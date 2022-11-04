@@ -36,12 +36,16 @@ const SearchBox = ({
 
 const StyledSearchBoxContainer = styled.div`
   cursor: pointer;
-  width: 372px;
+  width: 93%;
   background-color: #e7e6e6;
   border-radius: 7px;
   margin: 10px 0 5px 15px;
   display: flex;
   align-items: center;
+
+  @media screen and (min-width: 1024px) {
+      width: 372px;
+  }
 
   input {
     background-color: transparent;

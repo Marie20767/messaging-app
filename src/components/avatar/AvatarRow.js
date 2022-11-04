@@ -23,9 +23,15 @@ const AvatarRow = ({ avatars, avatarId, tabIndex, onKeyDown, onClickSelectAvatar
 
 const StyledAvatarContainer = styled.div`
   img {
-    height: 70px;
+    height: 52px;
     margin-right: 15px;
-    cursor: pointer;
+  }
+
+  @media screen and (min-width: 1024px) {
+    img {
+      height: 70px;
+      cursor: pointer;
+    }
   }
 
   .selected-avatar {

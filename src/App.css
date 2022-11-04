@@ -22,8 +22,18 @@ h3, p, h4, button, input, textarea, footer {
 }
 
 h3, p {
-  font-size: 18px;
+  font-size: 17px;
   color: #919190;
+}
+
+.add-friend-overlay-title {
+  text-align: center;
+}
+
+@media screen and (min-width: 1024px) {
+  h3 {
+    font-size: 18px;
+  }
 }
 
 input, textarea {
@@ -42,7 +52,7 @@ footer {
 }
 
 button {
-  font-size: 16px;
+  font-size: 14px;
   background-color: #ea738d;
   color: white;
   cursor: pointer;
@@ -51,8 +61,14 @@ button {
   padding: 6px 12px;
 }
 
-button:hover {
-  background-color: #9dbbf8;
+@media screen and (min-width: 1024px) {
+  button {
+    font-size: 16px;
+  }
+
+  button:hover {
+    background-color: #9dbbf8;
+  }
 }
 
 p {

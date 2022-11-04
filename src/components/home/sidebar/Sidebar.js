@@ -33,6 +33,8 @@ const Sidebar = ({
   setCurrentUser,
   setShowAvatarOverlay,
   setAddNewFriendError,
+  showActiveMessagesMobile,
+  setShowActiveMessagesMobile,
 }) => {
   const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
   const [searchInput, setSearchInput] = useState('');
@@ -108,7 +110,7 @@ const Sidebar = ({
   };
 
   return (
-    <StyledSidebarContainer>
+    <StyledSidebarContainer className={!showActiveMessagesMobile ? 'shown' : 'hidden'}>
       <StyledHomePageHeader>
         <StyledCurrentUserContainer>
           <StyledAvatarAndNameContainer>
@@ -180,7 +182,9 @@ const Sidebar = ({
               activeSearchResultIds={activeSearchResultIds}
               setActiveSearchResultIds={setActiveSearchResultIds}
               messageThreads={messageThreads}
-              setMessageThreads={setMessageThreads} />
+              setMessageThreads={setMessageThreads}
+              showActiveMessagesMobile={showActiveMessagesMobile}
+              setShowActiveMessagesMobile={setShowActiveMessagesMobile} />
           )
           : (
             <AddNewFriendSidebar
@@ -199,21 +203,44 @@ const Sidebar = ({
 };
 
 const StyledSidebarContainer = styled.div`
-  width: 400px; 
   background-color: #f8f7f7;
-  border-right: 1px solid #e9e9e9;
+  width: 100%;
 
+  &.shown {
+    display: block;
+  }
+
+  &.hidden {
+    display: none;
+  }
+  
   .current-user-name {
     font-weight: bold;
     color: #9dbbf8;
+  }
+
+  @media screen and (min-width: 1024px) {
+    width: 400px; 
+    border-right: 1px solid #e9e9e9;
+    &.shown {
+      display: block;
+    }
+
+    &.hidden {
+      display: block;
+    }
   }
 `;
 
 const StyledHomePageHeader = styled.div`
   display: flex;
   flex-direction: column;
-  width: 400px;
   height: 16vh;
+
+  @media screen and (min-width: 1024px) {
+    width: 400px; 
+  }
+
 `;
 
 const StyledCurrentUserContainer = styled.div`
@@ -221,6 +248,11 @@ const StyledCurrentUserContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-right: 30px;
+  margin-top: 15px;
+
+  @media screen and (min-width: 1024px) {
+    margin-top: 0px;
+  }
 `;
 
 const StyledBackHomeContainer = styled.div`

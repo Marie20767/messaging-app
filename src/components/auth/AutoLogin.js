@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loading } from 'react-loading-dot';
+import { APIDomain } from '../../constants/constants';
 
 const AutoLogin = ({ children, setCurrentUser }) => {
   const [loading, setLoading] = useState(true);
@@ -14,7 +15,7 @@ const AutoLogin = ({ children, setCurrentUser }) => {
         navigate('/login');
       } else {
         try {
-          const response = await fetch(`http://localhost:3001/users/${currentUserId}`);
+          const response = await fetch(`http://${APIDomain}/users/${currentUserId}`);
 
           const userResult = await response.json();
 

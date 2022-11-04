@@ -10,7 +10,7 @@ const AddNewFriendSidebar = ({
   setActiveNewFriendId,
   setAddNewFriendError,
 }) => {
-  const noSearchResultText = `User called '${searchInput}' doesn't exist. Ask your friend to register first.`;
+  const noSearchResultText = `User called '${searchInput}' doesn't exist or is already in your friend list. Ask your friend to register first if applicable.`;
 
   const onClickSelectFriend = (friendId) => {
     setActiveNewFriendId(friendId);
@@ -42,6 +42,7 @@ const AddNewFriendSidebar = ({
 
 const StyledAddNewFriendSidebarContainer = styled.div`
   margin-top: 80px;
+  width: 100%;
 `;
 
 export default AddNewFriendSidebar;

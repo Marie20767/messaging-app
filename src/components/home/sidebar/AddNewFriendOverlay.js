@@ -1,5 +1,6 @@
 import moment from 'moment';
 import styled from 'styled-components';
+import { APIDomain } from '../../../constants/constants';
 import { getSocket } from '../../../utils/socket-io';
 import SmallFullScreenOverlay from '../../overlays-and-popups/SmallFullScreenOverlay';
 
@@ -24,7 +25,7 @@ const AddNewFriendOverlay = ({
 
   const onClickAddNewFriend = async () => {
     try {
-      const response = await fetch('http://localhost:3001/add_friend', {
+      const response = await fetch(`http://${APIDomain}/add_friend`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -95,7 +96,7 @@ const AddNewFriendOverlay = ({
 
   return (
     <SmallFullScreenOverlay onClick={() => setActiveNewFriendId(null)}>
-      <h3>Would you like to add this friend to your contact list?</h3>
+      <h3 className="add-friend-overlay-title">Would you like to add this friend to your contact list?</h3>
       {addNewFriendError !== null
         ? <p className="error-message">{addNewFriendError}</p>
         : null
@@ -112,7 +113,11 @@ const StyledButtonsContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-around;
-  padding: 0 170px;
+  padding: 0 90px;
+
+  @media screen and (min-width: 1024px) {
+    padding: 0 170px;
+  }
 
   button {
     padding-left: 15px;

@@ -8,10 +8,9 @@ const FriendsList = ({
   friends,
   activeFriendId,
   setActiveFriendId,
+  setShowActiveMessagesMobile,
 }) => {
   const { id } = currentUser;
-
-  console.log('>>> messageThreads: ', messageThreads);
 
   const getLastFriendMessage = (userId) => {
     const friendMessageThread = findFriendMessageThread(userId, messageThreads);
@@ -33,6 +32,8 @@ const FriendsList = ({
     if (friendHasUnreadMessage) {
       onUpdateReadMessages(friendId, messageThreads, setMessageThreads);
     }
+
+    setShowActiveMessagesMobile(true);
   };
 
   return (

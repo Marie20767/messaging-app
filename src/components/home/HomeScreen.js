@@ -8,6 +8,7 @@ import Sidebar from './sidebar/Sidebar';
 import { getFormattedMessageThreads, getFriendsSortedByMessageSent, onUpdateReadMessages } from '../../utils/utils';
 import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
 import { getSocket } from '../../utils/socket-io';
+import { APIDomain } from '../../constants/constants';
 
 const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [friends, setFriends] = useState(null);
@@ -25,11 +26,11 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [serverError, setServerError] = useState('');
   const [activeSearchResultIds, setActiveSearchResultIds] = useState(null);
   const [newMessageInput, setNewMessageInput] = useState('');
+  const [showActiveMessagesMobile, setShowActiveMessagesMobile] = useState(false);
 
   const { id, avatar_id } = currentUser;
   const messagesEndRef = useRef(null);
 
-  console.log('>>> messageThreads: ', messageThreads);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -42,7 +43,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
   const onClickSaveNewAvatar = async (newAvatarId) => {
     try {
-      const response = await fetch(`http://localhost:3001/users/${id}`, {
+      const response = await fetch(`http://${APIDomain}/users/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -68,7 +69,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const getNonFriendUsers = async (friendResults) => {
     try {
       // Already get all the users that are not in the friend list so when currentUser looks for a new friend, the data is already there
-      const response = await fetch('http://localhost:3001/users');
+      const response = await fetch(`http://${APIDomain}/users`);
       const userResults = await response.json();
 
       if (!friendResults.length) {
@@ -92,7 +93,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
   const getFriends = async (formattedMessageThreads) => {
     try {
-      const response = await fetch(`http://localhost:3001/friends/${id}`);
+      const response = await fetch(`http://${APIDomain}/friends/${id}`);
       const friendResults = await response.json();
 
       setFriends(friendResults);
@@ -120,7 +121,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
   const getMessageThreadsAndFriends = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/messages/${id}`);
+      const response = await fetch(`http://${APIDomain}/messages/${id}`);
       const messageThreadsResults = await response.json();
 
       const sanitisedMessageThreads = messageThreadsResults || [];
@@ -242,7 +243,9 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         setActiveFriendId={setActiveFriendId}
         setCurrentUser={setCurrentUser}
         setShowAvatarOverlay={setShowAvatarOverlay}
-        setAddNewFriendError={setAddNewFriendError} />
+        setAddNewFriendError={setAddNewFriendError}
+        showActiveMessagesMobile={showActiveMessagesMobile}
+        setShowActiveMessagesMobile={setShowActiveMessagesMobile} />
 
       <ActiveMessagesThread
         friends={friends}
@@ -252,7 +255,9 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         messagesEndRef={messagesEndRef}
         newMessageInput={newMessageInput}
         setNewMessageInput={setNewMessageInput}
-        setMessageThreads={setMessageThreads} />
+        setMessageThreads={setMessageThreads}
+        showActiveMessagesMobile={showActiveMessagesMobile}
+        setShowActiveMessagesMobile={setShowActiveMessagesMobile} />
 
       {showAvatarOverlay
         ? (
@@ -292,6 +297,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 const StyledHomeScreenContainer = styled.div`
   min-height: 100%;
   display: flex;
+  width: 100%;
+  overflow-x: hidden;
 `;
 
 export default HomeScreen;

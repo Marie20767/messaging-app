@@ -72,20 +72,22 @@ const StyledFriendContainer = styled.div`
   margin: 0 5px 0 15px;
   cursor: pointer;
 
-  &.active-friend {
+  @media screen and (min-width: 1024px) {
+    &.active-friend {
     background-color: #9dbbf8a9;
     border-radius: 10px;
-  }
+    }
 
-  &.non-active-friend {
+    &.non-active-friend {
     background-color: transparent;
 
-    &:hover {
-      background-color: #e7e6e6;
-      border-radius: 10px;
+      &:hover {
+        background-color: #e7e6e6;
+       border-radius: 10px;
+      }
     }
   }
-
+  
   img {
     height: 50px;
     margin-right: 10px;

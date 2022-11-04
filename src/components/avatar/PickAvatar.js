@@ -48,13 +48,18 @@ const StyledAvatarTitleContainer = styled.div`
   }
 
   h2 {
-    font-size: 23px;
+    font-size: 19px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    h2 {
+      font-size: 23px;
+    }
   }
 
   p {
     margin-top: 20px;
   }
-
 
   .avatar-title-line {
     height: 1px;

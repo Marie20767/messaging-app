@@ -15,6 +15,8 @@ const ActiveMessagesThread = ({
   newMessageInput,
   setNewMessageInput,
   setMessageThreads,
+  showActiveMessagesMobile,
+  setShowActiveMessagesMobile,
 }) => {
   if (!messageThreads.length) {
     return <EmptyMessagesThread title1="No friends here yet..." title2="Don&apos;t be shy, add a friend first!" />;
@@ -22,17 +24,17 @@ const ActiveMessagesThread = ({
 
   const activeMessagesThread = messageThreads.find((thread) => thread.friendParticipantId === activeFriendId);
 
-  const handleEnterKeySendMessage = (e) => {
-    const newMessageInfo = {
-      thread_id: activeMessagesThread.threadId,
-      sending_user_id: currentUserId,
-      recipient_user_id: activeFriendId,
-      text: newMessageInput,
-      timestamp: moment().toISOString(),
-      read: false,
-    };
+  const onClickSendMessage = () => {
+    if (newMessageInput !== '') {
+      const newMessageInfo = {
+        thread_id: activeMessagesThread.threadId,
+        sending_user_id: currentUserId,
+        recipient_user_id: activeFriendId,
+        text: newMessageInput,
+        timestamp: moment().toISOString(),
+        read: false,
+      };
 
-    if (e.keyCode === 13) {
       getSocket().emit('send_message', { ...newMessageInfo });
 
       activeMessagesThread.messages.push({ id: moment().toISOString(), ...newMessageInfo });
@@ -51,16 +53,17 @@ const ActiveMessagesThread = ({
   };
 
   return (
-    <StyledMessagesThreadContainer>
+    <StyledMessagesThreadContainer className={showActiveMessagesMobile ? 'shown' : 'hidden'}>
       <MessagesHeader
         friends={friends}
-        activeFriendId={activeFriendId} />
+        activeFriendId={activeFriendId}
+        setShowActiveMessagesMobile={setShowActiveMessagesMobile} />
       <Messages
         activeMessagesThread={activeMessagesThread}
         currentUserId={currentUserId}
         messagesEndRef={messagesEndRef} />
       <MessageInputField
-        onKeyDown={handleEnterKeySendMessage}
+        onClickSendMessage={onClickSendMessage}
         setNewMessageInput={setNewMessageInput}
         newMessageInput={newMessageInput} />
     </StyledMessagesThreadContainer>
@@ -68,11 +71,27 @@ const ActiveMessagesThread = ({
 };
 
 const StyledMessagesThreadContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: 100%;
-  justify-content: space-between;
+  &.hidden {
+    display: none;
+  }
+
+  &.shown {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  @media screen and (min-width: 1024px) { 
+    &.hidden {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
 `;
 
 export default ActiveMessagesThread;

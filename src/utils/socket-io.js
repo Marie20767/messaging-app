@@ -1,9 +1,10 @@
 import io from 'socket.io-client';
+import { APIDomain } from '../constants/constants';
 
 let socket = null;
 
 export const initSocketConnection = () => {
-  socket = io.connect('http://localhost:3001');
+  socket = io.connect(`http://${APIDomain}`);
 };
 
 export const getSocket = () => {

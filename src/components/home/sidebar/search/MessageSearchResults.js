@@ -12,9 +12,11 @@ const MessageSearchResults = ({
   setActiveFriendId,
   activeSearchResultIds,
   setActiveSearchResultIds,
+  setShowActiveMessagesMobile,
 }) => {
   const onClickSelectMessageResult = (messageId) => {
     setActiveSearchResultIds({ messageId });
+    setShowActiveMessagesMobile(true);
 
     const activeMessagesThread = messageThreads.find((thread) => {
       const threadHasMessage = thread.messages.some((message) => message.id === messageId);

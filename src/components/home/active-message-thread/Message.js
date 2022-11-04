@@ -44,7 +44,11 @@ const StyledMessageContainer = styled.div`
   border-radius: 10px;
   margin-top: 20px;
   padding: 15px;
-  max-width: 70%;
+  max-width: 90%;
+
+  @media screen and (min-width: 1024px) {
+    max-width: 70%;
+  }
 
   .timestamp {
       font-size: 11px;

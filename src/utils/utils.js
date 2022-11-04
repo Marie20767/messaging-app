@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { APIDomain } from '../constants/constants';
 
 const getFormattedMessageThreads = (messageThreadsResults, currentUserId) => {
   const threadsToMessagesMap = messageThreadsResults.reduce((acc, currentMessage) => {
@@ -175,7 +176,7 @@ const onUpdateReadMessages = async (friendId, messageThreads, setMessageThreads)
   const { threadId } = friendMessageThread;
 
   try {
-    await fetch('http://localhost:3001/update_message_read', {
+    await fetch(`http://${APIDomain}/update_message_read`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

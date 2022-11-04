@@ -1,14 +1,15 @@
 import styled from 'styled-components';
+import SendMessageIcon from '../../../images/send-message-icon.png';
 
-const MessageInputField = ({ onKeyDown, newMessageInput, setNewMessageInput }) => {
+const MessageInputField = ({ newMessageInput, setNewMessageInput, onClickSendMessage }) => {
   return (
     <StyledMessageInputFieldContainer>
       <textarea
         type="text"
         placeholder="Message"
         value={newMessageInput}
-        onChange={(e) => setNewMessageInput(e.target.value)}
-        onKeyDown={onKeyDown} />
+        onChange={(e) => setNewMessageInput(e.target.value)} />
+      <img src={SendMessageIcon} alt="Send Message Icon" onClick={() => onClickSendMessage(newMessageInput)} className="clickable" />
     </StyledMessageInputFieldContainer>
   );
 };
@@ -17,6 +18,7 @@ const StyledMessageInputFieldContainer = styled.div`
   margin-top: 30px;
   padding: 0px 25px 15px 15px;
   display: flex;
+  align-items: center;
 
   textarea {
     display: flex;
@@ -33,6 +35,11 @@ const StyledMessageInputFieldContainer = styled.div`
     width: 80%;
     font-size: 15px;
     color: #919190;
+  }
+
+  img {
+    height: 22px;
+    margin-left: 15px;
   }
 `;
 

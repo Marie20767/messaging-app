@@ -25,13 +25,18 @@ const LargeFullScreenOverlay = ({ children, onClick }) => {
 const StyledOverlayContent = styled.div`
   display: flex;
   flex-direction: column;
-  height: 55%;
-  width: 38%;
+  height: 300px;
+  width: 100%;
   padding: 20px 0;
-  border-radius: 15px;
   z-index: 1;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
+
+  @media screen and (min-width: 1024px) {
+    height: 55%;
+    width: 38%;
+    border-radius: 15px;
+  }
 `;
 
 const StyledTitleAvatarsAndButtonContainer = styled.div`
