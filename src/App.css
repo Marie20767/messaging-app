@@ -13,13 +13,7 @@ h2 {
   font-family: 'Work Sans', sans-serif;
   color: #8a8a8b;
   font-weight: 400;
-  font-size: 23px;
-}
-
-@media screen and (min-width: 1024px) {
-  h2 {
-    font-size: 26px;
-  }
+  font-size: 20px;
 }
 
 h3, p, h4, button, input, textarea, footer {
@@ -27,8 +21,13 @@ h3, p, h4, button, input, textarea, footer {
   font-weight: 300;
 }
 
-h3, p {
-  font-size: 17px;
+p {
+  font-size: 13px;
+  color: #919190;
+}
+
+h3 {
+  font-size: 15px;
   color: #919190;
 }
 
@@ -36,14 +35,8 @@ h3, p {
   text-align: center;
 }
 
-@media screen and (min-width: 1024px) {
-  h3 {
-    font-size: 18px;
-  }
-}
-
 input, textarea {
-  font-size: 16px;
+  font-size: 13px;
 }
 
 input:-webkit-autofill {
@@ -53,38 +46,18 @@ input:-webkit-autofill {
 
 footer {
   margin-top: 10px;
-  font-size: 15px;
+  font-size: 13px;
   color: #919190;
 }
 
 button {
-  font-size: 14px;
+  font-size: 13px;
   background-color: #ea738d;
   color: white;
   cursor: pointer;
   border: none;
   border-radius: 10px;
-  padding: 6px 12px;
-}
-
-@media screen and (min-width: 1024px) {
-  button {
-    font-size: 16px;
-  }
-
-  button:hover {
-    background-color: #9dbbf8;
-  }
-}
-
-p {
-  font-size: 15px;
-}
-
-.small-black-title {
-  color: black;
-  font-weight: bold;
-  font-size: 17px;
+  padding: 6px 8px;
 }
 
 .card-container {
@@ -121,13 +94,7 @@ p {
 }
 
 .message-icon {
-  height: 80px;
-}
-
-@media screen and (min-width: 1024px) {
-  .message-icon {
-    height: 100px;
-  }
+  height: 70px;
 }
 
 .auth-a-tag {
@@ -135,11 +102,16 @@ p {
   font-weight: bold;
 }
 
+.add-friend-icon {
+  font-size: 16px;
+}
+
 .x-icon {
   display: flex;
   margin-right: 10px;
   justify-self: flex-end;
   cursor: pointer;
+  font-size: 20px;
 }
 
 .full-screen-error-container {
@@ -166,7 +138,7 @@ p {
 }
 
 .small-black-title {
-  font-size: 15px;
+  font-size: 13px;
   color: black;
   font-weight: 500;
 }
@@ -207,4 +179,51 @@ p {
 ::-webkit-scrollbar-thumb {
   background: #919190;
   border-radius: 8px;
+}
+
+@media screen and (min-width: 1024px) {
+  h2 {
+    font-size: 26px;
+  }
+
+  h3 {
+    font-size: 17px;
+  }
+
+  p {
+    font-size: 15px;
+  }
+
+  input, textarea {
+    font-size: 15px;
+  }
+  
+  .message-icon {
+    height: 100px;
+  }
+
+  .small-black-title {
+    font-size: 15px;
+  }
+
+  .x-icon {
+    font-size: 23px;
+  }
+
+  .add-friend-icon {
+    font-size: 18px;
+  }
+
+  button {
+    font-size: 15px;
+    padding: 6px 12px;
+  }
+
+  button:hover {
+    background-color: #9dbbf8;
+  }
+
+  footer {
+    font-size: 15px;
+  }
 }

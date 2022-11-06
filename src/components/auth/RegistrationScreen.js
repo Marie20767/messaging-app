@@ -129,7 +129,7 @@ const StyledRegistrationCardContainer = styled.div`
   padding: 50px 0px;
 
   h3 {
-    font-size: 16px;
+    font-size: 15px;
     margin-top: 20px;
   }
 

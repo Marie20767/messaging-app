@@ -44,7 +44,7 @@ const StyledSearchBoxContainer = styled.div`
   align-items: center;
 
   @media screen and (min-width: 1024px) {
-      width: 372px;
+    width: 372px;
   }
 
   input {
@@ -53,7 +53,6 @@ const StyledSearchBoxContainer = styled.div`
     border: none;
     width: 100%;
     margin: 5px 0;
-    font-size: 14px;
   }
 
   input:focus {
@@ -61,10 +60,21 @@ const StyledSearchBoxContainer = styled.div`
   }
 
   .magnifying-glass {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     margin: 0px 10px;
   }
+
+  @media screen and (min-width: 1024px) {
+    font-size: 14px;
+
+    .magnifying-glass {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+ 
 `;
 
 export default SearchBox;

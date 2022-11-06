@@ -48,7 +48,7 @@ const StyledAvatarTitleContainer = styled.div`
   }
 
   h2 {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   @media screen and (min-width: 1024px) {

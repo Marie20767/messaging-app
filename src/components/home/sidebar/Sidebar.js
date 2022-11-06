@@ -119,13 +119,13 @@ const Sidebar = ({
               alt="your user avatar"
               className="current-user-avatar clickable"
               onClick={() => setShowSettingsPopUpMenu(!showSettingsPopUpMenu)} />
-            <h4 className="current-user-name">Hi {name}!</h4>
+            <h3 className="current-user-name">Hi {name}!</h3>
           </StyledAvatarAndNameContainer>
           <div>
             <FontAwesomeIcon
               icon={faUserPlus}
               fontSize="18px"
-              className="clickable"
+              className="clickable add-friend-icon"
               onClick={() => setClickedAddNewFriend(true)} />
           </div>
         </StyledCurrentUserContainer>
@@ -219,7 +219,7 @@ const StyledSidebarContainer = styled.div`
     color: #9dbbf8;
   }
 
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     width: 400px; 
     border-right: 1px solid #e9e9e9;
     &.shown {
@@ -229,16 +229,21 @@ const StyledSidebarContainer = styled.div`
     &.hidden {
       display: block;
     }
+
+    h3 {
+    font-size: 16px;
+    }
   }
 `;
 
 const StyledHomePageHeader = styled.div`
   display: flex;
   flex-direction: column;
-  height: 16vh;
+  height: 18vh;
 
   @media screen and (min-width: 1024px) {
     width: 400px; 
+    height: 16vh;
   }
 
 `;
@@ -248,7 +253,7 @@ const StyledCurrentUserContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-right: 30px;
-  margin-top: 15px;
+  margin-top: 8px;
 
   @media screen and (min-width: 1024px) {
     margin-top: 0px;
@@ -276,20 +281,34 @@ const StyledAvatarAndNameContainer = styled.div`
   }
 
   .current-user-avatar {
-    height: 40px;
+    height: 35px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .current-user-avatar {
+      height: 40px;
+    }
   }
 `;
 
 const StyledFriendsContainer = styled.div`
   overflow-y: scroll;
-  height: 84vh;
+  height: 82vh;
 
   .search-result-title {
     margin: 30px 0 20px 15px;
   }
 
   .no-search-result {
-    margin: 10px 0 20px 15px;
+    margin-left: 15px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    height: 84vh;
+
+    .no-search-result {
+      margin: 10px 0 20px 15px;
+    }
   }
 `;
 

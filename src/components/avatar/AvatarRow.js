@@ -25,11 +25,12 @@ const StyledAvatarContainer = styled.div`
   img {
     height: 52px;
     margin-right: 15px;
+    margin-bottom: 5px;
   }
 
   @media screen and (min-width: 1024px) {
     img {
-      height: 70px;
+      height: 66px;
       cursor: pointer;
       margin-bottom: 10px;
     }

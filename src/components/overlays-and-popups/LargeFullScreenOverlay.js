@@ -11,8 +11,7 @@ const LargeFullScreenOverlay = ({ children, onClick }) => {
           <FontAwesomeIcon
             icon={faXmark}
             onClick={onClick}
-            className="light-icon x-icon"
-            fontSize="26px" />
+            className="light-icon x-icon" />
         </div>
         <StyledTitleAvatarsAndButtonContainer>
           {children}

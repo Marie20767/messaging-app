@@ -112,12 +112,21 @@ const StyledLoginScreenContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  padding: 20px 0;
+  padding: 40px 0;
+
+  button {
+    margin-top: 10px;
+  }
 
   @media screen and (min-width: 1024px) {
     height: 45%;
     width: 40%;
     border-radius: 12px;
+    padding: 20px 0;
+
+    button {
+      margin: 0;
+    }
   }
 `;
 

@@ -113,16 +113,23 @@ const StyledButtonsContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-around;
-  padding: 0 90px;
-
-  @media screen and (min-width: 1024px) {
-    padding: 0 170px;
-  }
+  padding: 0 80px;
 
   button {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 5px 10px;
+    
   }
+
+  @media screen and (min-width: 1024px) {
+    padding: 0 220px;
+
+    button {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+
+ 
 `;
 
 export default AddNewFriendOverlay;

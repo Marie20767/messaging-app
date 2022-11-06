@@ -11,8 +11,7 @@ const SmallFullScreenOverlay = ({ children, onClick }) => {
           <FontAwesomeIcon
             icon={faXmark}
             onClick={onClick}
-            className="light-icon x-icon"
-            fontSize="26px" />
+            className="light-icon x-icon" />
         </div>
         <StyledTitleAndButtonsContainer>
           {children}
@@ -34,7 +33,7 @@ const StyledOverlayContent = styled.div`
 
   @media screen and (min-width: 1024px) {
     height: 24%;
-    width: 35%;
+    width: 40%;
     border-radius: 15px;
   }
 `;

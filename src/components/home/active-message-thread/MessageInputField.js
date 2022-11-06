@@ -6,7 +6,7 @@ const MessageInputField = ({ newMessageInput, setNewMessageInput, onClickSendMes
     <StyledMessageInputFieldContainer>
       <textarea
         type="text"
-        placeholder="Message"
+        placeholder="Message..."
         value={newMessageInput}
         onChange={(e) => setNewMessageInput(e.target.value)} />
       <img src={SendMessageIcon} alt="Send Message Icon" onClick={() => onClickSendMessage(newMessageInput)} className="clickable" />
@@ -22,7 +22,7 @@ const StyledMessageInputFieldContainer = styled.div`
 
   textarea {
     display: flex;
-    line-height: 15px;
+    line-height: 14px;
     resize: none;
     align-content: flex-end;
     justify-content: flex-end;
@@ -30,16 +30,26 @@ const StyledMessageInputFieldContainer = styled.div`
     overflow-y: scroll;
     background-color: #e7e6e6;
     outline: none;
-    padding: 15px 15px 0px 15px;
+    padding: 10px 8px 0px 10px;
     border-radius: 10px;
     width: 80%;
-    font-size: 15px;
     color: #919190;
   }
 
   img {
-    height: 22px;
+    height: 18px;
     margin-left: 15px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    textarea {
+      padding: 15px 15px 0px 15px;
+      line-height: 15px;
+    }
+
+    img {
+      height: 22px;
+    }
   }
 `;
 

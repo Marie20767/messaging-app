@@ -67,12 +67,20 @@ const FriendDisplay = ({
 const StyledFriendContainer = styled.div`
   display: flex;
   align-items: center;
-  height: 90px;
-  padding: 15px 10px 20px 10px;
+  height: 70px;
+  padding: 0px 10px;
   margin: 0 5px 0 15px;
   cursor: pointer;
 
+  img {
+    height: 35px;
+    margin-right: 10px;
+  }
+
   @media screen and (min-width: 1024px) {
+    padding: 15px 10px 20px 10px;
+    height: 90px;
+
     &.active-friend {
     background-color: #9dbbf8a9;
     border-radius: 10px;
@@ -86,11 +94,10 @@ const StyledFriendContainer = styled.div`
        border-radius: 10px;
       }
     }
-  }
-  
-  img {
-    height: 50px;
-    margin-right: 10px;
+
+    img {
+      height: 50px
+    }
   }
 `;
 
@@ -109,10 +116,6 @@ const StyledNameAndMessageContainer = styled.div`
     color: #ea738dff;
   }
 
-  p {
-    font-size: 14px;
-  }
-
   .search-input-match {
     font-weight: bold;
     color: black;
@@ -121,6 +124,12 @@ const StyledNameAndMessageContainer = styled.div`
   .last-message {
     margin-top: 2px;
     padding-right: 25px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    p {
+      font-size: 14px;
+    }
   }
 `;
 

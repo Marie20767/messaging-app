@@ -52,7 +52,7 @@ const getFriendMessageSearchResult = (currentUser, friends, searchResult) => {
 const getFormattedLastFriendMessage = (string) => {
   const splitString = string.split(' ');
 
-  return splitString.length > 13 ? `${splitString.slice(0, 13).join(' ')}...` : splitString.join(' ');
+  return splitString.length > 10 ? `${splitString.slice(0, 10).join(' ')}...` : splitString.join(' ');
 };
 
 const getFormattedMessageSearchResult = (string, searchInput) => {

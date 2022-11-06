@@ -30,7 +30,7 @@ const StyledWelcomeScreenCard = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  padding: 30px 60px;
+  padding: 40px 60px;
 
   h3 {
     text-align: center;

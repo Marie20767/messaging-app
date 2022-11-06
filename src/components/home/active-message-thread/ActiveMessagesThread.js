@@ -83,7 +83,7 @@ const StyledMessagesThreadContainer = styled.div`
     justify-content: space-between;
   }
 
-  @media screen and (min-width: 1024px) { 
+  @media screen and (min-width: 768px) { 
     &.hidden {
       display: flex;
       flex-direction: column;
