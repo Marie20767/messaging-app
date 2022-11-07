@@ -3,16 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { Loading } from 'react-loading-dot';
 import useRedirectUser from '../../hooks/useRedirectUser';
 
-const AutoLogin = ({ children, setCurrentUser }) => {
+const RedirectLoggedInUser = ({ children, setCurrentUser }) => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useRedirectUser({
     onUserNotLoggedIn: () => {
-      navigate('/login');
+      setLoading(false);
     },
     onUserLoggedIn: () => {
-      setLoading(false);
+      navigate('/home');
     },
     setCurrentUser,
   });
@@ -28,4 +28,4 @@ const AutoLogin = ({ children, setCurrentUser }) => {
   return children;
 };
 
-export default AutoLogin;
+export default RedirectLoggedInUser;

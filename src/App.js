@@ -8,6 +8,7 @@ import RegistrationScreen from './components/auth/RegistrationScreen';
 import LoginScreen from './components/auth/LoginScreen';
 import AutoLogin from './components/auth/AutoLogin';
 import PageNotFound from './components/PageNotFound';
+import RedirectLoggedInUser from './components/auth/RedirectLoggedInUser';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -15,9 +16,30 @@ const App = () => {
   return (
     <StyledAppContainer>
       <Routes>
-        <Route exact path="/" element={<WelcomeScreen />} />
-        <Route exact path="/register" element={<RegistrationScreen setCurrentUser={setCurrentUser} />} />
-        <Route exact path="/login" element={<LoginScreen setCurrentUser={setCurrentUser} />} />
+        <Route
+          exact
+          path="/"
+          element={(
+            <RedirectLoggedInUser setCurrentUser={setCurrentUser}>
+              <WelcomeScreen />
+            </RedirectLoggedInUser>
+          )} />
+        <Route
+          exact
+          path="/register"
+          element={(
+            <RedirectLoggedInUser setCurrentUser={setCurrentUser}>
+              <RegistrationScreen setCurrentUser={setCurrentUser} />
+            </RedirectLoggedInUser>
+          )} />
+        <Route
+          exact
+          path="/login"
+          element={(
+            <RedirectLoggedInUser setCurrentUser={setCurrentUser}>
+              <LoginScreen setCurrentUser={setCurrentUser} />
+            </RedirectLoggedInUser>
+          )} />
         <Route
           exact
           path="/home"
