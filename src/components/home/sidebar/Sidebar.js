@@ -35,6 +35,7 @@ const Sidebar = ({
   setAddNewFriendError,
   showActiveMessagesMobile,
   setShowActiveMessagesMobile,
+  getNonFriendUsers,
 }) => {
   const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
   const [searchInput, setSearchInput] = useState('');
@@ -109,6 +110,11 @@ const Sidebar = ({
     setNewFriendUserNameExists(false);
   };
 
+  const onClickStartNewFriendSearch = () => {
+    getNonFriendUsers(friends);
+    setClickedAddNewFriend(true);
+  };
+
   return (
     <StyledSidebarContainer className={!showActiveMessagesMobile ? 'shown' : 'hidden'}>
       <StyledHomePageHeader>
@@ -126,7 +132,7 @@ const Sidebar = ({
               icon={faUserPlus}
               fontSize="18px"
               className="clickable add-friend-icon"
-              onClick={() => setClickedAddNewFriend(true)} />
+              onClick={onClickStartNewFriendSearch} />
           </div>
         </StyledCurrentUserContainer>
 

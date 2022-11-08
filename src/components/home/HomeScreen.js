@@ -119,7 +119,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     }
   };
 
-  const getMessageThreadsAndFriends = async () => {
+  const getFriendsAndMessagesData = async () => {
     try {
       const response = await fetch(`http://${APIDomain}/messages/${id}`);
       const messageThreadsResults = await response.json();
@@ -135,10 +135,6 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       console.log('>>> getMessageThreadsAndFriends error: ', e);
       setServerError('Something went wrong with your request');
     }
-  };
-
-  const getFriendsAndMessagesData = () => {
-    getMessageThreadsAndFriends();
   };
 
   useEffect(() => {
@@ -245,7 +241,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         setShowAvatarOverlay={setShowAvatarOverlay}
         setAddNewFriendError={setAddNewFriendError}
         showActiveMessagesMobile={showActiveMessagesMobile}
-        setShowActiveMessagesMobile={setShowActiveMessagesMobile} />
+        setShowActiveMessagesMobile={setShowActiveMessagesMobile}
+        getNonFriendUsers={getNonFriendUsers} />
 
       <ActiveMessagesThread
         friends={friends}
