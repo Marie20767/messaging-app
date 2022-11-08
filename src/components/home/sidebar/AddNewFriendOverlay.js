@@ -116,17 +116,22 @@ const StyledButtonsContainer = styled.div`
   padding: 0 80px;
 
   button {
-    padding: 5px 10px;
-    
+    padding: 5px 10px; 
   }
 
-  @media screen and (min-width: 1024px) {
-    padding: 0 220px;
+  @media screen and (min-width: 768px) {
+    padding: 0 60px;
 
     button {
       padding-left: 15px;
       padding-right: 15px;
     }
+  }
+
+  @media screen and (min-width: 1024px) {
+    padding: 0 220px;
+
+   
   }
 
  

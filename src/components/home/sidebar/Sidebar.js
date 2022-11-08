@@ -220,7 +220,7 @@ const StyledSidebarContainer = styled.div`
   }
 
   @media screen and (min-width: 768px) {
-    width: 400px; 
+    width: 290px; 
     border-right: 1px solid #e9e9e9;
     &.shown {
       display: block;
@@ -234,12 +234,21 @@ const StyledSidebarContainer = styled.div`
     font-size: 16px;
     }
   }
+
+  @media screen and (min-width: 1024px) {
+    width: 400px; 
+  }
 `;
 
 const StyledHomePageHeader = styled.div`
   display: flex;
   flex-direction: column;
   height: 18vh;
+
+  @media screen and (min-width: 768px) {
+    height: 14vh;
+    width: 290px; 
+  }
 
   @media screen and (min-width: 1024px) {
     width: 400px; 
@@ -268,6 +277,18 @@ const StyledBackHomeContainer = styled.div`
   .back-home-icon {
     margin-right: 5px;
   }
+
+  @media screen and (min-width: 768px) {
+    .back-home-icon {
+      font-size: 14px;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    .back-home-icon {
+      font-size: 15px;
+    }
+  }
 `;
 
 const StyledAvatarAndNameContainer = styled.div`
@@ -284,7 +305,7 @@ const StyledAvatarAndNameContainer = styled.div`
     height: 35px;
   }
 
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     .current-user-avatar {
       height: 40px;
     }
@@ -301,6 +322,10 @@ const StyledFriendsContainer = styled.div`
 
   .no-search-result {
     margin-left: 15px;
+  }
+
+  @media screen and (min-width: 768px) {
+    height: 86vh;
   }
 
   @media screen and (min-width: 1024px) {

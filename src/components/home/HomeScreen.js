@@ -198,7 +198,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     return () => {
       getSocket().off('received_add_new_friend', onReceivedAddedAsNewFriend);
     };
-  }, [friends]);
+  }, [friends, messageThreads]);
 
   if (serverError && !showAvatarOverlay) {
     return (

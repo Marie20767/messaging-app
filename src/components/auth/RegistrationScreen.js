@@ -133,26 +133,30 @@ const StyledRegistrationCardContainer = styled.div`
     margin-top: 20px;
   }
 
+  button {
+    margin-top: 10px;
+  }
+
+  @media screen and (min-width: 768px) {
+    width: 60%;
+    border-radius: 12px;
+  }
+
+
   @media screen and (min-width: 1024px) {
     height: 80%;
     width: 40%;
-    border-radius: 12px;
 
     h3 {
       font-size: 18px;
       margin: 0;  
     }
-  }
 
-  button {
-    margin-top: 10px;
-  }
-
-  @media screen and (min-width: 1024px) {
     button {
       margin-top: 0;
     }
   }
+
 `;
 
 export default RegistrationScreen;

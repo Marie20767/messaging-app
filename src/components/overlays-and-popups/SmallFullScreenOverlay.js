@@ -31,10 +31,15 @@ const StyledOverlayContent = styled.div`
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
 
+  @media screen and (min-width: 768px) {
+    height: 20%;
+    width: 45%;
+    border-radius: 15px;
+  }
+
   @media screen and (min-width: 1024px) {
     height: 24%;
     width: 40%;
-    border-radius: 15px;
   }
 `;
 

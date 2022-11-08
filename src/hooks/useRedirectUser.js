@@ -12,15 +12,19 @@ const useRedirectUser = ({ onUserNotLoggedIn, onUserLoggedIn, setCurrentUser }) 
         try {
           const response = await fetch(`http://${APIDomain}/users/${currentUserId}`);
 
-          const userResult = await response.json();
+          if (!response.ok) {
+            onUserNotLoggedIn();
+          } else {
+            const userResult = await response.json();
 
-          setCurrentUser({
-            id: userResult.id,
-            name: userResult.name,
-            avatar_id: userResult.avatar_id,
-          });
+            setCurrentUser({
+              id: userResult.id,
+              name: userResult.name,
+              avatar_id: userResult.avatar_id,
+            });
 
-          onUserLoggedIn();
+            onUserLoggedIn();
+          }
         } catch (e) {
           onUserNotLoggedIn();
         }

@@ -77,9 +77,9 @@ const StyledFriendContainer = styled.div`
     margin-right: 10px;
   }
 
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     padding: 15px 10px 20px 10px;
-    height: 90px;
+    height: 80px;
 
     &.active-friend {
     background-color: #9dbbf8a9;
@@ -88,15 +88,25 @@ const StyledFriendContainer = styled.div`
 
     &.non-active-friend {
     background-color: transparent;
+    }
 
+    img {
+      height: 42px
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    height: 90px;
+
+    img {
+      height: 50px
+    }
+
+    &.non-active-friend {
       &:hover {
         background-color: #e7e6e6;
        border-radius: 10px;
       }
-    }
-
-    img {
-      height: 50px
     }
   }
 `;
@@ -126,7 +136,26 @@ const StyledNameAndMessageContainer = styled.div`
     padding-right: 25px;
   }
 
+  @media screen and (min-width: 768px) {
+    .last-message {
+      padding-right: 0;
+    }
+
+    .unread-icon-container {
+      margin-right: 0;
+    }
+  }
+
   @media screen and (min-width: 1024px) {
+    .last-message {
+      margin-top: 2px;
+      padding-right: 5px;
+    }
+
+    .unread-icon-container {
+      margin-right: 15px;
+    }
+
     p {
       font-size: 14px;
     }

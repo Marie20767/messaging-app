@@ -181,13 +181,41 @@ button {
   border-radius: 8px;
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 768px) {
+  button {
+    font-size: 15px;
+    padding: 6px 12px;
+  }
+
   h2 {
-    font-size: 26px;
+    font-size: 23px;
   }
 
   h3 {
     font-size: 17px;
+  }
+
+  .add-friend-icon {
+    font-size: 18px;
+  }
+
+  .x-icon {
+    font-size: 23px;
+  }
+
+  .small-black-title {
+    font-size: 14px;
+  }
+
+  .message-icon {
+    height: 76px;
+  }
+  
+}
+
+@media screen and (min-width: 1024px) {
+  h2 {
+    font-size: 26px;
   }
 
   p {
@@ -199,24 +227,11 @@ button {
   }
   
   .message-icon {
-    height: 100px;
+    height: 90px;
   }
 
   .small-black-title {
     font-size: 15px;
-  }
-
-  .x-icon {
-    font-size: 23px;
-  }
-
-  .add-friend-icon {
-    font-size: 18px;
-  }
-
-  button {
-    font-size: 15px;
-    padding: 6px 12px;
   }
 
   button:hover {

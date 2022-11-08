@@ -118,10 +118,14 @@ const StyledLoginScreenContainer = styled.div`
     margin-top: 10px;
   }
 
+  @media screen and (min-width: 768px) {
+    width: 70%;
+    border-radius: 12px;
+  }
+
   @media screen and (min-width: 1024px) {
     height: 45%;
     width: 40%;
-    border-radius: 12px;
     padding: 20px 0;
 
     button {

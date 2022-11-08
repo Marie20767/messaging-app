@@ -41,7 +41,7 @@ const StyledMessageInputFieldContainer = styled.div`
     margin-left: 15px;
   }
 
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     textarea {
       padding: 15px 15px 0px 15px;
       line-height: 15px;

@@ -40,10 +40,14 @@ const StyledWelcomeScreenCard = styled.div`
     margin-right: 15px;
   }
 
+  @media screen and (min-width: 768px) {
+    border-radius: 12px;
+    width: 70%;
+  }
+
   @media screen and (min-width: 1024px) {
     height: 40%;
     width: 40%;
-    border-radius: 12px;
     padding: 30px 0;
 
     h3 {

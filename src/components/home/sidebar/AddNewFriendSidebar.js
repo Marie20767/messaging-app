@@ -10,7 +10,7 @@ const AddNewFriendSidebar = ({
   setActiveNewFriendId,
   setAddNewFriendError,
 }) => {
-  const noSearchResultText = `User called '${searchInput}' doesn't exist or is already in your friend list. Ask your friend to register first if applicable.`;
+  const noSearchResultText = `User called '${searchInput}' doesn't exist or is already in your friend list.`;
 
   const onClickSelectFriend = (friendId) => {
     setActiveNewFriendId(friendId);
