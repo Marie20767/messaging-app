@@ -10,6 +10,15 @@ import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
 import { getSocket } from '../../utils/socket-io';
 import { APIDomain } from '../../constants/constants';
 
+// TODO: STYLING
+// Iphone:
+// 1. Don't zoom in when selecting an input
+// 2. Scroll to bottom doesn't work
+// 3. Header for ActiveMessages and MessageInputField are not fixed at the top and bottom
+
+// General
+// 1. User should not be able to scroll down beyond borders of app
+
 const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [friends, setFriends] = useState(null);
   const [nonFriendUsers, setNonFriendUsers] = useState([]);

@@ -111,7 +111,7 @@ const Sidebar = ({
   };
 
   const onClickStartNewFriendSearch = () => {
-    getNonFriendUsers(friends);
+    getNonFriendUsers(nonFriendUsers);
     setClickedAddNewFriend(true);
   };
 

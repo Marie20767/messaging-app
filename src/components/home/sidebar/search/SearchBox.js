@@ -39,13 +39,9 @@ const StyledSearchBoxContainer = styled.div`
   width: 93%;
   background-color: #e7e6e6;
   border-radius: 7px;
-  margin: 10px 0 5px 15px;
+  margin: 5px 0 5px 15px;
   display: flex;
   align-items: center;
-
-  @media screen and (min-width: 1024px) {
-    width: 372px;
-  }
 
   input {
     background-color: transparent;
@@ -66,7 +62,8 @@ const StyledSearchBoxContainer = styled.div`
   }
 
   @media screen and (min-width: 1024px) {
-    font-size: 14px;
+    width: 372px;
+    margin: 10px 0 5px 15px;
 
     .magnifying-glass {
       width: 12px;
