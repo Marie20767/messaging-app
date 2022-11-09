@@ -12,14 +12,13 @@ import { APIDomain } from '../../constants/constants';
 
 // TODO: STYLING
 // Iphone:
-// 1. Don't zoom in when selecting an input
-// 2. Scroll to bottom doesn't work
-// 3. Header for ActiveMessages and MessageInputField are not fixed at the top and bottom
+// 1. Header for ActiveMessages and MessageInputField are not fixed at the top and bottom
 
 // General
 // 1. User should not be able to scroll down beyond borders of app
+// 2. Scrolling doesn't work on sidebar for the last contact
 
-const HomeScreen = ({ currentUser, setCurrentUser }) => {
+const HomeScreen = ({ currentUser, setCurrentUser, showSettingsPopUpMenu, setShowSettingsPopUpMenu }) => {
   const [friends, setFriends] = useState(null);
   const [nonFriendUsers, setNonFriendUsers] = useState([]);
   const [activeFriendId, setActiveFriendId] = useState(null);
@@ -251,6 +250,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         setAddNewFriendError={setAddNewFriendError}
         showActiveMessagesMobile={showActiveMessagesMobile}
         setShowActiveMessagesMobile={setShowActiveMessagesMobile}
+        showSettingsPopUpMenu={showSettingsPopUpMenu}
+        setShowSettingsPopUpMenu={setShowSettingsPopUpMenu}
         getNonFriendUsers={getNonFriendUsers} />
 
       <ActiveMessagesThread

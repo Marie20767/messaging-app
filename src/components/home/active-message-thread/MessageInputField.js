@@ -3,22 +3,34 @@ import SendMessageIcon from '../../../images/send-message-icon.png';
 
 const MessageInputField = ({ newMessageInput, setNewMessageInput, onClickSendMessage }) => {
   return (
-    <StyledMessageInputFieldContainer>
-      <textarea
-        type="text"
-        placeholder="Message..."
-        value={newMessageInput}
-        onChange={(e) => setNewMessageInput(e.target.value)} />
-      <img src={SendMessageIcon} alt="Send Message Icon" onClick={() => onClickSendMessage(newMessageInput)} className="clickable" />
-    </StyledMessageInputFieldContainer>
+    <div>
+      <StyledMessageInputFieldPlaceholder />
+      <StyledMessageInputFieldContainer>
+        <textarea
+          type="text"
+          placeholder="Message..."
+          value={newMessageInput}
+          onChange={(e) => setNewMessageInput(e.target.value)} />
+        <img src={SendMessageIcon} alt="Send Message Icon" onClick={() => onClickSendMessage(newMessageInput)} className="clickable" />
+      </StyledMessageInputFieldContainer>
+    </div>
   );
 };
 
+const StyledMessageInputFieldPlaceholder = styled.div`
+  height: 80px;
+  background-color: #f8f7f7;
+`;
+
 const StyledMessageInputFieldContainer = styled.div`
-  margin-top: 30px;
-  padding: 0px 25px 15px 15px;
+  padding: 15px 25px 15px 15px;
   display: flex;
   align-items: center;
+  position: fixed;
+  z-index: 8;
+  bottom: 0;
+  background-color: #f8f7f7;
+  width: 100%;
 
   textarea {
     display: flex;
@@ -42,13 +54,22 @@ const StyledMessageInputFieldContainer = styled.div`
   }
 
   @media screen and (min-width: 768px) {
+    margin-top: 70px;
+
     textarea {
       padding: 15px 15px 0px 15px;
       line-height: 15px;
+      width: 55%;
     }
 
     img {
       height: 22px;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    textarea {
+      width: 60%;
     }
   }
 `;

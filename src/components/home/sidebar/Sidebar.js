@@ -35,9 +35,10 @@ const Sidebar = ({
   setAddNewFriendError,
   showActiveMessagesMobile,
   setShowActiveMessagesMobile,
+  showSettingsPopUpMenu,
+  setShowSettingsPopUpMenu,
   getNonFriendUsers,
 }) => {
-  const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [friendSearchResult, setFriendSearchResult] = useState([]);
   const [friendUserNameExists, setFriendUserNameExists] = useState(false);
@@ -117,59 +118,62 @@ const Sidebar = ({
 
   return (
     <StyledSidebarContainer className={!showActiveMessagesMobile ? 'shown' : 'hidden'}>
-      <StyledHomePageHeader>
-        <StyledCurrentUserContainer>
-          <StyledAvatarAndNameContainer>
-            <img
-              src={currentUserAvatar.animal}
-              alt="your user avatar"
-              className="current-user-avatar clickable"
-              onClick={() => setShowSettingsPopUpMenu(!showSettingsPopUpMenu)} />
-            <h3 className="current-user-name">Hi {name}!</h3>
-          </StyledAvatarAndNameContainer>
-          <div>
-            <FontAwesomeIcon
-              icon={faUserPlus}
-              fontSize="18px"
-              className="clickable add-friend-icon"
-              onClick={onClickStartNewFriendSearch} />
-          </div>
-        </StyledCurrentUserContainer>
+      <div>
+        <StyledHeaderPlaceholder />
+        <StyledHomePageHeader>
+          <StyledCurrentUserContainer>
+            <StyledAvatarAndNameContainer>
+              <img
+                src={currentUserAvatar.animal}
+                alt="your user avatar"
+                className="current-user-avatar clickable"
+                onClick={() => setShowSettingsPopUpMenu(!showSettingsPopUpMenu)} />
+              <h3 className="current-user-name">Hi {name}!</h3>
+            </StyledAvatarAndNameContainer>
+            <div>
+              <FontAwesomeIcon
+                icon={faUserPlus}
+                fontSize="18px"
+                className="clickable add-friend-icon"
+                onClick={onClickStartNewFriendSearch} />
+            </div>
+          </StyledCurrentUserContainer>
 
-        {showSettingsPopUpMenu
-          ? (
-            <SettingsPopUpMenu
-              setShowSettingsPopUpMenu={setShowSettingsPopUpMenu}
-              setCurrentUser={setCurrentUser}
-              setShowAvatarOverlay={setShowAvatarOverlay} />
-          )
-          : null
+          {showSettingsPopUpMenu
+            ? (
+              <SettingsPopUpMenu
+                setShowSettingsPopUpMenu={setShowSettingsPopUpMenu}
+                setCurrentUser={setCurrentUser}
+                setShowAvatarOverlay={setShowAvatarOverlay} />
+            )
+            : null
         }
 
-        {clickedAddNewFriend
-          ? (
-            <>
-              <StyledBackHomeContainer className="clickable" onClick={onClickCloseNewFriendSearch}>
-                <FontAwesomeIcon icon={faChevronLeft} className="back-home-icon" />
-                <h3 className="small-black-title">Back home</h3>
-              </StyledBackHomeContainer>
+          {clickedAddNewFriend
+            ? (
+              <>
+                <StyledBackHomeContainer className="clickable" onClick={onClickCloseNewFriendSearch}>
+                  <FontAwesomeIcon icon={faChevronLeft} className="back-home-icon" />
+                  <h3 className="small-black-title">Back home</h3>
+                </StyledBackHomeContainer>
+                <SearchBox
+                  autoFocus
+                  searchInput={addNewFriendSearchInput}
+                  placeholder="Search by username"
+                  onClickCloseSearch={onClickCloseNewFriendSearch}
+                  onChange={onChangeSearchInputAddNewFriendGetSearchResults} />
+              </>
+            )
+            : (
               <SearchBox
-                autoFocus
-                searchInput={addNewFriendSearchInput}
-                placeholder="Search by username"
-                onClickCloseSearch={onClickCloseNewFriendSearch}
-                onChange={onChangeSearchInputAddNewFriendGetSearchResults} />
-            </>
-          )
-          : (
-            <SearchBox
-              searchInput={searchInput}
-              placeholder="Search"
-              onClickCloseSearch={onClickCloseSearch}
-              onChange={onChangeSearchInputGetSearchResults} />
-          )
+                searchInput={searchInput}
+                placeholder="Search"
+                onClickCloseSearch={onClickCloseSearch}
+                onChange={onChangeSearchInputGetSearchResults} />
+            )
         }
-      </StyledHomePageHeader>
+        </StyledHomePageHeader>
+      </div>
 
       <StyledFriendsContainer>
         {!clickedAddNewFriend
@@ -226,7 +230,7 @@ const StyledSidebarContainer = styled.div`
   }
 
   @media screen and (min-width: 768px) {
-    width: 290px; 
+    width: 290px;
     border-right: 1px solid #e9e9e9;
     &.shown {
       display: block;
@@ -242,32 +246,37 @@ const StyledSidebarContainer = styled.div`
   }
 
   @media screen and (min-width: 1024px) {
-    width: 400px; 
+    width: 400px;
   }
 `;
 
 const StyledHomePageHeader = styled.div`
   display: flex;
   flex-direction: column;
-  height: 18vh;
+  position: fixed;
+  z-index: 8;
+  top: 0;
+  background-color: #f8f7f7;
+  width: 100%;
 
   @media screen and (min-width: 768px) {
-    height: 14vh;
-    width: 290px; 
+    width: 289px;
   }
 
-  @media screen and (min-width: 1024px) {
-    width: 400px; 
-    height: 16vh;
+  @media screen and (min-width: 1024px) { 
+    width: 399px;
   }
+`;
 
+const StyledHeaderPlaceholder = styled.div`
+  height: 120px;
 `;
 
 const StyledCurrentUserContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-right: 30px;
+  margin-right: 20px;
   margin-top: 8px;
 
   @media screen and (min-width: 1024px) {
@@ -300,7 +309,7 @@ const StyledBackHomeContainer = styled.div`
 const StyledAvatarAndNameContainer = styled.div`
   display: flex;
   align-items: center;
-
+  width: 100%;
   padding: 20px 0px 15px 15px;
 
   img {
@@ -319,9 +328,6 @@ const StyledAvatarAndNameContainer = styled.div`
 `;
 
 const StyledFriendsContainer = styled.div`
-  overflow-y: scroll;
-  height: 82vh;
-
   .search-result-title {
     margin: 30px 0 20px 15px;
   }
@@ -330,13 +336,7 @@ const StyledFriendsContainer = styled.div`
     margin-left: 15px;
   }
 
-  @media screen and (min-width: 768px) {
-    height: 86vh;
-  }
-
   @media screen and (min-width: 1024px) {
-    height: 84vh;
-
     .no-search-result {
       margin: 10px 0 20px 15px;
     }

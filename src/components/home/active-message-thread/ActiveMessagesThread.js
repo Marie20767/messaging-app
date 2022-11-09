@@ -76,19 +76,19 @@ const StyledMessagesThreadContainer = styled.div`
   }
 
   &.shown {
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    width: 100%;
+    flex: 1;
     justify-content: space-between;
   }
 
   @media screen and (min-width: 768px) { 
     &.hidden {
+      overflow-y: scroll;
       display: flex;
       flex-direction: column;
-      height: 100vh;
-      width: 100%;
+      flex: 1;
       justify-content: space-between;
     }
   }

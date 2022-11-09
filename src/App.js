@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Routes, Route } from 'react-router-dom';
 import WelcomeScreen from './components/auth/WelcomeScreen';
@@ -12,6 +12,23 @@ import RedirectLoggedInUser from './components/auth/RedirectLoggedInUser';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
+
+  useEffect(() => {
+    const closePopUp = (e) => {
+      // console.log(e.path);
+      // console.log(e.path[0]);
+      // console.log(e.path[0].className);
+      // console.log(e.path[0].className.includes('current-user-avatar'));
+      if (!e.path[0].className.includes('current-user-avatar')) {
+        setShowSettingsPopUpMenu(false);
+      }
+    };
+
+    document.body.addEventListener('click', closePopUp);
+
+    return () => document.body.removeEventListener('click', closePopUp);
+  }, [setShowSettingsPopUpMenu]);
 
   return (
     <StyledAppContainer>
@@ -47,7 +64,9 @@ const App = () => {
             <AutoLogin setCurrentUser={setCurrentUser}>
               <HomeScreen
                 currentUser={currentUser}
-                setCurrentUser={setCurrentUser} />
+                setCurrentUser={setCurrentUser}
+                showSettingsPopUpMenu={showSettingsPopUpMenu}
+                setShowSettingsPopUpMenu={setShowSettingsPopUpMenu} />
             </AutoLogin>
           )} />
         <Route exact path="*" element={<PageNotFound />} />
@@ -59,6 +78,7 @@ const App = () => {
 const StyledAppContainer = styled.div`
   height: 100%;
   width: 100%;
+  background-color: #f8f7f7;
 `;
 
 export default App;

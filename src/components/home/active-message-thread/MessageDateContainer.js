@@ -32,7 +32,11 @@ const StyledDateContainer = styled.div`
   justify-content: center;
 
   h4 {
-    margin-top: 40px;
+    margin-top: 10px;
+  }
+
+  @media screen and (min-width: 768px) {
+    margin-top: 10px;
   }
 `;
 

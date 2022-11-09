@@ -69,7 +69,7 @@ const StyledFriendContainer = styled.div`
   align-items: center;
   height: 70px;
   padding: 0px 10px;
-  margin: 0 5px 0 15px;
+  margin-left: 5px;
   cursor: pointer;
 
   img {
@@ -80,6 +80,7 @@ const StyledFriendContainer = styled.div`
   @media screen and (min-width: 768px) {
     padding: 15px 10px 20px 10px;
     height: 80px;
+    margin: 0 5px 0 15px;
 
     &.active-friend {
     background-color: #9dbbf8a9;
@@ -97,6 +98,7 @@ const StyledFriendContainer = styled.div`
 
   @media screen and (min-width: 1024px) {
     height: 90px;
+    margin: 0 10px 0 15px;
 
     img {
       height: 50px
