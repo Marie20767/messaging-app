@@ -302,10 +302,10 @@ const HomeScreen = ({ currentUser, setCurrentUser, showSettingsPopUpMenu, setSho
 };
 
 const StyledHomeScreenContainer = styled.div`
-  min-height: 100%;
+  height: 100%;
   display: flex;
   width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
 `;
 
 export default HomeScreen;

@@ -83,7 +83,9 @@ const StyledMessagesThreadContainer = styled.div`
     justify-content: space-between;
   }
 
-  @media screen and (min-width: 768px) { 
+  @media screen and (min-width: 768px) {
+    overflow: hidden;
+
     &.hidden {
       overflow-y: scroll;
       display: flex;

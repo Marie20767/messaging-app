@@ -230,14 +230,17 @@ const StyledSidebarContainer = styled.div`
   }
 
   @media screen and (min-width: 768px) {
+    overflow: hidden;
+    height: 100%;
     width: 290px;
     border-right: 1px solid #e9e9e9;
+
     &.shown {
-      display: block;
+      display: flex;
     }
 
     &.hidden {
-      display: block;
+      display: flex;
     }
 
     h3 {
@@ -334,6 +337,11 @@ const StyledFriendsContainer = styled.div`
 
   .no-search-result {
     margin-left: 15px;
+  }
+
+  @media screen and (min-width: 768px) {
+    overflow-y: scroll;
+    margin-top: 120px;
   }
 
   @media screen and (min-width: 1024px) {
