@@ -144,8 +144,8 @@ const StyledRegistrationCardContainer = styled.div`
 
 
   @media screen and (min-width: 1024px) {
-    height: 80%;
-    width: 40%;
+    height: 650px;
+    width: 550px;
 
     h3 {
       font-size: 18px;

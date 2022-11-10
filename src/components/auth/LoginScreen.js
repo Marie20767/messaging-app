@@ -124,8 +124,8 @@ const StyledLoginScreenContainer = styled.div`
   }
 
   @media screen and (min-width: 1024px) {
-    height: 45%;
-    width: 40%;
+    height: 400px;
+    width: 600px;
     padding: 20px 0;
 
     button {

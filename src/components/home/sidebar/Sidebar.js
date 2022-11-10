@@ -95,6 +95,7 @@ const Sidebar = ({
   };
 
   const onClickCloseSearch = () => {
+    console.log('>>> onClickCloseSearch: ');
     setSearchInput('');
     setFriendSearchResult([]);
     setIsSearching(false);
@@ -217,7 +218,10 @@ const StyledSidebarContainer = styled.div`
   width: 100%;
 
   &.shown {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: scroll;
   }
 
   &.hidden {
@@ -237,6 +241,8 @@ const StyledSidebarContainer = styled.div`
 
     &.shown {
       display: flex;
+      flex: initial;
+      flex-direction: row;
     }
 
     &.hidden {
@@ -331,6 +337,8 @@ const StyledAvatarAndNameContainer = styled.div`
 `;
 
 const StyledFriendsContainer = styled.div`
+  overflow-y: scroll;
+
   .search-result-title {
     margin: 30px 0 20px 15px;
   }
@@ -342,9 +350,10 @@ const StyledFriendsContainer = styled.div`
   @media screen and (min-width: 768px) {
     overflow-y: scroll;
     margin-top: 120px;
+    width: 100%;
   }
 
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     .no-search-result {
       margin: 10px 0 20px 15px;
     }

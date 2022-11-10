@@ -115,6 +115,14 @@ button {
   font-size: 20px;
 }
 
+.x-icon-search {
+  display: flex;
+  margin-right: 10px;
+  justify-self: flex-end;
+  cursor: pointer;
+  font-size: 16px;
+}
+
 .full-screen-error-container {
   background-color: #9dbbf8;
   height: 100%;
@@ -206,6 +214,10 @@ button {
     font-size: 23px;
   }
 
+  .x-icon-search {
+    font-size: 18px;
+  }
+
   .small-black-title {
     font-size: 14px;
   }
@@ -236,6 +248,11 @@ button {
   .small-black-title {
     font-size: 15px;
   }
+
+  .x-icon-search {
+    font-size: 20px;
+  }
+  
 
   button:hover {
     background-color: #9dbbf8;

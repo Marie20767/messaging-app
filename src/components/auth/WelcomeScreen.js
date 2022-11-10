@@ -46,8 +46,8 @@ const StyledWelcomeScreenCard = styled.div`
   }
 
   @media screen and (min-width: 1024px) {
-    height: 40%;
-    width: 40%;
+    height: 350px;
+    width: 550px;
     padding: 30px 0;
 
     h3 {

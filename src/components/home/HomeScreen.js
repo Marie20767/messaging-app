@@ -10,14 +10,6 @@ import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
 import { getSocket } from '../../utils/socket-io';
 import { APIDomain } from '../../constants/constants';
 
-// TODO: STYLING
-// Iphone:
-// 1. Header for ActiveMessages and MessageInputField are not fixed at the top and bottom
-
-// General
-// 1. User should not be able to scroll down beyond borders of app
-// 2. Scrolling doesn't work on sidebar for the last contact
-
 const HomeScreen = ({ currentUser, setCurrentUser, showSettingsPopUpMenu, setShowSettingsPopUpMenu }) => {
   const [friends, setFriends] = useState(null);
   const [nonFriendUsers, setNonFriendUsers] = useState([]);
@@ -46,6 +38,10 @@ const HomeScreen = ({ currentUser, setCurrentUser, showSettingsPopUpMenu, setSho
   useEffect(() => {
     if (!isSearching || activeSearchResultIds?.friendId) {
       scrollToBottom();
+    } else if (activeSearchResultIds?.messageId) {
+      const messageElement = document.getElementsByClassName(`message-container-${activeSearchResultIds.messageId}`)[0];
+
+      messageElement.scrollIntoView({ behavior: 'smooth' });
     }
   }, [activeFriendId, isSearching, activeSearchResultIds, messageThreads]);
 

@@ -37,8 +37,8 @@ const StyledOverlayContent = styled.div`
   }
 
   @media screen and (min-width: 1024px) {
-    height: 55%;
-    width: 38%;
+    height: 400px;
+    width: 600px;
     border-radius: 15px;
   }
 `;

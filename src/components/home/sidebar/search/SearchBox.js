@@ -27,7 +27,7 @@ const SearchBox = ({
         value={searchInput}
         onChange={onChange} />
       {searchInput !== ''
-        ? <FontAwesomeIcon icon={faXmark} className="light-icon x-icon" onClick={onClickCloseSearch} />
+        ? <FontAwesomeIcon icon={faXmark} className="light-icon x-icon-search" onClick={onClickCloseSearch} />
         : null
       }
     </StyledSearchBoxContainer>
@@ -61,14 +61,17 @@ const StyledSearchBoxContainer = styled.div`
     margin: 0px 10px;
   }
 
-  @media screen and (min-width: 1024px) {
-    width: 372px;
-    margin: 10px 0 5px 15px;
 
+  @media screen and (min-width: 768px) {
     .magnifying-glass {
       width: 12px;
       height: 12px;
     }
+  }
+
+  @media screen and (min-width: 1024px) {
+    width: 372px;
+    margin: 10px 0 5px 15px;
   }
 
  

@@ -9,6 +9,7 @@ import LoginScreen from './components/auth/LoginScreen';
 import AutoLogin from './components/auth/AutoLogin';
 import PageNotFound from './components/PageNotFound';
 import RedirectLoggedInUser from './components/auth/RedirectLoggedInUser';
+import { sanitiseString } from './utils/utils';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -16,11 +17,8 @@ const App = () => {
 
   useEffect(() => {
     const closePopUp = (e) => {
-      // console.log(e.path);
-      // console.log(e.path[0]);
-      // console.log(e.path[0].className);
-      // console.log(e.path[0].className.includes('current-user-avatar'));
-      if (!e.path[0].className.includes('current-user-avatar')) {
+      // SVG classnames give back an object so you need to sanitise the string first before using .includes
+      if (e?.path[0]?.className && !sanitiseString(e.path[0].className).includes('current-user-avatar')) {
         setShowSettingsPopUpMenu(false);
       }
     };

@@ -129,9 +129,7 @@ const StyledButtonsContainer = styled.div`
   }
 
   @media screen and (min-width: 1024px) {
-    padding: 0 220px;
-
-   
+    padding: 0 180px;
   }
 
  

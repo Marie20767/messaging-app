@@ -67,7 +67,7 @@ const FriendDisplay = ({
 const StyledFriendContainer = styled.div`
   display: flex;
   align-items: center;
-  height: 70px;
+  min-height: 70px;
   padding: 0px 10px;
   margin-left: 5px;
   cursor: pointer;
@@ -98,7 +98,6 @@ const StyledFriendContainer = styled.div`
 
   @media screen and (min-width: 1024px) {
     height: 90px;
-    margin: 0 10px 0 15px;
 
     img {
       height: 50px

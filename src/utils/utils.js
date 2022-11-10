@@ -214,6 +214,10 @@ const getSortedMessages = (messages) => {
   return messages?.sort((messageA, messageB) => new Date(messageA.timestamp) - new Date(messageB.timestamp)) || [];
 };
 
+const sanitiseString = (string) => {
+  return typeof string === 'string' ? string : '';
+};
+
 export {
   getFormattedMessageThreads,
   getFriendMessageSearchResult,
@@ -229,4 +233,5 @@ export {
   onUpdateReadMessages,
   findFriendMessageThread,
   getSortedMessages,
+  sanitiseString,
 };

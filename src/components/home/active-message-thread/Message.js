@@ -8,7 +8,8 @@ import MessageTimestamp from './MessageTimestamp';
 const Message = ({ message, isFirstMessage, date, currentUserId, messagesEndRef }) => {
   const [timestampKey, setTimestampKey] = useState(`${Date.now()}`);
   const [isMoreThanAnHourAgo, setIsMoreThanAnHourAgo] = useState(checkIfMessageSentMoreThanOneHourAgo(message));
-  const messageClassName = message.sending_user_id === currentUserId ? 'from-current-user' : 'from-friend';
+  const messageFromClassName = message.sending_user_id === currentUserId ? 'from-current-user' : 'from-friend';
+  const messageIdClassName = `message-container-${message.id}`;
 
   // Every minute, the messages should re-render to update the timestamp if message is less than 1 hour ago
   const intervalIdRef = useInterval(() => {
@@ -29,7 +30,7 @@ const Message = ({ message, isFirstMessage, date, currentUserId, messagesEndRef 
         ? <MessageDateContainer date={date} message={message} />
         : null
       }
-      <StyledMessageContainer className={messageClassName} key={message.id}>
+      <StyledMessageContainer className={`${messageFromClassName} ${messageIdClassName}`} key={message.id}>
         <p className="text">{message.text}</p>
         <MessageTimestamp key={timestampKey} isMoreThanAnHourAgo={isMoreThanAnHourAgo} message={message} />
         <div ref={messagesEndRef} />
