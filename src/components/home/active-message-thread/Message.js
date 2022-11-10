@@ -68,6 +68,10 @@ const StyledMessageContainer = styled.div`
     align-self: flex-end;
     background-color: #9dbbf8a9;
   }
+
+  &.scrolled-to-message {
+    background-color: rgba(0, 0, 0, 0.2)
+  }
 `;
 
 export default Message;

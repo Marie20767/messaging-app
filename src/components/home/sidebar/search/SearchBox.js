@@ -63,6 +63,8 @@ const StyledSearchBoxContainer = styled.div`
 
 
   @media screen and (min-width: 768px) {
+    width: 257px;
+    
     .magnifying-glass {
       width: 12px;
       height: 12px;
@@ -70,10 +72,8 @@ const StyledSearchBoxContainer = styled.div`
   }
 
   @media screen and (min-width: 1024px) {
-    width: 372px;
-    margin: 10px 0 5px 15px;
+    width: 367px;
   }
-
  
 `;
 

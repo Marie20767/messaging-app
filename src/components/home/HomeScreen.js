@@ -42,6 +42,11 @@ const HomeScreen = ({ currentUser, setCurrentUser, showSettingsPopUpMenu, setSho
       const messageElement = document.getElementsByClassName(`message-container-${activeSearchResultIds.messageId}`)[0];
 
       messageElement.scrollIntoView({ behavior: 'smooth' });
+      messageElement.classList.add('scrolled-to-message');
+
+      setTimeout(() => {
+        messageElement.classList.remove('scrolled-to-message');
+      }, 3000);
     }
   }, [activeFriendId, isSearching, activeSearchResultIds, messageThreads]);
 
