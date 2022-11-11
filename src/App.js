@@ -18,7 +18,7 @@ const App = () => {
   useEffect(() => {
     const closePopUp = (e) => {
       // SVG classnames give back an object so you need to sanitise the string first before using .includes
-      if (e?.path[0]?.className && !sanitiseString(e.path[0].className).includes('current-user-avatar')) {
+      if (e?.composedPath()[0]?.className && !sanitiseString(e.composedPath()[0].className).includes('current-user-avatar')) {
         setShowSettingsPopUpMenu(false);
       }
     };

@@ -5,7 +5,7 @@ import moment from 'moment';
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
 import ActiveMessagesThread from './active-message-thread/ActiveMessagesThread';
 import Sidebar from './sidebar/Sidebar';
-import { getFormattedMessageThreads, getFriendsSortedByMessageSent, onUpdateReadMessages } from '../../utils/utils';
+import { getFormattedMessageThreads, getFriendsSortedByMessageSent, onUpdateReadMessages, sanitiseArray } from '../../utils/utils';
 import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
 import { getSocket } from '../../utils/socket-io';
 import { APIDomain } from '../../constants/constants';
@@ -81,19 +81,15 @@ const HomeScreen = ({ currentUser, setCurrentUser, showSettingsPopUpMenu, setSho
       const response = await fetch(`http://${APIDomain}/users`);
       const userResults = await response.json();
 
-      if (!friendResults.length) {
-        setNonFriendUsers(userResults);
-      } else {
-        const usersMinusFriends = userResults.filter((userResult) => {
-          if (userResult.id === id || friendResults.some((friendResult) => friendResult.id === userResult.id)) {
-            return false;
-          }
+      const usersMinusFriends = userResults.filter((userResult) => {
+        if (userResult.id === id || sanitiseArray(friendResults).some((friendResult) => friendResult.id === userResult.id)) {
+          return false;
+        }
 
-          return true;
-        });
+        return true;
+      });
 
-        setNonFriendUsers(usersMinusFriends);
-      }
+      setNonFriendUsers(usersMinusFriends);
     } catch (e) {
       console.log('>>> getNonFriends error: ', e);
       setServerError('Something went wrong with your request');

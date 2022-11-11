@@ -218,6 +218,10 @@ const sanitiseString = (string) => {
   return typeof string === 'string' ? string : '';
 };
 
+const sanitiseArray = (value) => {
+  return Array.isArray(value) ? value : [];
+};
+
 export {
   getFormattedMessageThreads,
   getFriendMessageSearchResult,
@@ -234,4 +238,5 @@ export {
   findFriendMessageThread,
   getSortedMessages,
   sanitiseString,
+  sanitiseArray,
 };

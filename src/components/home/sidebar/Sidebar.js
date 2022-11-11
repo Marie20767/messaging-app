@@ -95,7 +95,6 @@ const Sidebar = ({
   };
 
   const onClickCloseSearch = () => {
-    console.log('>>> onClickCloseSearch: ');
     setSearchInput('');
     setFriendSearchResult([]);
     setIsSearching(false);
@@ -113,7 +112,7 @@ const Sidebar = ({
   };
 
   const onClickStartNewFriendSearch = () => {
-    getNonFriendUsers(nonFriendUsers);
+    getNonFriendUsers(friends);
     setClickedAddNewFriend(true);
   };
 

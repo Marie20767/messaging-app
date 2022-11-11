@@ -50,15 +50,14 @@ const FriendDisplay = ({
           {isMessageSearchResult
             ? <p>{getHighlightedSearchResult()}</p>
             : <p className="last-message">{formattedLastMessage}</p>
-        }
+          }
         </div>
-        <div className="unread-icon-container">
+        <div className="unread-message-icon-container">
           {hasUnreadMessage
-            ? <FontAwesomeIcon icon={faPaw} fontSize="14px" className="unread-icon" />
+            ? <FontAwesomeIcon icon={faPaw} fontSize="14px" className="unread-message-icon" />
             : null
           }
         </div>
-
       </StyledNameAndMessageContainer>
     </StyledFriendContainer>
   );
@@ -81,6 +80,7 @@ const StyledFriendContainer = styled.div`
     padding: 15px 10px 20px 10px;
     height: 80px;
     margin: 0 5px 0 15px;
+    width: 257px;
 
     &.active-friend {
     background-color: #9dbbf8a9;
@@ -98,6 +98,7 @@ const StyledFriendContainer = styled.div`
 
   @media screen and (min-width: 1024px) {
     height: 90px;
+    width: 367px;
 
     img {
       height: 50px
@@ -117,13 +118,13 @@ const StyledNameAndMessageContainer = styled.div`
   width: 100%;
   justify-content: space-between;
 
-  .unread-icon-container {
+  .unread-message-icon-container {
     display: flex;
     align-items: center;
     margin-right: 15px;
   }
 
-  .unread-icon {
+  .unread-message-icon {
     color: #ea738dff;
   }
 
@@ -139,10 +140,10 @@ const StyledNameAndMessageContainer = styled.div`
 
   @media screen and (min-width: 768px) {
     .last-message {
-      padding-right: 0;
+      padding-right: 5px;
     }
 
-    .unread-icon-container {
+    .unread-message-icon-container {
       margin-right: 0;
     }
   }
@@ -150,10 +151,10 @@ const StyledNameAndMessageContainer = styled.div`
   @media screen and (min-width: 1024px) {
     .last-message {
       margin-top: 2px;
-      padding-right: 5px;
+      padding-right: 16px;
     }
 
-    .unread-icon-container {
+    .unread-message-icon-container {
       margin-right: 15px;
     }
 
