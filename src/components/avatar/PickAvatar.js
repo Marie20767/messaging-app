@@ -20,10 +20,6 @@ const PickAvatar = ({
           : <h3>Choose your avatar</h3>
         }
         <div className="avatar-title-line" />
-        {serverError
-          ? <p className="error-message server-error">{serverError}</p>
-          : null
-        }
       </StyledAvatarTitleContainer>
       <AvatarDisplay
         avatars1={avatars1}
@@ -32,6 +28,10 @@ const PickAvatar = ({
         tabIndex={tabIndex}
         onKeyDown={onKeyDown}
         onClickSelectAvatar={onClickSelectAvatar} />
+      {serverError
+        ? <p className="error-message server-error">{serverError}</p>
+        : null
+        }
     </>
   );
 };
@@ -44,7 +44,7 @@ const StyledAvatarTitleContainer = styled.div`
   h3 {
     margin: 2px 0;
     color: #8a8a8b;
-    ${(props) => props.$isAvatarMissing ? 'color: #dd3a08' : ''}
+    ${(props) => props.$isAvatarMissing ? 'color: #b52f06f0' : ''}
   }
 
   h2 {
@@ -71,7 +71,7 @@ const StyledAvatarTitleContainer = styled.div`
     height: 1px;
     width: 100%;
     background-color: #8a8a8b;
-    ${(props) => props.$isAvatarMissing ? 'background-color: #dd3a08' : ''}
+    ${(props) => props.$isAvatarMissing ? 'background-color: #b52f06f0' : ''}
   }
 `;
 

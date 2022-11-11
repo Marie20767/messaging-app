@@ -28,14 +28,14 @@ const Form = ({
           }
         </StyledErrorMessageContainer>
         <StyledErrorMessageContainer>
-          {loginError !== null
+          {loginError
             ? <p className="error-message">{loginError}</p>
             : null
           }
         </StyledErrorMessageContainer>
         <StyledErrorMessageContainer>
           {isPasswordTooShort
-            ? <p className="error-message">Password needs min. 8 characters</p>
+            ? <p className="error-message">Password needs at least 8 characters</p>
             : null
           }
         </StyledErrorMessageContainer>

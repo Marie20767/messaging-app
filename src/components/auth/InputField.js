@@ -33,11 +33,11 @@ const StyledInputContainer = styled.div`
   }
 
   & {
-    ${(props) => props.$isMissing ? 'border-bottom: 1px solid #dd3a08' : 'border-bottom: 1px solid #8a8a8b'}
+    ${(props) => props.$isMissing ? 'border-bottom: 1px solid #b52f06f0' : 'border-bottom: 1px solid #8a8a8b'}
   }
 
   input::placeholder {
-    ${(props) => props.$isMissing ? 'color: #dd3a08' : ''}
+    ${(props) => props.$isMissing ? 'color: #b52f06f0' : ''}
   }
 `;
 

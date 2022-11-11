@@ -71,8 +71,12 @@ button {
 }
 
 .error-message {
-  color: #dd3a08;
+  color: #b52f06f0;
+  background-color: #fee3e2;
+  border-radius: 4px;
+  padding: 3px 9px;
   margin-top: 0;
+  font-size: 9px;
 }
 
 .server-error {
@@ -130,20 +134,18 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  align-content: center;
+  text-align: center;
   flex-direction: column;
 }
 
 .full-screen-error-container h2 {
   margin-bottom: 20px;
+  font-size: 17px;
 }
 
 .full-screen-error-container button {
   min-width: 80px;
-}
-
-.full-screen-error-container button:hover {
-  background-color: #ea738dff;
-  transform: scale(1.1);
 }
 
 .small-black-title {
@@ -225,6 +227,16 @@ button {
   .message-icon {
     height: 76px;
   }
+
+  .error-message {
+    font-size: 11px;
+    margin-top: 2px;
+    padding: 4px 9px;
+  }
+
+  .full-screen-error-container h2 {
+    font-size: 23px;
+  }
   
 }
 
@@ -252,13 +264,23 @@ button {
   .x-icon-search {
     font-size: 20px;
   }
-  
 
+  .error-message {
+    font-size: 13px;
+    padding: 7px 12px;
+    margin-top: 0;
+  }
+  
   button:hover {
     background-color: #9dbbf8;
   }
 
   footer {
     font-size: 15px;
+  }
+
+  .full-screen-error-container button:hover {
+    background-color: #ea738dff;
+    transform: scale(1.1);
   }
 }

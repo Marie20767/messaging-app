@@ -140,6 +140,7 @@ const StyledRegistrationCardContainer = styled.div`
   @media screen and (min-width: 768px) {
     width: 60%;
     border-radius: 12px;
+    height: 690px;
   }
 
 
