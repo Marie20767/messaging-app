@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { APIDomain } from '../constants/constants';
+import { getSocket } from './socket-io';
 
 const getFormattedMessageThreads = (messageThreadsResults, currentUserId) => {
   const threadsToMessagesMap = messageThreadsResults.reduce((acc, currentMessage) => {
@@ -222,6 +223,55 @@ const sanitiseArray = (value) => {
   return Array.isArray(value) ? value : [];
 };
 
+const handleActiveMessagesScroll = (isSearching, activeSearchResultIds, scrollToBottom) => {
+  if (!isSearching || activeSearchResultIds?.friendId) {
+    scrollToBottom();
+  } else if (activeSearchResultIds?.messageId) {
+    const messageElement = document.getElementsByClassName(`message-container-${activeSearchResultIds.messageId}`)[0];
+
+    messageElement.scrollIntoView({ behavior: 'smooth' });
+    messageElement.classList.add('scrolled-to-message');
+
+    setTimeout(() => {
+      messageElement.classList.remove('scrolled-to-message');
+    }, 3000);
+  }
+};
+
+const onHandleSendingNewMessage = (
+  activeMessagesThread,
+  currentUserId,
+  activeFriendId,
+  newMessageInput,
+  messageThreads,
+  setMessageThreads,
+  setNewMessageInput,
+) => {
+  const newMessageInfo = {
+    thread_id: activeMessagesThread.threadId,
+    sending_user_id: currentUserId,
+    recipient_user_id: activeFriendId,
+    text: newMessageInput,
+    timestamp: moment().toISOString(),
+    read: false,
+  };
+
+  getSocket().emit('send_message', { ...newMessageInfo });
+
+  activeMessagesThread.messages.push({ id: moment().toISOString(), ...newMessageInfo });
+
+  const updatedMessages = messageThreads.map((messageThread) => {
+    if (messageThread.friendParticipantId === activeFriendId) {
+      return activeMessagesThread;
+    }
+
+    return messageThread;
+  });
+
+  setMessageThreads(updatedMessages);
+  setNewMessageInput('');
+};
+
 export {
   getFormattedMessageThreads,
   getFriendMessageSearchResult,
@@ -239,4 +289,6 @@ export {
   getSortedMessages,
   sanitiseString,
   sanitiseArray,
+  handleActiveMessagesScroll,
+  onHandleSendingNewMessage,
 };

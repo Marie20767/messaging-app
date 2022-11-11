@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 import SendMessageIcon from '../../../images/send-message-icon.png';
 
-const MessageInputField = ({ newMessageInput, setNewMessageInput, onClickSendMessage }) => {
+const MessageInputField = ({ newMessageInput, setNewMessageInput, onKeyDown, onClickSendMessage }) => {
   return (
     <div>
       <StyledMessageInputFieldPlaceholder />
       <StyledMessageInputFieldContainer>
         <textarea
           type="text"
+          onKeyDown={onKeyDown}
           placeholder="Message..."
           value={newMessageInput}
           onChange={(e) => setNewMessageInput(e.target.value)} />

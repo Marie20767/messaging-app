@@ -5,7 +5,7 @@ import moment from 'moment';
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
 import ActiveMessagesThread from './active-message-thread/ActiveMessagesThread';
 import Sidebar from './sidebar/Sidebar';
-import { getFormattedMessageThreads, getFriendsSortedByMessageSent, onUpdateReadMessages, sanitiseArray } from '../../utils/utils';
+import { getFormattedMessageThreads, getFriendsSortedByMessageSent, handleActiveMessagesScroll, onUpdateReadMessages, sanitiseArray } from '../../utils/utils';
 import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
 import { getSocket } from '../../utils/socket-io';
 import { APIDomain } from '../../constants/constants';
@@ -36,18 +36,7 @@ const HomeScreen = ({ currentUser, setCurrentUser, showSettingsPopUpMenu, setSho
   };
 
   useEffect(() => {
-    if (!isSearching || activeSearchResultIds?.friendId) {
-      scrollToBottom();
-    } else if (activeSearchResultIds?.messageId) {
-      const messageElement = document.getElementsByClassName(`message-container-${activeSearchResultIds.messageId}`)[0];
-
-      messageElement.scrollIntoView({ behavior: 'smooth' });
-      messageElement.classList.add('scrolled-to-message');
-
-      setTimeout(() => {
-        messageElement.classList.remove('scrolled-to-message');
-      }, 3000);
-    }
+    handleActiveMessagesScroll(isSearching, activeSearchResultIds, scrollToBottom);
   }, [activeFriendId, isSearching, activeSearchResultIds, messageThreads]);
 
   const onClickSaveNewAvatar = async (newAvatarId) => {

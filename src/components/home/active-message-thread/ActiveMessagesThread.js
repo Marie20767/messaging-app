@@ -1,10 +1,9 @@
 import styled from 'styled-components';
-import moment from 'moment';
 import MessagesHeader from './ActiveMessagesHeader';
 import Messages from './Messages';
 import MessageInputField from './MessageInputField';
 import EmptyMessagesThread from './EmptyMessagesThread';
-import { getSocket } from '../../../utils/socket-io';
+import { onHandleSendingNewMessage } from '../../../utils/utils';
 
 const ActiveMessagesThread = ({
   friends,
@@ -26,29 +25,14 @@ const ActiveMessagesThread = ({
 
   const onClickSendMessage = () => {
     if (newMessageInput !== '') {
-      const newMessageInfo = {
-        thread_id: activeMessagesThread.threadId,
-        sending_user_id: currentUserId,
-        recipient_user_id: activeFriendId,
-        text: newMessageInput,
-        timestamp: moment().toISOString(),
-        read: false,
-      };
+      onHandleSendingNewMessage(activeMessagesThread, currentUserId, activeFriendId, newMessageInput, messageThreads, setMessageThreads, setNewMessageInput);
+    }
+  };
 
-      getSocket().emit('send_message', { ...newMessageInfo });
-
-      activeMessagesThread.messages.push({ id: moment().toISOString(), ...newMessageInfo });
-
-      const updatedMessages = messageThreads.map((messageThread) => {
-        if (messageThread.friendParticipantId === activeFriendId) {
-          return activeMessagesThread;
-        }
-
-        return messageThread;
-      });
-
-      setMessageThreads(updatedMessages);
-      setNewMessageInput('');
+  const onEnterSendMessage = (e) => {
+    if (e.keyCode === 13 && !e.shiftKey && newMessageInput !== '') {
+      onHandleSendingNewMessage(activeMessagesThread, currentUserId, activeFriendId, newMessageInput, messageThreads, setMessageThreads, setNewMessageInput);
+      e.preventDefault();
     }
   };
 
@@ -65,7 +49,8 @@ const ActiveMessagesThread = ({
       <MessageInputField
         onClickSendMessage={onClickSendMessage}
         setNewMessageInput={setNewMessageInput}
-        newMessageInput={newMessageInput} />
+        newMessageInput={newMessageInput}
+        onKeyDown={onEnterSendMessage} />
     </StyledMessagesThreadContainer>
   );
 };
