@@ -5,12 +5,12 @@ import moment from 'moment';
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
 import ActiveMessagesThread from './active-message-thread/ActiveMessagesThread';
 import Sidebar from './sidebar/Sidebar';
-import { getFormattedMessageThreads, getFriendsSortedByMessageSent, handleActiveMessagesScroll, onUpdateReadMessages, sanitiseArray } from '../../utils/utils';
+import { getFormattedMessageThreads, getFriendsSortedByMessageSent, handleActiveMessagesScroll, onUpdateReadMessages, sanitiseArray, sanitiseString } from '../../utils/utils';
 import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
 import { getSocket } from '../../utils/socket-io';
 import { APIDomain } from '../../constants/constants';
 
-const HomeScreen = ({ currentUser, setCurrentUser, showSettingsPopUpMenu, setShowSettingsPopUpMenu }) => {
+const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [friends, setFriends] = useState(null);
   const [nonFriendUsers, setNonFriendUsers] = useState([]);
   const [activeFriendId, setActiveFriendId] = useState(null);
@@ -27,6 +27,7 @@ const HomeScreen = ({ currentUser, setCurrentUser, showSettingsPopUpMenu, setSho
   const [activeSearchResultIds, setActiveSearchResultIds] = useState(null);
   const [newMessageInput, setNewMessageInput] = useState('');
   const [showActiveMessagesMobile, setShowActiveMessagesMobile] = useState(false);
+  const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
 
   const { id, avatar_id } = currentUser;
   const messagesEndRef = useRef(null);
@@ -139,12 +140,15 @@ const HomeScreen = ({ currentUser, setCurrentUser, showSettingsPopUpMenu, setSho
   }, []);
 
   useEffect(() => {
-    const onReceiveMessage = (data) => {
+    const onReceiveMessage = async (data) => {
       const updatedMessageThreads = messageThreads.map((messageThread) => {
         if (messageThread.friendParticipantId === data.sending_user_id) {
+          debugger;
           messageThread.messages.push({
-            id: moment().toISOString(),
             ...data,
+            id: moment().toISOString(),
+            // if friend we received message from is activeFriend then all messages should be read on front end
+            read: messageThread.friendParticipantId === activeFriendId,
           });
         }
 
@@ -152,6 +156,20 @@ const HomeScreen = ({ currentUser, setCurrentUser, showSettingsPopUpMenu, setSho
       });
 
       setMessageThreads(updatedMessageThreads);
+
+      if (data.sending_user_id === activeFriendId) {
+        try {
+          await fetch(`http://${APIDomain}/update_message_read`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              thread_id: data.threadId,
+            }),
+          });
+        } catch (e) {
+          console.log('>>> setActiveFriendMessageToRead! ', e);
+        }
+      }
     };
 
     // Listen to receive message event to check when you've received a new message
@@ -162,7 +180,7 @@ const HomeScreen = ({ currentUser, setCurrentUser, showSettingsPopUpMenu, setSho
       // the onReceiveMessage function always has the latest messageThreads
       getSocket().off('receive_message', onReceiveMessage);
     };
-  }, [messageThreads]);
+  }, [messageThreads, activeFriendId]);
 
   useEffect(() => {
     const onReceivedAddedAsNewFriend = (data) => {
@@ -189,6 +207,19 @@ const HomeScreen = ({ currentUser, setCurrentUser, showSettingsPopUpMenu, setSho
       getSocket().off('received_add_new_friend', onReceivedAddedAsNewFriend);
     };
   }, [friends, messageThreads]);
+
+  useEffect(() => {
+    const closePopUp = (e) => {
+      // SVG classnames give back an object so you need to sanitise the string first before using .includes
+      if (e?.composedPath()[0]?.className && !sanitiseString(e.composedPath()[0].className).includes('current-user-avatar')) {
+        setShowSettingsPopUpMenu(false);
+      }
+    };
+
+    document.body.addEventListener('click', closePopUp);
+
+    return () => document.body.removeEventListener('click', closePopUp);
+  }, [setShowSettingsPopUpMenu]);
 
   if (serverError && !showAvatarOverlay) {
     return (

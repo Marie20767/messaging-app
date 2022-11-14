@@ -232,6 +232,7 @@ button {
     font-size: 11px;
     margin-top: 2px;
     padding: 4px 9px;
+    border-radius: 6px;
   }
 
   .full-screen-error-container h2 {

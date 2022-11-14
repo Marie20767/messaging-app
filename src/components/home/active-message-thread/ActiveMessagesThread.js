@@ -1,9 +1,10 @@
 import styled from 'styled-components';
+import moment from 'moment';
 import MessagesHeader from './ActiveMessagesHeader';
 import Messages from './Messages';
 import MessageInputField from './MessageInputField';
 import EmptyMessagesThread from './EmptyMessagesThread';
-import { onHandleSendingNewMessage } from '../../../utils/utils';
+import { getSocket } from '../../../utils/socket-io';
 
 const ActiveMessagesThread = ({
   friends,
@@ -23,15 +24,45 @@ const ActiveMessagesThread = ({
 
   const activeMessagesThread = messageThreads.find((thread) => thread.friendParticipantId === activeFriendId);
 
+  const onHandleSendingNewMessage = () => {
+    const newMessageInfo = {
+      thread_id: activeMessagesThread.threadId,
+      sending_user_id: currentUserId,
+      recipient_user_id: activeFriendId,
+      text: newMessageInput,
+      timestamp: moment().toISOString(),
+      read: false,
+    };
+
+    getSocket().emit('send_message', { ...newMessageInfo });
+
+    activeMessagesThread.messages.push({
+      ...newMessageInfo,
+      id: moment().toISOString(),
+      read: true,
+    });
+
+    const updatedMessages = messageThreads.map((messageThread) => {
+      if (messageThread.friendParticipantId === activeFriendId) {
+        return activeMessagesThread;
+      }
+
+      return messageThread;
+    });
+
+    setMessageThreads(updatedMessages);
+    setNewMessageInput('');
+  };
+
   const onClickSendMessage = () => {
     if (newMessageInput !== '') {
-      onHandleSendingNewMessage(activeMessagesThread, currentUserId, activeFriendId, newMessageInput, messageThreads, setMessageThreads, setNewMessageInput);
+      onHandleSendingNewMessage();
     }
   };
 
   const onEnterSendMessage = (e) => {
     if (e.keyCode === 13 && !e.shiftKey && newMessageInput !== '') {
-      onHandleSendingNewMessage(activeMessagesThread, currentUserId, activeFriendId, newMessageInput, messageThreads, setMessageThreads, setNewMessageInput);
+      onHandleSendingNewMessage();
       e.preventDefault();
     }
   };

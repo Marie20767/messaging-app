@@ -49,11 +49,10 @@ const FriendsList = ({
 
         const lastFriendMessage = sortedFriendMessageThread[sortedFriendMessageThread.length - 1];
 
-        const friendHasUnreadMessages = sanitisedFriendMessageThread?.messages?.some((message) => message.read === false);
-        const friendIsNotActiveFriend = sanitisedFriendMessageThread?.friendParticipantId !== activeFriendId;
-        const lastMessageIsNotSentByCurrentUser = lastFriendMessage?.sending_user_id !== id;
+        const userHasUnreadMessagesFromFriend = sanitisedFriendMessageThread?.messages?.some((message) => message.read === false);
+        const lastMessageIsSentByCurrentUser = lastFriendMessage?.sending_user_id === id;
 
-        if (friendHasUnreadMessages && friendIsNotActiveFriend && lastMessageIsNotSentByCurrentUser) {
+        if (userHasUnreadMessagesFromFriend && !lastMessageIsSentByCurrentUser) {
           hasUnreadMessage = true;
         }
 

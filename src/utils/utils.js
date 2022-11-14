@@ -1,6 +1,5 @@
 import moment from 'moment';
 import { APIDomain } from '../constants/constants';
-import { getSocket } from './socket-io';
 
 const getFormattedMessageThreads = (messageThreadsResults, currentUserId) => {
   const threadsToMessagesMap = messageThreadsResults.reduce((acc, currentMessage) => {
@@ -238,40 +237,6 @@ const handleActiveMessagesScroll = (isSearching, activeSearchResultIds, scrollTo
   }
 };
 
-const onHandleSendingNewMessage = (
-  activeMessagesThread,
-  currentUserId,
-  activeFriendId,
-  newMessageInput,
-  messageThreads,
-  setMessageThreads,
-  setNewMessageInput,
-) => {
-  const newMessageInfo = {
-    thread_id: activeMessagesThread.threadId,
-    sending_user_id: currentUserId,
-    recipient_user_id: activeFriendId,
-    text: newMessageInput,
-    timestamp: moment().toISOString(),
-    read: false,
-  };
-
-  getSocket().emit('send_message', { ...newMessageInfo });
-
-  activeMessagesThread.messages.push({ id: moment().toISOString(), ...newMessageInfo });
-
-  const updatedMessages = messageThreads.map((messageThread) => {
-    if (messageThread.friendParticipantId === activeFriendId) {
-      return activeMessagesThread;
-    }
-
-    return messageThread;
-  });
-
-  setMessageThreads(updatedMessages);
-  setNewMessageInput('');
-};
-
 export {
   getFormattedMessageThreads,
   getFriendMessageSearchResult,
@@ -290,5 +255,4 @@ export {
   sanitiseString,
   sanitiseArray,
   handleActiveMessagesScroll,
-  onHandleSendingNewMessage,
 };
