@@ -184,23 +184,28 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
   useEffect(() => {
     const onReceivedAddedAsNewFriend = (data) => {
+      if (!friends.some((friend) => friend.id === data.current_user.id)) {
       // Someone else has just added me as a friend
       // So now I want to put them in my friends list and add their empty messageThread
-      const updatedFriends = [
-        data.current_user,
-        ...friends,
-      ];
+        const updatedFriends = [
+          data.current_user,
+          ...friends,
+        ];
 
-      setFriends(updatedFriends);
-      setMessageThreads([
-        ...messageThreads,
-        data.message_thread,
-      ]);
+        console.log('>>> data: ', data);
 
-      if (!activeFriendId) {
-        setActiveFriendId(data.current_user.id);
+        setFriends(updatedFriends);
+        setMessageThreads([
+          ...messageThreads,
+          data.message_thread,
+        ]);
+
+        if (!activeFriendId) {
+          setActiveFriendId(data.current_user.id);
+        }
       }
     };
+
     getSocket().on('received_add_new_friend', onReceivedAddedAsNewFriend);
 
     return () => {
