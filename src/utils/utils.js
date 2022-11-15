@@ -1,6 +1,14 @@
 import moment from 'moment';
 import { APIDomain } from '../constants/constants';
 
+const sanitiseString = (string) => {
+  return typeof string === 'string' ? string : '';
+};
+
+const sanitiseArray = (value) => {
+  return Array.isArray(value) ? [...value] : [];
+};
+
 const getFormattedMessageThreads = (messageThreadsResults, currentUserId) => {
   const threadsToMessagesMap = messageThreadsResults.reduce((acc, currentMessage) => {
     return {
@@ -143,7 +151,9 @@ const getFriendsSortedByMessageSent = (messageThreads, friends) => {
     return messageThread.messages[lastIndex];
   });
 
-  friends.sort((friendA, friendB) => {
+  const sanitisedFriends = sanitiseArray(friends);
+
+  sanitisedFriends.sort((friendA, friendB) => {
     const friendALastMessage = lastMessages.find((message) => message.sending_user_id === friendA.id || message.recipient_user_id === friendA.id);
     const friendBLastMessage = lastMessages.find((message) => message.sending_user_id === friendB.id || message.recipient_user_id === friendB.id);
 
@@ -162,7 +172,7 @@ const getFriendsSortedByMessageSent = (messageThreads, friends) => {
     return -1;
   });
 
-  return friends;
+  return sanitisedFriends;
 };
 
 const findFriendMessageThread = (id, messageThreads) => {
@@ -211,15 +221,7 @@ const onUpdateReadMessages = async (friendId, messageThreads, setMessageThreads)
 };
 
 const getSortedMessages = (messages) => {
-  return messages?.sort((messageA, messageB) => new Date(messageA.timestamp) - new Date(messageB.timestamp)) || [];
-};
-
-const sanitiseString = (string) => {
-  return typeof string === 'string' ? string : '';
-};
-
-const sanitiseArray = (value) => {
-  return Array.isArray(value) ? value : [];
+  return sanitiseArray(messages).sort((messageA, messageB) => new Date(messageA.timestamp) - new Date(messageB.timestamp)) || [];
 };
 
 const handleActiveMessagesScroll = (isSearching, activeSearchResultIds, scrollToBottom) => {

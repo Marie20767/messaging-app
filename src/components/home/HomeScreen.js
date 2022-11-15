@@ -23,7 +23,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [clickedAddNewFriend, setClickedAddNewFriend] = useState(false);
   const [newFriendUserNameExists, setNewFriendUserNameExists] = useState(false);
   const [addNewFriendError, setAddNewFriendError] = useState(null);
-  const [serverError, setServerError] = useState('');
+  const [serverError, setServerError] = useState(null);
   const [activeSearchResultIds, setActiveSearchResultIds] = useState(null);
   const [newMessageInput, setNewMessageInput] = useState('');
   const [showActiveMessagesMobile, setShowActiveMessagesMobile] = useState(false);
@@ -132,6 +132,11 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     }
   };
 
+  const onClickRetry = () => {
+    setServerError(null);
+    getFriendsAndMessagesData();
+  };
+
   useEffect(() => {
     // Make the current user join the add_friend_room so that when they add a friend, the friend
     // doesn't have to refresh the page and get the data from the back end to see the new chat
@@ -143,7 +148,6 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     const onReceiveMessage = async (data) => {
       const updatedMessageThreads = messageThreads.map((messageThread) => {
         if (messageThread.friendParticipantId === data.sending_user_id) {
-          debugger;
           messageThread.messages.push({
             ...data,
             id: moment().toISOString(),
@@ -192,8 +196,6 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
           ...friends,
         ];
 
-        console.log('>>> data: ', data);
-
         setFriends(updatedFriends);
         setMessageThreads([
           ...messageThreads,
@@ -230,7 +232,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     return (
       <div className="full-screen-error-container">
         <h2>{serverError}</h2>
-        <button type="button" onClick={getFriendsAndMessagesData}>Retry</button>
+        <button type="button" onClick={onClickRetry}>Retry</button>
       </div>
     );
   }

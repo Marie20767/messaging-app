@@ -55,9 +55,14 @@ const StyledNameAndAvatarContainer = styled.div`
   }
 
   .back-to-sidebar-icon {
-    margin-right: 20px;
-    margin-left: 10px;
+    padding: 10px 20px 10px 10px;
     font-size: 20px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
 
   @media screen and (min-width: 768px) { 
