@@ -8,22 +8,9 @@ const FriendsList = ({
   friends,
   activeFriendId,
   setActiveFriendId,
-  setShowActiveMessagesMobile,
+  updateIsActiveMessageThreadShowing,
 }) => {
   const { id } = currentUser;
-
-  const getLastFriendMessage = (userId) => {
-    const friendMessageThread = findFriendMessageThread(userId, messageThreads);
-
-    if (!friendMessageThread) {
-      return null;
-    }
-
-    const friendMessages = friendMessageThread.messages || [];
-    const lastFriendMessage = friendMessages[friendMessages.length - 1];
-
-    return lastFriendMessage?.text;
-  };
 
   const sortedFriends = getFriendsSortedByMessageSent(messageThreads, friends);
 
@@ -33,13 +20,12 @@ const FriendsList = ({
       onUpdateReadMessages(friendId, messageThreads, setMessageThreads);
     }
 
-    setShowActiveMessagesMobile(true);
+    updateIsActiveMessageThreadShowing(true);
   };
 
   return (
     <>
       {sortedFriends.map((user) => {
-        const lastFriendMessageText = getLastFriendMessage(user.id);
         const highlighted = user.id === activeFriendId;
         let hasUnreadMessage = false;
 
@@ -48,6 +34,8 @@ const FriendsList = ({
         const sortedFriendMessageThread = getSortedMessages(sanitisedFriendMessageThread.messages);
 
         const lastFriendMessage = sortedFriendMessageThread[sortedFriendMessageThread.length - 1];
+
+        const lastFriendMessageText = lastFriendMessage.text;
 
         const userHasUnreadMessagesFromFriend = sanitisedFriendMessageThread?.messages?.some((message) => message.read === false);
         const lastMessageIsSentByCurrentUser = lastFriendMessage?.sending_user_id === id;

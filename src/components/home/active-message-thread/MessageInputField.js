@@ -37,7 +37,7 @@ const StyledMessageInputFieldPlaceholder = styled.div`
 `;
 
 const StyledMessageInputFieldContainer = styled.div`
-  padding: 5px 25px 15px 15px;
+  padding: 0px 25px 15px 15px;
   display: flex;
   align-items: center;
   position: fixed;

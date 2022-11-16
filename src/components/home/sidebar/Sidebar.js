@@ -33,8 +33,8 @@ const Sidebar = ({
   setCurrentUser,
   setShowAvatarOverlay,
   setAddNewFriendError,
-  showActiveMessagesMobile,
-  setShowActiveMessagesMobile,
+  isActiveMessageThreadShowing,
+  updateIsActiveMessageThreadShowing,
   showSettingsPopUpMenu,
   setShowSettingsPopUpMenu,
   getNonFriendUsers,
@@ -117,7 +117,7 @@ const Sidebar = ({
   };
 
   return (
-    <StyledSidebarContainer className={!showActiveMessagesMobile ? 'shown' : 'hidden'}>
+    <StyledSidebarContainer className={!isActiveMessageThreadShowing ? 'shown' : 'hidden'}>
       <div>
         <StyledHeaderPlaceholder />
         <StyledHomePageHeader>
@@ -193,8 +193,8 @@ const Sidebar = ({
               setActiveSearchResultIds={setActiveSearchResultIds}
               messageThreads={messageThreads}
               setMessageThreads={setMessageThreads}
-              showActiveMessagesMobile={showActiveMessagesMobile}
-              setShowActiveMessagesMobile={setShowActiveMessagesMobile} />
+              isActiveMessageThreadShowing={isActiveMessageThreadShowing}
+              updateIsActiveMessageThreadShowing={updateIsActiveMessageThreadShowing} />
           )
           : (
             <AddNewFriendSidebar
@@ -285,7 +285,7 @@ const StyledCurrentUserContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-right: 20px;
-  margin-top: 8px;
+  margin-top: 5px;
 
   @media screen and (min-width: 1024px) {
     margin-top: 0px;

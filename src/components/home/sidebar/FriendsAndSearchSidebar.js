@@ -16,8 +16,8 @@ const FriendsAndSearchSidebar = ({
   setActiveSearchResultIds,
   messageThreads,
   setMessageThreads,
-  showActiveMessagesMobile,
-  setShowActiveMessagesMobile,
+  isActiveMessageThreadShowing,
+  updateIsActiveMessageThreadShowing,
 }) => {
   if (isSearching) {
     return (
@@ -34,7 +34,7 @@ const FriendsAndSearchSidebar = ({
         setActiveFriendId={setActiveFriendId}
         activeSearchResultIds={activeSearchResultIds}
         setActiveSearchResultIds={setActiveSearchResultIds}
-        setShowActiveMessagesMobile={setShowActiveMessagesMobile} />
+        updateIsActiveMessageThreadShowing={updateIsActiveMessageThreadShowing} />
     );
   }
 
@@ -46,8 +46,8 @@ const FriendsAndSearchSidebar = ({
       setMessageThreads={setMessageThreads}
       activeFriendId={activeFriendId}
       setActiveFriendId={setActiveFriendId}
-      showActiveMessagesMobile={showActiveMessagesMobile}
-      setShowActiveMessagesMobile={setShowActiveMessagesMobile} />
+      isActiveMessageThreadShowing={isActiveMessageThreadShowing}
+      updateIsActiveMessageThreadShowing={updateIsActiveMessageThreadShowing} />
   );
 };
 

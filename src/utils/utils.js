@@ -144,11 +144,16 @@ const isYesterday = (momentDate) => {
   return momentDate.isSame(yesterday, 'd');
 };
 
+const getSortedMessages = (messages) => {
+  return sanitiseArray(messages).sort((messageA, messageB) => new Date(messageA.timestamp) - new Date(messageB.timestamp)) || [];
+};
+
 const getFriendsSortedByMessageSent = (messageThreads, friends) => {
   const lastMessages = messageThreads.map((messageThread) => {
-    const lastIndex = messageThread.messages.length - 1;
+    const sortedMessages = getSortedMessages(messageThread.messages);
+    const lastIndex = sortedMessages.length - 1;
 
-    return messageThread.messages[lastIndex];
+    return sortedMessages[lastIndex];
   });
 
   const sanitisedFriends = sanitiseArray(friends);
@@ -220,10 +225,6 @@ const onUpdateReadMessages = async (friendId, messageThreads, setMessageThreads)
   setMessageThreads(updatedMessageThreads);
 };
 
-const getSortedMessages = (messages) => {
-  return sanitiseArray(messages).sort((messageA, messageB) => new Date(messageA.timestamp) - new Date(messageB.timestamp)) || [];
-};
-
 const handleActiveMessagesScroll = (isSearching, activeSearchResultIds, scrollToBottom) => {
   if (!isSearching || activeSearchResultIds?.friendId) {
     scrollToBottom();
@@ -237,6 +238,10 @@ const handleActiveMessagesScroll = (isSearching, activeSearchResultIds, scrollTo
       messageElement.classList.remove('scrolled-to-message');
     }, 3000);
   }
+};
+
+const isLargeScreen = () => {
+  return window.innerWidth >= 768;
 };
 
 export {
@@ -257,4 +262,5 @@ export {
   sanitiseString,
   sanitiseArray,
   handleActiveMessagesScroll,
+  isLargeScreen,
 };

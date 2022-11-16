@@ -16,12 +16,12 @@ const SearchResults = ({
   currentUser,
   friends,
   setActiveFriendId,
-  setShowActiveMessagesMobile,
+  updateIsActiveMessageThreadShowing,
 }) => {
   const onClickSelectFriend = (friendId) => {
     setActiveSearchResultIds({ friendId });
     setActiveFriendId(friendId);
-    setShowActiveMessagesMobile(true);
+    updateIsActiveMessageThreadShowing(true);
 
     onUpdateReadMessages(friendId, messageThreads, setMessageThreads);
   };
@@ -53,7 +53,7 @@ const SearchResults = ({
         setActiveFriendId={setActiveFriendId}
         activeSearchResultIds={activeSearchResultIds}
         setActiveSearchResultIds={setActiveSearchResultIds}
-        setShowActiveMessagesMobile={setShowActiveMessagesMobile} />
+        updateIsActiveMessageThreadShowing={updateIsActiveMessageThreadShowing} />
     </>
   );
 };

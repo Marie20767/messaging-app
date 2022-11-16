@@ -15,8 +15,8 @@ const ActiveMessagesThread = ({
   newMessageInput,
   setNewMessageInput,
   setMessageThreads,
-  showActiveMessagesMobile,
-  setShowActiveMessagesMobile,
+  isActiveMessageThreadShowing,
+  updateIsActiveMessageThreadShowing,
 }) => {
   if (!messageThreads.length) {
     return <EmptyMessagesThread title1="No friends here yet..." title2="Don&apos;t be shy, add a friend first!" />;
@@ -68,11 +68,11 @@ const ActiveMessagesThread = ({
   };
 
   return (
-    <StyledMessagesThreadContainer className={showActiveMessagesMobile ? 'shown' : 'hidden'}>
+    <StyledMessagesThreadContainer className={isActiveMessageThreadShowing ? 'shown' : 'hidden'}>
       <MessagesHeader
         friends={friends}
         activeFriendId={activeFriendId}
-        setShowActiveMessagesMobile={setShowActiveMessagesMobile} />
+        updateIsActiveMessageThreadShowing={updateIsActiveMessageThreadShowing} />
       <Messages
         activeMessagesThread={activeMessagesThread}
         currentUserId={currentUserId}

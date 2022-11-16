@@ -5,7 +5,7 @@ import moment from 'moment';
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
 import ActiveMessagesThread from './active-message-thread/ActiveMessagesThread';
 import Sidebar from './sidebar/Sidebar';
-import { getFormattedMessageThreads, getFriendsSortedByMessageSent, handleActiveMessagesScroll, onUpdateReadMessages, sanitiseArray, sanitiseString } from '../../utils/utils';
+import { getFormattedMessageThreads, getFriendsSortedByMessageSent, handleActiveMessagesScroll, isLargeScreen, onUpdateReadMessages, sanitiseArray, sanitiseString } from '../../utils/utils';
 import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
 import { getSocket } from '../../utils/socket-io';
 import { APIDomain } from '../../constants/constants';
@@ -26,7 +26,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [serverError, setServerError] = useState(null);
   const [activeSearchResultIds, setActiveSearchResultIds] = useState(null);
   const [newMessageInput, setNewMessageInput] = useState('');
-  const [showActiveMessagesMobile, setShowActiveMessagesMobile] = useState(false);
+  const [isActiveMessageThreadShowing, setIsActiveMessageThreadShowing] = useState(isLargeScreen());
   const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
 
   const { id, avatar_id } = currentUser;
@@ -34,6 +34,14 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const updateIsActiveMessageThreadShowing = (value) => {
+    if (!isLargeScreen()) {
+      setIsActiveMessageThreadShowing(value);
+    } else {
+      setIsActiveMessageThreadShowing(true);
+    }
   };
 
   useEffect(() => {
@@ -106,7 +114,10 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         const sortedFriends = getFriendsSortedByMessageSent(formattedMessageThreads, friendResults);
 
         setActiveFriendId(sortedFriends[0].id);
-        onUpdateReadMessages(sortedFriends[0].id, formattedMessageThreads, setMessageThreads);
+
+        if (isActiveMessageThreadShowing) {
+          onUpdateReadMessages(sortedFriends[0].id, formattedMessageThreads, setMessageThreads);
+        }
       }
     } catch (e) {
       console.log('>>> getFriends error: ', e);
@@ -145,14 +156,24 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   }, []);
 
   useEffect(() => {
+    const getIsRead = (messageThread) => {
+      // If the messages aren't showing then set read to false,
+      // otherwise, only set it to true if it is a message from the active friend
+      if (!isActiveMessageThreadShowing) {
+        return false;
+      }
+
+      return messageThread.friendParticipantId === activeFriendId;
+    };
+
     const onReceiveMessage = async (data) => {
       const updatedMessageThreads = messageThreads.map((messageThread) => {
         if (messageThread.friendParticipantId === data.sending_user_id) {
           messageThread.messages.push({
             ...data,
             id: moment().toISOString(),
-            // if friend we received message from is activeFriend then all messages should be read on front end
-            read: messageThread.friendParticipantId === activeFriendId,
+            // if friend we received message from is activeFriend then all messages should be read on front end unless it's in mobile view
+            read: getIsRead(messageThread),
           });
         }
 
@@ -184,7 +205,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       // the onReceiveMessage function always has the latest messageThreads
       getSocket().off('receive_message', onReceiveMessage);
     };
-  }, [messageThreads, activeFriendId]);
+  }, [messageThreads, activeFriendId, isActiveMessageThreadShowing]);
 
   useEffect(() => {
     const onReceivedAddedAsNewFriend = (data) => {
@@ -272,8 +293,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         setCurrentUser={setCurrentUser}
         setShowAvatarOverlay={setShowAvatarOverlay}
         setAddNewFriendError={setAddNewFriendError}
-        showActiveMessagesMobile={showActiveMessagesMobile}
-        setShowActiveMessagesMobile={setShowActiveMessagesMobile}
+        isActiveMessageThreadShowing={isActiveMessageThreadShowing}
+        updateIsActiveMessageThreadShowing={updateIsActiveMessageThreadShowing}
         showSettingsPopUpMenu={showSettingsPopUpMenu}
         setShowSettingsPopUpMenu={setShowSettingsPopUpMenu}
         getNonFriendUsers={getNonFriendUsers} />
@@ -287,8 +308,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         newMessageInput={newMessageInput}
         setNewMessageInput={setNewMessageInput}
         setMessageThreads={setMessageThreads}
-        showActiveMessagesMobile={showActiveMessagesMobile}
-        setShowActiveMessagesMobile={setShowActiveMessagesMobile} />
+        isActiveMessageThreadShowing={isActiveMessageThreadShowing}
+        updateIsActiveMessageThreadShowing={updateIsActiveMessageThreadShowing} />
 
       {showAvatarOverlay
         ? (

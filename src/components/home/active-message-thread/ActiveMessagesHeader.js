@@ -3,7 +3,7 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { allAvatars } from '../../../constants/constants';
 
-const MessagesHeader = ({ friends, activeFriendId, setShowActiveMessagesMobile }) => {
+const MessagesHeader = ({ friends, activeFriendId, updateIsActiveMessageThreadShowing }) => {
   const activeFriend = friends.find((user) => user.id === activeFriendId);
 
   const activeFriendAvatar = allAvatars.find((avatar) => avatar.id === activeFriend?.avatar_id);
@@ -16,7 +16,7 @@ const MessagesHeader = ({ friends, activeFriendId, setShowActiveMessagesMobile }
           <FontAwesomeIcon
             icon={faChevronLeft}
             className="back-to-sidebar-icon"
-            onClick={() => setShowActiveMessagesMobile(false)} />
+            onClick={() => updateIsActiveMessageThreadShowing(false)} />
           <img src={activeFriendAvatar?.animal} alt="Avatar" />
           <h3 className="small-black-title">{activeFriend?.name}</h3>
         </StyledNameAndAvatarContainer>
