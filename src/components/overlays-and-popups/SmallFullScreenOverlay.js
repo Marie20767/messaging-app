@@ -32,8 +32,8 @@ const StyledOverlayContent = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
 
   @media screen and (min-width: 768px) {
-    height: 20%;
-    width: 45%;
+    height: 200px;
+    width: 400px;
     border-radius: 15px;
   }
 

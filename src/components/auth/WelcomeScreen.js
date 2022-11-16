@@ -30,14 +30,10 @@ const StyledWelcomeScreenCard = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  padding: 40px 60px;
+  padding: 40px 20px;
 
-  h3 {
+  h3, h2 {
     text-align: center;
-  }
-  
-  .login-button {
-    margin-right: 15px;
   }
 
   @media screen and (min-width: 768px) {
@@ -50,7 +46,7 @@ const StyledWelcomeScreenCard = styled.div`
     width: 550px;
     padding: 30px 0;
 
-    h3 {
+    h3, h2 {
       text-align: unset;
     }
   }
@@ -62,6 +58,10 @@ const StyledButtonContainer = styled.div`
   a {
     color: white;
     text-decoration: none;
+  }
+
+  .login-button {
+    margin-right: 15px;
   }
 `;
 

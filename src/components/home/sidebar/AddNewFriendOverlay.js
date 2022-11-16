@@ -102,7 +102,7 @@ const AddNewFriendOverlay = ({
         : null
       }
       <StyledButtonsContainer>
-        <button type="button" onClick={() => setActiveNewFriendId(null)}>No</button>
+        <button type="button" onClick={() => setActiveNewFriendId(null)} className="no-button">No</button>
         <button type="button" onClick={onClickAddNewFriend}>Yes</button>
       </StyledButtonsContainer>
     </SmallFullScreenOverlay>
@@ -111,28 +111,23 @@ const AddNewFriendOverlay = ({
 
 const StyledButtonsContainer = styled.div`
   display: flex;
-  width: 100%;
   justify-content: space-around;
-  padding: 0 80px;
 
   button {
     padding: 5px 10px; 
   }
 
+  .no-button {
+    margin-right: 20px;
+  }
+
   @media screen and (min-width: 768px) {
-    padding: 0 60px;
 
     button {
       padding-left: 15px;
       padding-right: 15px;
     }
   }
-
-  @media screen and (min-width: 1024px) {
-    padding: 0 180px;
-  }
-
- 
 `;
 
 export default AddNewFriendOverlay;

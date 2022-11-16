@@ -40,7 +40,7 @@ const StyledHeaderContainer = styled.div`
 
   @media screen and (min-width: 768px) {
     margin-top: 0px;
-    padding: 20px 25px 15px 15px;
+    padding: 20px 25px 9px 15px;
   }
 `;
 

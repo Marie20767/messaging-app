@@ -2,6 +2,12 @@ import styled from 'styled-components';
 import SendMessageIcon from '../../../images/send-message-icon.png';
 
 const MessageInputField = ({ newMessageInput, setNewMessageInput, onKeyDown, onClickSendMessage }) => {
+  // For mobile, don't hide keyboard after sending a message
+  const onTouchEndKeepDisplayingKeyboard = (e) => {
+    e.preventDefault();
+    onClickSendMessage(newMessageInput);
+  };
+
   return (
     <div>
       <StyledMessageInputFieldPlaceholder />
@@ -12,7 +18,14 @@ const MessageInputField = ({ newMessageInput, setNewMessageInput, onKeyDown, onC
           placeholder="Message..."
           value={newMessageInput}
           onChange={(e) => setNewMessageInput(e.target.value)} />
-        <img src={SendMessageIcon} alt="Send Message Icon" onClick={() => onClickSendMessage(newMessageInput)} className="clickable" />
+        <StyledSendMessageIconContainer
+          onClick={() => onClickSendMessage(newMessageInput)}
+          onTouchEnd={onTouchEndKeepDisplayingKeyboard}>
+          <img
+            src={SendMessageIcon}
+            alt="Send Message Icon"
+            className="clickable" />
+        </StyledSendMessageIconContainer>
       </StyledMessageInputFieldContainer>
     </div>
   );
@@ -24,7 +37,7 @@ const StyledMessageInputFieldPlaceholder = styled.div`
 `;
 
 const StyledMessageInputFieldContainer = styled.div`
-  padding: 15px 25px 15px 15px;
+  padding: 5px 25px 15px 15px;
   display: flex;
   align-items: center;
   position: fixed;
@@ -49,11 +62,6 @@ const StyledMessageInputFieldContainer = styled.div`
     color: #919190;
   }
 
-  img {
-    height: 18px;
-    margin-left: 15px;
-  }
-
   @media screen and (min-width: 768px) {
     margin-top: 70px;
 
@@ -62,15 +70,25 @@ const StyledMessageInputFieldContainer = styled.div`
       line-height: 15px;
       width: 55%;
     }
-
-    img {
-      height: 22px;
-    }
   }
 
   @media screen and (min-width: 1024px) {
     textarea {
       width: 60%;
+    }
+  }
+`;
+
+const StyledSendMessageIconContainer = styled.div`
+  padding: 20px 15px 15px 15px;
+
+  img {
+    height: 18px;
+  }
+
+  @media screen and (min-width: 768px) {
+    img {
+      height: 22px;
     }
   }
 `;

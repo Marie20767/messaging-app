@@ -144,6 +144,11 @@ button {
   font-size: 17px;
 }
 
+.full-screen-error-button {
+  font-size: 11px;
+  border-radius: 8px;
+}
+
 .full-screen-error-container button {
   min-width: 80px;
 }
@@ -233,6 +238,12 @@ button {
     margin-top: 2px;
     padding: 4px 9px;
     border-radius: 6px;
+  }
+
+  .full-screen-error-button {
+    font-size: 15px;
+    padding: 6px 12px;
+    border-radius: 10px;
   }
 
   .full-screen-error-container h2 {
