@@ -244,6 +244,16 @@ const isLargeScreen = () => {
   return window.innerWidth >= 768;
 };
 
+const getIsRead = (messageThread, isActiveMessageThreadShowing, activeFriendId) => {
+  // If the messages aren't showing then set read to false,
+  // otherwise, only set it to true if it is a message from the active friend
+  if (!isActiveMessageThreadShowing) {
+    return false;
+  }
+
+  return messageThread.friendParticipantId === activeFriendId;
+};
+
 export {
   getFormattedMessageThreads,
   getFriendMessageSearchResult,
@@ -263,4 +273,5 @@ export {
   sanitiseArray,
   handleActiveMessagesScroll,
   isLargeScreen,
+  getIsRead,
 };

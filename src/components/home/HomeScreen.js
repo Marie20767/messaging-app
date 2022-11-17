@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Loading } from 'react-loading-dot/lib';
 import moment from 'moment';
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
 import ActiveMessagesThread from './active-message-thread/ActiveMessagesThread';
 import Sidebar from './sidebar/Sidebar';
-import { getFormattedMessageThreads, getFriendsSortedByMessageSent, handleActiveMessagesScroll, isLargeScreen, onUpdateReadMessages, sanitiseArray, sanitiseString } from '../../utils/utils';
+import { getFormattedMessageThreads, getFriendsSortedByMessageSent, getIsRead, isLargeScreen, onUpdateReadMessages, sanitiseArray, sanitiseString } from '../../utils/utils';
 import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
 import { getSocket } from '../../utils/socket-io';
 import { APIDomain } from '../../constants/constants';
@@ -30,46 +30,12 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
 
   const { id, avatar_id } = currentUser;
-  const messagesEndRef = useRef(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   const updateIsActiveMessageThreadShowing = (value) => {
     if (!isLargeScreen()) {
       setIsActiveMessageThreadShowing(value);
     } else {
       setIsActiveMessageThreadShowing(true);
-    }
-  };
-
-  useEffect(() => {
-    handleActiveMessagesScroll(isSearching, activeSearchResultIds, scrollToBottom);
-  }, [activeFriendId, isSearching, activeSearchResultIds, messageThreads]);
-
-  const onClickSaveNewAvatar = async (newAvatarId) => {
-    try {
-      const response = await fetch(`http://${APIDomain}/users/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          avatar_id: newAvatarId,
-        }),
-      });
-      const result = await response.json();
-
-      if (!result.error) {
-        setCurrentUser({
-          ...currentUser,
-          avatar_id: newAvatarId,
-        });
-
-        setShowAvatarOverlay(false);
-      }
-    } catch (e) {
-      console.log('>>> onClickSaveNewAvatar error! ', e);
-      setServerError('Something went wrong with your request');
     }
   };
 
@@ -156,16 +122,6 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   }, []);
 
   useEffect(() => {
-    const getIsRead = (messageThread) => {
-      // If the messages aren't showing then set read to false,
-      // otherwise, only set it to true if it is a message from the active friend
-      if (!isActiveMessageThreadShowing) {
-        return false;
-      }
-
-      return messageThread.friendParticipantId === activeFriendId;
-    };
-
     const onReceiveMessage = async (data) => {
       const updatedMessageThreads = messageThreads.map((messageThread) => {
         if (messageThread.friendParticipantId === data.sending_user_id) {
@@ -173,7 +129,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
             ...data,
             id: moment().toISOString(),
             // if friend we received message from is activeFriend then all messages should be read on front end unless it's in mobile view
-            read: getIsRead(messageThread),
+            read: getIsRead(messageThread, isActiveMessageThreadShowing, activeFriendId),
           });
         }
 
@@ -206,35 +162,6 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       getSocket().off('receive_message', onReceiveMessage);
     };
   }, [messageThreads, activeFriendId, isActiveMessageThreadShowing]);
-
-  useEffect(() => {
-    const onReceivedAddedAsNewFriend = (data) => {
-      if (!friends.some((friend) => friend.id === data.current_user.id)) {
-      // Someone else has just added me as a friend
-      // So now I want to put them in my friends list and add their empty messageThread
-        const updatedFriends = [
-          data.current_user,
-          ...friends,
-        ];
-
-        setFriends(updatedFriends);
-        setMessageThreads([
-          ...messageThreads,
-          data.message_thread,
-        ]);
-
-        if (!activeFriendId) {
-          setActiveFriendId(data.current_user.id);
-        }
-      }
-    };
-
-    getSocket().on('received_add_new_friend', onReceivedAddedAsNewFriend);
-
-    return () => {
-      getSocket().off('received_add_new_friend', onReceivedAddedAsNewFriend);
-    };
-  }, [friends, messageThreads]);
 
   useEffect(() => {
     const closePopUp = (e) => {
@@ -270,6 +197,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     <StyledHomeScreenContainer>
       <Sidebar
         friends={friends}
+        setFriends={setFriends}
         currentUser={currentUser}
         nonFriendUsers={nonFriendUsers}
         activeFriendId={activeFriendId}
@@ -304,7 +232,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         currentUserId={id}
         activeFriendId={activeFriendId}
         messageThreads={messageThreads}
-        messagesEndRef={messagesEndRef}
+        isSearching={isSearching}
+        activeSearchResultIds={activeSearchResultIds}
         newMessageInput={newMessageInput}
         setNewMessageInput={setNewMessageInput}
         setMessageThreads={setMessageThreads}
@@ -316,8 +245,10 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
           <ChangeAvatarOverlay
             setShowAvatarOverlay={setShowAvatarOverlay}
             avatarId={avatar_id}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
             serverError={serverError}
-            onClickSaveNewAvatar={onClickSaveNewAvatar} />
+            setServerError={setServerError} />
         )
         : null
       }

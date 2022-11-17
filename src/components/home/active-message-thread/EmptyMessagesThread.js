@@ -6,7 +6,7 @@ const EmptyMessagesThread = ({ title1, title2 }) => {
     <StyledEmptyMessagesThreadContainer>
       <h3>{title1}</h3>
       <h3>{title2}</h3>
-      <img src={NewFriendWelcomeMessage} alt="Waving bear" />
+      <img src={NewFriendWelcomeMessage} alt="Sad Jellyfish" />
     </StyledEmptyMessagesThreadContainer>
   );
 };

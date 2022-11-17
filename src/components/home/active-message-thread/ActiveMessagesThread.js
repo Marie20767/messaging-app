@@ -1,17 +1,20 @@
 import styled from 'styled-components';
 import moment from 'moment';
+import { useEffect, useRef } from 'react';
 import MessagesHeader from './ActiveMessagesHeader';
 import Messages from './Messages';
 import MessageInputField from './MessageInputField';
 import EmptyMessagesThread from './EmptyMessagesThread';
 import { getSocket } from '../../../utils/socket-io';
+import { handleActiveMessagesScroll } from '../../../utils/utils';
 
 const ActiveMessagesThread = ({
   friends,
   currentUserId,
   activeFriendId,
   messageThreads,
-  messagesEndRef,
+  isSearching,
+  activeSearchResultIds,
   newMessageInput,
   setNewMessageInput,
   setMessageThreads,
@@ -21,6 +24,16 @@ const ActiveMessagesThread = ({
   if (!messageThreads.length) {
     return <EmptyMessagesThread title1="No friends here yet..." title2="Don&apos;t be shy, add a friend first!" />;
   }
+
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    handleActiveMessagesScroll(isSearching, activeSearchResultIds, scrollToBottom);
+  }, [activeFriendId, isSearching, activeSearchResultIds, messageThreads]);
 
   const activeMessagesThread = messageThreads.find((thread) => thread.friendParticipantId === activeFriendId);
 

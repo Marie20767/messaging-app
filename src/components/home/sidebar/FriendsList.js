@@ -35,7 +35,7 @@ const FriendsList = ({
 
         const lastFriendMessage = sortedFriendMessageThread[sortedFriendMessageThread.length - 1];
 
-        const lastFriendMessageText = lastFriendMessage.text;
+        const lastFriendMessageText = lastFriendMessage?.text;
 
         const userHasUnreadMessagesFromFriend = sanitisedFriendMessageThread?.messages?.some((message) => message.read === false);
         const lastMessageIsSentByCurrentUser = lastFriendMessage?.sending_user_id === id;

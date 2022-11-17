@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { allAvatars } from '../../../constants/constants';
@@ -7,9 +7,11 @@ import SettingsPopUpMenu from './SettingsPopUpMenu';
 import FriendsAndSearchSidebar from './FriendsAndSearchSidebar';
 import SearchBox from './search/SearchBox';
 import AddNewFriendSidebar from './AddNewFriendSidebar';
+import { getSocket } from '../../../utils/socket-io';
 
 const Sidebar = ({
   friends,
+  setFriends,
   currentUser,
   activeFriendId,
   activeNewFriendId,
@@ -46,6 +48,35 @@ const Sidebar = ({
   const [messageThreadsSearchResults, setMessageThreadSearchResults] = useState([]);
 
   const { name, avatar_id } = currentUser;
+
+  useEffect(() => {
+    const onReceivedAddedAsNewFriend = (data) => {
+      if (!friends.some((friend) => friend.id === data.current_user.id)) {
+      // Someone else has just added me as a friend
+      // So now I want to put them in my friends list and add their empty messageThread
+        const updatedFriends = [
+          data.current_user,
+          ...friends,
+        ];
+
+        setFriends(updatedFriends);
+        setMessageThreads([
+          ...messageThreads,
+          data.message_thread,
+        ]);
+
+        if (!activeFriendId) {
+          setActiveFriendId(data.current_user.id);
+        }
+      }
+    };
+
+    getSocket().on('received_add_new_friend', onReceivedAddedAsNewFriend);
+
+    return () => {
+      getSocket().off('received_add_new_friend', onReceivedAddedAsNewFriend);
+    };
+  }, [friends, messageThreads]);
 
   const currentUserAvatar = allAvatars.find((avatar) => avatar.id === avatar_id);
 

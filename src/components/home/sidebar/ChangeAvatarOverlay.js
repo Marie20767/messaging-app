@@ -1,9 +1,16 @@
 import { useState } from 'react';
-import { avatars } from '../../../constants/constants';
+import { APIDomain, avatars } from '../../../constants/constants';
 import PickAvatar from '../../avatar/PickAvatar';
 import LargeFullScreenOverlay from '../../overlays-and-popups/LargeFullScreenOverlay';
 
-const ChangeAvatarOverlay = ({ avatarId, setShowAvatarOverlay, serverError, onClickSaveNewAvatar }) => {
+const ChangeAvatarOverlay = ({
+  avatarId,
+  currentUser,
+  setCurrentUser,
+  setShowAvatarOverlay,
+  serverError,
+  setServerError,
+}) => {
   const [newSelectedAvatarId, setNewSelectedAvatarId] = useState(avatarId);
 
   const [firstAvatar, secondAvatar, thirdAvatar, fourthAvatar, ...lastFourAvatars] = avatars;
@@ -11,6 +18,31 @@ const ChangeAvatarOverlay = ({ avatarId, setShowAvatarOverlay, serverError, onCl
 
   const onClickSelectNewAvatar = (id) => {
     setNewSelectedAvatarId(id);
+  };
+
+  const onClickSaveNewAvatar = async (newAvatarId) => {
+    try {
+      const response = await fetch(`http://${APIDomain}/users/${currentUser.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          avatar_id: newAvatarId,
+        }),
+      });
+      const result = await response.json();
+
+      if (!result.error) {
+        setCurrentUser({
+          ...currentUser,
+          avatar_id: newAvatarId,
+        });
+
+        setShowAvatarOverlay(false);
+      }
+    } catch (e) {
+      console.log('>>> onClickSaveNewAvatar error! ', e);
+      setServerError('Something went wrong with your request');
+    }
   };
 
   return (

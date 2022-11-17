@@ -8,6 +8,7 @@ import MessageTimestamp from './MessageTimestamp';
 const Message = ({ message, isFirstMessage, date, currentUserId, messagesEndRef }) => {
   const [timestampKey, setTimestampKey] = useState(`${Date.now()}`);
   const [isMoreThanAnHourAgo, setIsMoreThanAnHourAgo] = useState(checkIfMessageSentMoreThanOneHourAgo(message));
+
   const messageFromClassName = message.sending_user_id === currentUserId ? 'from-current-user' : 'from-friend';
   const messageIdClassName = `message-container-${message.id}`;
 
