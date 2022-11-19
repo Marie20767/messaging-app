@@ -10,7 +10,7 @@ const Form = ({
   isPasswordMissing,
   isPasswordTooShort,
   showFormInvalidErrorMessage,
-  loginError,
+  formError,
   onChangeUserName,
   onChangePassword,
   onKeyDown,
@@ -28,8 +28,8 @@ const Form = ({
           }
         </StyledErrorMessageContainer>
         <StyledErrorMessageContainer>
-          {loginError
-            ? <p className="error-message">{loginError}</p>
+          {formError
+            ? <p className="error-message">{formError}</p>
             : null
           }
         </StyledErrorMessageContainer>

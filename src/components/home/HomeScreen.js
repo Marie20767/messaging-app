@@ -5,10 +5,18 @@ import moment from 'moment';
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
 import ActiveMessagesThread from './active-message-thread/ActiveMessagesThread';
 import Sidebar from './sidebar/Sidebar';
-import { getFormattedMessageThreads, getFriendsSortedByMessageSent, getIsRead, isLargeScreen, onUpdateReadMessages, sanitiseArray, sanitiseString } from '../../utils/utils';
+import {
+  getFormattedMessageThreads,
+  getFriendsSortedByMessageSent,
+  getIsRead,
+  isLargeScreen,
+  onUpdateReadMessages,
+  sanitiseArray,
+} from '../../utils/utils';
 import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
 import { getSocket } from '../../utils/socket-io';
 import { APIDomain } from '../../constants/constants';
+import useOutsideClick from '../../hooks/useOutsideClick';
 
 const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [friends, setFriends] = useState(null);
@@ -163,18 +171,9 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
     };
   }, [messageThreads, activeFriendId, isActiveMessageThreadShowing]);
 
-  useEffect(() => {
-    const closePopUp = (e) => {
-      // SVG classnames give back an object so you need to sanitise the string first before using .includes
-      if (e?.composedPath()[0]?.className && !sanitiseString(e.composedPath()[0].className).includes('current-user-avatar')) {
-        setShowSettingsPopUpMenu(false);
-      }
-    };
-
-    document.body.addEventListener('click', closePopUp);
-
-    return () => document.body.removeEventListener('click', closePopUp);
-  }, [setShowSettingsPopUpMenu]);
+  useOutsideClick(() => {
+    setShowSettingsPopUpMenu(false);
+  }, 'current-user-avatar', [setShowSettingsPopUpMenu]);
 
   if (serverError && !showAvatarOverlay) {
     return (

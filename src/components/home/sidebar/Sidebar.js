@@ -47,11 +47,13 @@ const Sidebar = ({
   const [messageExists, setMessageExists] = useState(false);
   const [messageThreadsSearchResults, setMessageThreadSearchResults] = useState([]);
 
-  const { name, avatar_id } = currentUser;
+  const { id: currentUserId, name, avatar_id } = currentUser;
 
   useEffect(() => {
     const onReceivedAddedAsNewFriend = (data) => {
-      if (!friends.some((friend) => friend.id === data.current_user.id)) {
+      const friendIdThatSentFriendRequest = data.current_user.id;
+
+      if (!friends.some((friend) => friend.id === friendIdThatSentFriendRequest)) {
       // Someone else has just added me as a friend
       // So now I want to put them in my friends list and add their empty messageThread
         const updatedFriends = [
@@ -68,6 +70,9 @@ const Sidebar = ({
         if (!activeFriendId) {
           setActiveFriendId(data.current_user.id);
         }
+
+        // Join the chat room with the user that just added us
+        getSocket().emit('join_room', { sending_user_id: currentUserId, recipient_user_id: friendIdThatSentFriendRequest });
       }
     };
 

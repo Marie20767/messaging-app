@@ -89,7 +89,7 @@ const LoginScreen = ({ setCurrentUser }) => {
           isNameMissing={isNameMissing}
           isPasswordMissing={isPasswordMissing}
           showFormInvalidErrorMessage={showFormInvalidErrorMessage}
-          loginError={loginError}
+          formError={loginError}
           onChangeUserName={onChangeUserName}
           onChangePassword={onChangePassword}
           onKeyDown={handleEnterKeyPressLogin} />

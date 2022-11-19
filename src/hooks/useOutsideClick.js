@@ -1,11 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
+import { sanitiseString } from '../utils/utils';
 
-const useOutsideClick = (callback) => {
-  const ref = useRef();
-
+const useOutsideClick = (callback, className, dependencies = []) => {
   useEffect(() => {
-    const handleClick = (event) => {
-      if (ref.current && !ref.current.contains(event.target)) {
+    const handleClick = (e) => {
+      const clickedElementClassName = e?.composedPath()[0]?.className;
+
+      if (!sanitiseString(clickedElementClassName).includes(className)) {
         callback();
       }
     };
@@ -15,9 +16,7 @@ const useOutsideClick = (callback) => {
     return () => {
       document.removeEventListener('click', handleClick);
     };
-  }, [ref]);
-
-  return ref;
+  }, dependencies);
 };
 
 export default useOutsideClick;

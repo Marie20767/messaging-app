@@ -8,6 +8,7 @@ import Form from './Form';
 
 const RegistrationScreen = ({ setCurrentUser }) => {
   const [serverError, setServerError] = useState('');
+  const [registrationError, setRegistrationError] = useState(null);
 
   const {
     userNameInput,
@@ -46,20 +47,24 @@ const RegistrationScreen = ({ setCurrentUser }) => {
         });
 
         // Saving id of current user to local storage so they get shown the home screen when they come back to the site
-        const newUserId = await response.json();
+        const result = await response.json();
 
-        localStorage.setItem('current-user-id', newUserId);
+        if (!result.error) {
+          localStorage.setItem('current-user-id', result.id);
 
-        setCurrentUser({
-          id: newUserId,
-          name: userNameInput,
-          avatar_id: avatarId,
-        });
+          setCurrentUser({
+            id: result.id,
+            name: userNameInput,
+            avatar_id: avatarId,
+          });
 
-        setShowFormInvalidErrorMessage(false);
+          setShowFormInvalidErrorMessage(false);
 
-        // Go to home screen here instead of using <Link> to make sure the newest current-user-id gets passed
-        navigate('/home');
+          // Go to home screen here instead of using <Link> to make sure the newest current-user-id gets passed
+          navigate('/home');
+        } else {
+          setRegistrationError(result.error);
+        }
       } catch (e) {
         console.log('>>> onClickCreateNewUser error! ', e);
         setServerError('Something went wrong with your request');
@@ -95,6 +100,7 @@ const RegistrationScreen = ({ setCurrentUser }) => {
           isNameMissing={isNameMissing}
           isPasswordMissing={isPasswordMissing}
           isPasswordTooShort={isPasswordTooShort}
+          formError={registrationError}
           showFormInvalidErrorMessage={showFormInvalidErrorMessage}
           onChangeUserName={onChangeUserName}
           onChangePassword={onChangePassword}

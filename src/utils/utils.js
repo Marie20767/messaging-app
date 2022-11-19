@@ -110,13 +110,8 @@ const renderHighlightedSearchResult = (messageMatchingSearchInput, searchInput) 
   return text;
 };
 
-const getFormattedDateAndTime = (message) => {
-  return moment(message.timestamp).format('LLLL');
-};
-
 const getFormattedMessageTime = (message) => {
-  const formattedDateAndTime = getFormattedDateAndTime(message);
-  const formattedTime = moment(formattedDateAndTime).format('HH:mm');
+  const formattedTime = moment(message.timestamp).format('HH:mm');
 
   return formattedTime;
 };
@@ -124,11 +119,11 @@ const getFormattedMessageTime = (message) => {
 const checkIfMessageSentMoreThanOneHourAgo = (message) => {
   const oneHourAgo = moment().subtract(1, 'hours');
 
-  return moment(getFormattedDateAndTime(message)).isBefore(oneHourAgo);
+  return moment(message.timestamp).isBefore(oneHourAgo);
 };
 
 const getMinutesIfLessThanOneHourAgo = (message) => {
-  return moment(getFormattedDateAndTime(message)).fromNow();
+  return moment(message.timestamp).fromNow();
 };
 
 const reference = moment();
