@@ -103,6 +103,7 @@ const allAvatars = [
 // TODO: change this
 
 const APIDomain = '192.168.1.42:3001';
+// const APIDomain = '192.168.1.198:3001';
 // const APIDomain = 'localhost:3001';
 
 export { avatars, demoUsersAvatars, allAvatars, APIDomain };

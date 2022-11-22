@@ -28,12 +28,14 @@ const ActiveMessagesThread = ({
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 0);
   };
 
   useEffect(() => {
     handleActiveMessagesScroll(isSearching, activeSearchResultIds, scrollToBottom);
-  }, [activeFriendId, isSearching, activeSearchResultIds, messageThreads]);
+  }, [activeFriendId, isSearching, activeSearchResultIds, messageThreads, isActiveMessageThreadShowing]);
 
   const activeMessagesThread = messageThreads.find((thread) => thread.friendParticipantId === activeFriendId);
 

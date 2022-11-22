@@ -5,7 +5,7 @@ import { checkIfMessageSentMoreThanOneHourAgo } from '../../../utils/utils';
 import MessageDateContainer from './MessageDateContainer';
 import MessageTimestamp from './MessageTimestamp';
 
-const Message = ({ message, isFirstMessage, date, currentUserId, messagesEndRef }) => {
+const Message = ({ message, isFirstMessage, date, currentUserId }) => {
   const [timestampKey, setTimestampKey] = useState(`${Date.now()}`);
   const [isMoreThanAnHourAgo, setIsMoreThanAnHourAgo] = useState(checkIfMessageSentMoreThanOneHourAgo(message));
 
@@ -34,7 +34,6 @@ const Message = ({ message, isFirstMessage, date, currentUserId, messagesEndRef 
       <StyledMessageContainer className={`${messageFromClassName} ${messageIdClassName}`} key={message.id}>
         <p className="text">{message.text}</p>
         <MessageTimestamp key={timestampKey} isMoreThanAnHourAgo={isMoreThanAnHourAgo} message={message} />
-        <div ref={messagesEndRef} />
       </StyledMessageContainer>
     </>
   );

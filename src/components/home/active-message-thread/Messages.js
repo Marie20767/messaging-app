@@ -41,8 +41,7 @@ const Messages = ({ activeMessagesThread, currentUserId, messagesEndRef }) => {
                 date={date}
                 key={message.id}
                 message={message}
-                currentUserId={currentUserId}
-                messagesEndRef={messagesEndRef} />
+                currentUserId={currentUserId} />
             );
           }
 
@@ -50,11 +49,11 @@ const Messages = ({ activeMessagesThread, currentUserId, messagesEndRef }) => {
             <Message
               key={message.id}
               message={message}
-              currentUserId={currentUserId}
-              messagesEndRef={messagesEndRef} />
+              currentUserId={currentUserId} />
           );
         });
       })}
+      <div ref={messagesEndRef} />
     </StyledMessagesContainer>
   );
 };
