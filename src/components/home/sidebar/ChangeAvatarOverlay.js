@@ -22,7 +22,7 @@ const ChangeAvatarOverlay = ({
 
   const onClickSaveNewAvatar = async (newAvatarId) => {
     try {
-      const response = await fetch(`http://${APIDomain}/users/${currentUser.id}`, {
+      const response = await fetch(`${APIDomain}/users/${currentUser.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

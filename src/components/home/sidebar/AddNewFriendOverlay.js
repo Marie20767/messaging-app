@@ -25,7 +25,7 @@ const AddNewFriendOverlay = ({
 
   const onClickAddNewFriend = async () => {
     try {
-      const response = await fetch(`http://${APIDomain}/add_friend`, {
+      const response = await fetch(`${APIDomain}/add_friend`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

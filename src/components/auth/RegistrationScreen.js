@@ -36,7 +36,7 @@ const RegistrationScreen = ({ setCurrentUser }) => {
   const onClickCreateNewUser = async () => {
     if (userNameInput !== '' && passwordInput !== '' && avatarId !== null) {
       try {
-        const response = await fetch(`http://${APIDomain}/users`, {
+        const response = await fetch(`${APIDomain}/users`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

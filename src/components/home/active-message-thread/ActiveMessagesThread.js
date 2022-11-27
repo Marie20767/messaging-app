@@ -27,11 +27,23 @@ const ActiveMessagesThread = ({
 
   const messagesEndRef = useRef(null);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = (delay = 0) => {
     setTimeout(() => {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 0);
+    }, delay);
   };
+
+  useEffect(() => {
+    const onResize = () => {
+      scrollToBottom(200);
+    };
+
+    window.visualViewport.addEventListener('resize', onResize);
+
+    return () => {
+      window.visualViewport.removeEventListener('resize', onResize);
+    };
+  }, []);
 
   useEffect(() => {
     handleActiveMessagesScroll(isSearching, activeSearchResultIds, scrollToBottom);

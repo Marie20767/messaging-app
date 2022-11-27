@@ -65,6 +65,7 @@ const StyledMessagesContainer = styled.div`
   flex-direction: column;
   padding: 0px 25px 0px 15px;
   display: flex;
+  margin-bottom: calc(20px + env(keyboard-inset-height));
 
   h4 {
     font-size: 13px;

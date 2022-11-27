@@ -186,7 +186,7 @@ const onUpdateReadMessages = async (friendId, messageThreads, setMessageThreads)
   const { threadId } = friendMessageThread;
 
   try {
-    await fetch(`http://${APIDomain}/update_message_read`, {
+    await fetch(`${APIDomain}/update_message_read`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

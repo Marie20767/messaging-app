@@ -29,7 +29,7 @@ const LoginScreen = ({ setCurrentUser }) => {
       setShowFormInvalidErrorMessage(false);
 
       try {
-        const response = await fetch(`http://${APIDomain}/login`, {
+        const response = await fetch(`${APIDomain}/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

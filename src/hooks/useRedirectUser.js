@@ -10,7 +10,7 @@ const useRedirectUser = ({ onUserNotLoggedIn, onUserLoggedIn, setCurrentUser }) 
         onUserNotLoggedIn();
       } else {
         try {
-          const response = await fetch(`http://${APIDomain}/users/${currentUserId}`);
+          const response = await fetch(`${APIDomain}/users/${currentUserId}`);
 
           if (!response.ok) {
             onUserNotLoggedIn();

@@ -100,10 +100,7 @@ const allAvatars = [
   ...demoUsersAvatars,
 ];
 
-// TODO: change this
-
-const APIDomain = '192.168.1.42:3001';
-// const APIDomain = '192.168.1.198:3001';
-// const APIDomain = 'localhost:3001';
+const APIDomain = 'https://www.word-monkey-api.xyz/messageoh';
+// const APIDomain = 'http://192.168.1.42:3001';
 
 export { avatars, demoUsersAvatars, allAvatars, APIDomain };

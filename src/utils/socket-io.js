@@ -4,7 +4,7 @@ import { APIDomain } from '../constants/constants';
 let socket = null;
 
 export const initSocketConnection = () => {
-  socket = io.connect(`http://${APIDomain}`);
+  socket = io.connect(APIDomain);
 };
 
 export const getSocket = () => {

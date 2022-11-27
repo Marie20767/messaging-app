@@ -50,7 +50,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const getNonFriendUsers = async (friendResults) => {
     try {
       // Already get all the users that are not in the friend list so when currentUser looks for a new friend, the data is already there
-      const response = await fetch(`http://${APIDomain}/users`);
+      const response = await fetch(`${APIDomain}/users`);
       const userResults = await response.json();
 
       const usersMinusFriends = userResults.filter((userResult) => {
@@ -70,7 +70,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
   const getFriends = async (formattedMessageThreads) => {
     try {
-      const response = await fetch(`http://${APIDomain}/friends/${id}`);
+      const response = await fetch(`${APIDomain}/friends/${id}`);
       const friendResults = await response.json();
 
       setFriends(friendResults);
@@ -101,7 +101,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
   const getFriendsAndMessagesData = async () => {
     try {
-      const response = await fetch(`http://${APIDomain}/messages/${id}`);
+      const response = await fetch(`${APIDomain}/messages/${id}`);
       const messageThreadsResults = await response.json();
 
       const sanitisedMessageThreads = messageThreadsResults || [];
@@ -148,7 +148,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
       if (data.sending_user_id === activeFriendId) {
         try {
-          await fetch(`http://${APIDomain}/update_message_read`, {
+          await fetch(`${APIDomain}/update_message_read`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
