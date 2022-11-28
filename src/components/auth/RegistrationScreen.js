@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { APIDomain, avatars } from '../../constants/constants';
+import { APIPath, avatars } from '../../constants/constants';
 import useAuthForm from '../../hooks/useAuthForm';
 import PickAvatar from '../avatar/PickAvatar';
 import Form from './Form';
@@ -36,7 +36,7 @@ const RegistrationScreen = ({ setCurrentUser }) => {
   const onClickCreateNewUser = async () => {
     if (userNameInput !== '' && passwordInput !== '' && avatarId !== null) {
       try {
-        const response = await fetch(`${APIDomain}/users`, {
+        const response = await fetch(`${APIPath}/users`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { APIDomain } from '../constants/constants';
+import { APIPath } from '../constants/constants';
 
 const sanitiseString = (string) => {
   return typeof string === 'string' ? string : '';
@@ -186,7 +186,7 @@ const onUpdateReadMessages = async (friendId, messageThreads, setMessageThreads)
   const { threadId } = friendMessageThread;
 
   try {
-    await fetch(`${APIDomain}/update_message_read`, {
+    await fetch(`${APIPath}/update_message_read`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

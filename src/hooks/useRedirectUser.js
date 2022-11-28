@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { APIDomain } from '../constants/constants';
+import { APIPath } from '../constants/constants';
 
 const useRedirectUser = ({ onUserNotLoggedIn, onUserLoggedIn, setCurrentUser }) => {
   useEffect(() => {
@@ -10,7 +10,7 @@ const useRedirectUser = ({ onUserNotLoggedIn, onUserLoggedIn, setCurrentUser }) 
         onUserNotLoggedIn();
       } else {
         try {
-          const response = await fetch(`${APIDomain}/users/${currentUserId}`);
+          const response = await fetch(`${APIPath}/users/${currentUserId}`);
 
           if (!response.ok) {
             onUserNotLoggedIn();

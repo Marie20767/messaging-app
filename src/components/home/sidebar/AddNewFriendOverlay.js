@@ -1,6 +1,6 @@
 import moment from 'moment';
 import styled from 'styled-components';
-import { APIDomain } from '../../../constants/constants';
+import { APIPath } from '../../../constants/constants';
 import { getSocket } from '../../../utils/socket-io';
 import SmallFullScreenOverlay from '../../overlays-and-popups/SmallFullScreenOverlay';
 
@@ -25,7 +25,7 @@ const AddNewFriendOverlay = ({
 
   const onClickAddNewFriend = async () => {
     try {
-      const response = await fetch(`${APIDomain}/add_friend`, {
+      const response = await fetch(`${APIPath}/add_friend`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

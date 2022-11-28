@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { APIDomain, avatars } from '../../../constants/constants';
+import { APIPath, avatars } from '../../../constants/constants';
 import PickAvatar from '../../avatar/PickAvatar';
 import LargeFullScreenOverlay from '../../overlays-and-popups/LargeFullScreenOverlay';
 
@@ -22,7 +22,7 @@ const ChangeAvatarOverlay = ({
 
   const onClickSaveNewAvatar = async (newAvatarId) => {
     try {
-      const response = await fetch(`${APIDomain}/users/${currentUser.id}`, {
+      const response = await fetch(`${APIPath}/users/${currentUser.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

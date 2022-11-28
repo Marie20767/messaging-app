@@ -100,7 +100,8 @@ const allAvatars = [
   ...demoUsersAvatars,
 ];
 
-const APIDomain = 'https://www.word-monkey-api.xyz/messageoh';
-// const APIDomain = 'http://192.168.1.42:3001';
+const APIDomain = 'https://www.word-monkey-api.xyz';
+const APIPath = 'https://www.word-monkey-api.xyz/messageoh';
+// const APIPath = 'http://192.168.1.42:3001';
 
-export { avatars, demoUsersAvatars, allAvatars, APIDomain };
+export { avatars, demoUsersAvatars, allAvatars, APIDomain, APIPath };

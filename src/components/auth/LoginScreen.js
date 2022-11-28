@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { APIDomain } from '../../constants/constants';
+import { APIPath } from '../../constants/constants';
 import useAuthForm from '../../hooks/useAuthForm';
 import Form from './Form';
 
@@ -29,7 +29,7 @@ const LoginScreen = ({ setCurrentUser }) => {
       setShowFormInvalidErrorMessage(false);
 
       try {
-        const response = await fetch(`${APIDomain}/login`, {
+        const response = await fetch(`${APIPath}/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
