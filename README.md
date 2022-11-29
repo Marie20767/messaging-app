@@ -1,7 +1,7 @@
 # React Messaging App by Marie Impens
 
 Instant Full Stack Messaging App using the REST API and socket.io.
-Follow this link here to see the app: https://messaging-app.pages.dev/.
+View my Messaging App here: https://messaging-app.pages.dev/.
 
 ## Available Scripts
 
