@@ -2,7 +2,7 @@ import moment from 'moment';
 
 moment.updateLocale('en', {
   relativeTime: {
-    future: 'in %s',
+    future: 'now',
     past: '%s',
     s: 'now',
     ss: 'now',
