@@ -27,7 +27,7 @@ const ActiveMessagesThread = ({
 
   const messagesEndRef = useRef(null);
 
-  const scrollToBottom = (delay = 0) => {
+  const scrollToBottom = (delay = 200) => {
     setTimeout(() => {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, delay);
@@ -35,7 +35,7 @@ const ActiveMessagesThread = ({
 
   useEffect(() => {
     const onResize = () => {
-      scrollToBottom(200);
+      scrollToBottom();
     };
 
     window.visualViewport.addEventListener('resize', onResize);
