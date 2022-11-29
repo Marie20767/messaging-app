@@ -1,4 +1,4 @@
-import { findFriendMessageThread, getFriendsSortedByMessageSent, getSortedMessages, onUpdateReadMessages } from '../../../utils/utils';
+import { findFriendMessageThread, getSortedMessages, onUpdateReadMessages } from '../../../utils/utils';
 import FriendDisplay from './FriendDisplay';
 
 const FriendsList = ({
@@ -12,8 +12,6 @@ const FriendsList = ({
 }) => {
   const { id } = currentUser;
 
-  const sortedFriends = getFriendsSortedByMessageSent(messageThreads, friends);
-
   const onClickSelectFriend = (friendId, friendHasUnreadMessage) => {
     setActiveFriendId(friendId);
     if (friendHasUnreadMessage) {
@@ -25,7 +23,7 @@ const FriendsList = ({
 
   return (
     <>
-      {sortedFriends.map((user) => {
+      {friends.map((user) => {
         const highlighted = user.id === activeFriendId;
         let hasUnreadMessage = false;
 

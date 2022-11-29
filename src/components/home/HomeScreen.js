@@ -39,6 +39,8 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
   const { id, avatar_id } = currentUser;
 
+  const sortedFriends = getFriendsSortedByMessageSent(messageThreads, friends);
+
   const updateIsActiveMessageThreadShowing = (value) => {
     if (!isLargeScreen()) {
       setIsActiveMessageThreadShowing(value);
@@ -85,12 +87,12 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         });
 
         // Sort friends according to last message sent
-        const sortedFriends = getFriendsSortedByMessageSent(formattedMessageThreads, friendResults);
+        const sortedFriendsResults = getFriendsSortedByMessageSent(formattedMessageThreads, friendResults);
 
-        setActiveFriendId(sortedFriends[0].id);
+        setActiveFriendId(sortedFriendsResults[0].id);
 
         if (isActiveMessageThreadShowing) {
-          onUpdateReadMessages(sortedFriends[0].id, formattedMessageThreads, setMessageThreads);
+          onUpdateReadMessages(sortedFriendsResults[0].id, formattedMessageThreads, setMessageThreads);
         }
       }
     } catch (e) {
@@ -195,7 +197,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   return (
     <StyledHomeScreenContainer>
       <Sidebar
-        friends={friends}
+        friends={sortedFriends}
         setFriends={setFriends}
         currentUser={currentUser}
         nonFriendUsers={nonFriendUsers}

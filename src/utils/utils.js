@@ -144,7 +144,8 @@ const getSortedMessages = (messages) => {
 };
 
 const getFriendsSortedByMessageSent = (messageThreads, friends) => {
-  const lastMessages = messageThreads.map((messageThread) => {
+  const sanitisedMessageThreads = sanitiseArray(messageThreads);
+  const lastMessages = sanitisedMessageThreads.map((messageThread) => {
     const sortedMessages = getSortedMessages(messageThread.messages);
     const lastIndex = sortedMessages.length - 1;
 
