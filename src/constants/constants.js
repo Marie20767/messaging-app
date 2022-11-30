@@ -102,6 +102,7 @@ const allAvatars = [
 
 const APIDomain = 'https://www.word-monkey-api.xyz';
 const APIPath = 'https://www.word-monkey-api.xyz/messageoh';
-// const APIPath = 'http://192.168.1.42:3001';
+// To test against local backend:
+// const APIPath = 'http://localhost:3001';
 
 export { avatars, demoUsersAvatars, allAvatars, APIDomain, APIPath };

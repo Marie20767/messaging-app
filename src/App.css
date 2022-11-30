@@ -8,7 +8,9 @@ html, body, #root {
   height: 100%;
   width: 100%;
   background-color: #f8f7f7;
+  -webkit-tap-highlight-color: transparent;
 }
+
 
 h2 {
   font-family: 'Work Sans', sans-serif;

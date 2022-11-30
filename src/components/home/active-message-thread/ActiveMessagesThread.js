@@ -6,7 +6,6 @@ import Messages from './Messages';
 import MessageInputField from './MessageInputField';
 import EmptyMessagesThread from './EmptyMessagesThread';
 import { getSocket } from '../../../utils/socket-io';
-import { handleActiveMessagesScroll } from '../../../utils/utils';
 
 const ActiveMessagesThread = ({
   friends,
@@ -26,6 +25,7 @@ const ActiveMessagesThread = ({
   }
 
   const messagesEndRef = useRef(null);
+  const isScrollingToSearchedMessageRef = useRef(false);
 
   const scrollToBottom = (delay = 200) => {
     setTimeout(() => {
@@ -35,7 +35,11 @@ const ActiveMessagesThread = ({
 
   useEffect(() => {
     const onResize = () => {
-      scrollToBottom();
+      // Make sure scrollToBottom doesn't override scrolling to a specific message when you are searching
+      // through all conversations
+      if (!isScrollingToSearchedMessageRef.current) {
+        scrollToBottom();
+      }
     };
 
     window.visualViewport.addEventListener('resize', onResize);
@@ -46,7 +50,21 @@ const ActiveMessagesThread = ({
   }, []);
 
   useEffect(() => {
-    handleActiveMessagesScroll(isSearching, activeSearchResultIds, scrollToBottom);
+    if (!isSearching || activeSearchResultIds?.friendId) {
+      scrollToBottom();
+    } else if (activeSearchResultIds?.messageId) {
+      isScrollingToSearchedMessageRef.current = true;
+
+      const messageElement = document.getElementsByClassName(`message-container-${activeSearchResultIds.messageId}`)[0];
+
+      messageElement.scrollIntoView({ behavior: 'smooth' });
+      messageElement.classList.add('scrolled-to-message');
+
+      setTimeout(() => {
+        messageElement.classList.remove('scrolled-to-message');
+        isScrollingToSearchedMessageRef.current = false;
+      }, 3000);
+    }
   }, [activeFriendId, isSearching, activeSearchResultIds, messageThreads, isActiveMessageThreadShowing]);
 
   const activeMessagesThread = messageThreads.find((thread) => thread.friendParticipantId === activeFriendId);

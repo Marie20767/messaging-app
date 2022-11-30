@@ -221,21 +221,6 @@ const onUpdateReadMessages = async (friendId, messageThreads, setMessageThreads)
   setMessageThreads(updatedMessageThreads);
 };
 
-const handleActiveMessagesScroll = (isSearching, activeSearchResultIds, scrollToBottom) => {
-  if (!isSearching || activeSearchResultIds?.friendId) {
-    scrollToBottom();
-  } else if (activeSearchResultIds?.messageId) {
-    const messageElement = document.getElementsByClassName(`message-container-${activeSearchResultIds.messageId}`)[0];
-
-    messageElement.scrollIntoView({ behavior: 'smooth' });
-    messageElement.classList.add('scrolled-to-message');
-
-    setTimeout(() => {
-      messageElement.classList.remove('scrolled-to-message');
-    }, 3000);
-  }
-};
-
 const isLargeScreen = () => {
   return window.innerWidth >= 768;
 };
@@ -267,7 +252,6 @@ export {
   getSortedMessages,
   sanitiseString,
   sanitiseArray,
-  handleActiveMessagesScroll,
   isLargeScreen,
   getIsRead,
 };

@@ -89,6 +89,7 @@ const Sidebar = ({
     setSearchInput(e.target.value);
 
     if (e.target.value === '') {
+      console.log('>>> onChangeSearchInputGetSearchResults: set searchto faklse');
       setIsSearching(false);
       setFriendUserNameExists(false);
     } else {
@@ -133,6 +134,7 @@ const Sidebar = ({
   const onClickCloseSearch = () => {
     setSearchInput('');
     setFriendSearchResult([]);
+    console.log('>>> onClickCloseSearch: set searchto faklse');
     setIsSearching(false);
     setActiveFriendId(activeFriendId);
     setActiveSearchResultIds(null);
