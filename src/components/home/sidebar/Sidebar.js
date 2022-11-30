@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { debounce } from 'lodash';
 import { allAvatars } from '../../../constants/constants';
 import SettingsPopUpMenu from './SettingsPopUpMenu';
 import FriendsAndSearchSidebar from './FriendsAndSearchSidebar';
@@ -85,25 +86,22 @@ const Sidebar = ({
 
   const currentUserAvatar = allAvatars.find((avatar) => avatar.id === avatar_id);
 
-  const onChangeSearchInputGetSearchResults = (e) => {
-    setSearchInput(e.target.value);
-
-    if (e.target.value === '') {
-      console.log('>>> onChangeSearchInputGetSearchResults: set searchto faklse');
+  const onHandleDebouncedSearchResults = (inputValue) => {
+    if (inputValue === '') {
       setIsSearching(false);
       setFriendUserNameExists(false);
     } else {
       setIsSearching(true);
 
       const friendsMatchingSearchInput = friends.filter((user) => {
-        return user.name.toLowerCase().includes(e.target.value.toLowerCase());
+        return user.name.toLowerCase().includes(inputValue.toLowerCase());
       });
 
       setFriendUserNameExists(friendsMatchingSearchInput.length > 0);
       setFriendSearchResult(friendsMatchingSearchInput);
 
       const messageThreadsMatchingSearchInput = messageThreads.reduce((acc, currentMessageThread) => {
-        const filteredMessages = currentMessageThread.messages.filter((message) => message.text.toLowerCase().includes(e.target.value.toLowerCase()));
+        const filteredMessages = currentMessageThread.messages.filter((message) => message.text.toLowerCase().includes(inputValue.toLowerCase()));
 
         return [
           ...acc,
@@ -114,6 +112,14 @@ const Sidebar = ({
       setMessageExists(messageThreadsMatchingSearchInput.length > 0);
       setMessageThreadSearchResults(messageThreadsMatchingSearchInput);
     }
+  };
+
+  // Debounce search when looking for friends/messages to make sure app is not lagging
+  const onChangeDebounced = useRef(debounce(onHandleDebouncedSearchResults, 300)).current;
+
+  const onChangeSearchInputGetSearchResults = (e) => {
+    setSearchInput(e.target.value);
+    onChangeDebounced(e.target.value);
   };
 
   const onChangeSearchInputAddNewFriendGetSearchResults = (e) => {
@@ -134,7 +140,6 @@ const Sidebar = ({
   const onClickCloseSearch = () => {
     setSearchInput('');
     setFriendSearchResult([]);
-    console.log('>>> onClickCloseSearch: set searchto faklse');
     setIsSearching(false);
     setActiveFriendId(activeFriendId);
     setActiveSearchResultIds(null);
