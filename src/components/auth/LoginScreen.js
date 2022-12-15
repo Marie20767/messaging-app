@@ -25,7 +25,7 @@ const LoginScreen = ({ setCurrentUser }) => {
 
   const onClickLogin = async () => {
     if (userNameInput !== '' && passwordInput !== '') {
-      setLoginError(false);
+      setLoginError(null);
       setShowFormInvalidErrorMessage(false);
 
       try {
