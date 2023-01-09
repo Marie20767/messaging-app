@@ -102,8 +102,8 @@ const AddNewFriendOverlay = ({
         : null
       }
       <StyledButtonsContainer>
-        <button type="button" onClick={() => setActiveNewFriendId(null)} className="no-button">No</button>
-        <button type="button" onClick={onClickAddNewFriend}>Yes</button>
+        <button type="button" onClick={() => setActiveNewFriendId(null)} className="no-button">Cancel</button>
+        <button type="button" onClick={onClickAddNewFriend}>Confirm</button>
       </StyledButtonsContainer>
     </SmallFullScreenOverlay>
   );

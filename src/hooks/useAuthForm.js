@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { debounce } from 'lodash';
+import { useRef, useState } from 'react';
 
 const useAuthForm = (isLogin = false) => {
   const [userNameInput, setUserNameInput] = useState('');
@@ -16,6 +17,16 @@ const useAuthForm = (isLogin = false) => {
     }
   };
 
+  const onHandleDebouncedPasswordErrorMessage = (input) => {
+    if (input.length < 8 && input !== '') {
+      setIsPasswordTooShort(true);
+    } else {
+      setIsPasswordTooShort(false);
+    }
+  };
+
+  const onChangeDebouncePasswordErrorMessage = useRef(debounce(onHandleDebouncedPasswordErrorMessage, 750)).current;
+
   const onChangeUserName = (e) => {
     setUserNameInput(e.target.value);
     setIsNameMissing(false);
@@ -26,11 +37,7 @@ const useAuthForm = (isLogin = false) => {
     setPasswordInput(e.target.value);
     setIsPasswordMissing(false);
 
-    if (e.target.value.length < 8) {
-      setIsPasswordTooShort(true);
-    } else {
-      setIsPasswordTooShort(false);
-    }
+    onChangeDebouncePasswordErrorMessage(e.target.value);
 
     resetFormInvalidError(userNameInput, e.target.value, avatarId);
   };
