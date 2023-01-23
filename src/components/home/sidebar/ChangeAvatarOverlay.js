@@ -20,13 +20,13 @@ const ChangeAvatarOverlay = ({
     setNewSelectedAvatarId(id);
   };
 
-  const onClickSaveNewAvatar = async (newAvatarId) => {
+  const onClickSaveNewAvatar = async () => {
     try {
       const response = await fetch(`${APIPath}/users/${currentUser.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          avatar_id: newAvatarId,
+          avatar_id: newSelectedAvatarId,
         }),
       });
       const result = await response.json();
@@ -34,7 +34,7 @@ const ChangeAvatarOverlay = ({
       if (!result.error) {
         setCurrentUser({
           ...currentUser,
-          avatar_id: newAvatarId,
+          avatar_id: newSelectedAvatarId,
         });
 
         setShowAvatarOverlay(false);
