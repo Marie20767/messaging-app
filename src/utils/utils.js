@@ -1,4 +1,5 @@
 import moment from 'moment';
+
 import { APIPath } from '../constants/constants';
 
 const sanitiseString = (string) => {
@@ -235,6 +236,22 @@ const getIsRead = (messageThread, isActiveMessageThreadShowing, activeFriendId) 
   return messageThread.friendParticipantId === activeFriendId;
 };
 
+const shouldHideFormErrorMessage = (username, password, avatarId, isLogin) => {
+  if (isLogin) {
+    return username !== '' && password !== '';
+  }
+
+  return username !== '' && password !== '' && !!avatarId;
+};
+
+const onChangeDebouncePasswordErrorMessage = (input) => {
+  return input.length < 8 && input !== '';
+};
+
+// TODO: put back debounce
+
+// const onChangeDebouncePasswordErrorMessage = useRef(debounce(onHandleDebouncedPasswordErrorMessage, 750)).current;
+
 export {
   getFormattedMessageThreads,
   getFriendMessageSearchResult,
@@ -254,4 +271,6 @@ export {
   sanitiseArray,
   isLargeScreen,
   getIsRead,
+  shouldHideFormErrorMessage,
+  onChangeDebouncePasswordErrorMessage,
 };

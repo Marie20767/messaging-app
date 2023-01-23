@@ -1,40 +1,45 @@
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
 import { APIPath } from '../../constants/constants';
-import useAuthForm from '../../hooks/useAuthForm';
+import {
+  onChangePasswordInputValue,
+  onChangeUsernameInputValue,
+  setCurrentUser,
+  setIsPasswordMissing,
+  setIsUsernameMissing,
+  setLoginErrorText,
+  setServerErrorTextLogin,
+  setShowFormInvalidErrorMessage,
+} from '../../redux/user';
+
 import Form from './Form';
 
-const LoginScreen = ({ setCurrentUser }) => {
-  const navigate = useNavigate();
-  const [loginError, setLoginError] = useState(null);
-  const [serverError, setServerError] = useState('');
-
+const LoginScreen = () => {
   const {
-    userNameInput,
-    passwordInput,
-    isNameMissing,
-    isPasswordMissing,
-    showFormInvalidErrorMessage,
-    setIsNameMissing,
-    setIsPasswordMissing,
-    setShowFormInvalidErrorMessage,
-    onChangeUserName,
-    onChangePassword,
-  } = useAuthForm(true);
+    loginErrorText,
+    serverErrorTextLogin,
+    usernameInputValue,
+    passwordInputValue,
+  } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const onClickLogin = async () => {
-    if (userNameInput !== '' && passwordInput !== '') {
-      setLoginError(null);
-      setShowFormInvalidErrorMessage(false);
+    if (usernameInputValue !== '' && passwordInputValue !== '') {
+      dispatch(setLoginErrorText(null));
+      dispatch(setShowFormInvalidErrorMessage(false));
 
       try {
         const response = await fetch(`${APIPath}/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name: userNameInput,
-            password: passwordInput,
+            name: usernameInputValue,
+            password: passwordInputValue,
           }),
         });
 
@@ -46,29 +51,30 @@ const LoginScreen = ({ setCurrentUser }) => {
           // Saving id of current user to local storage so they get shown the home screen when they come back to the site
           localStorage.setItem('current-user-id', newUserId);
 
-          setCurrentUser({
+          dispatch(setCurrentUser({
             id: result.id,
             name: result.name,
             avatar_id: result.avatar_id,
-          });
+          }));
 
           // Go to home screen here instead of using <Link> to make sure the newest current-user-id gets passed
           navigate('/home');
-          setLoginError(null);
+          dispatch(setLoginErrorText(null));
         } else {
-          setLoginError(result.error);
+          dispatch(setLoginErrorText(result.error));
         }
       } catch (e) {
         console.log('>>> onClickLogin error! ', e);
-        setServerError('Something went wrong with your request');
+        dispatch(setServerErrorTextLogin('Something went wrong with your request'));
       }
     } else {
-      setShowFormInvalidErrorMessage(true);
-      if (userNameInput === '') {
-        setIsNameMissing(true);
+      dispatch(setShowFormInvalidErrorMessage(true));
+
+      if (usernameInputValue === '') {
+        dispatch(setIsUsernameMissing(true));
       }
-      if (passwordInput === '') {
-        setIsPasswordMissing(true);
+      if (passwordInputValue === '') {
+        dispatch(setIsPasswordMissing(true));
       }
     }
   };
@@ -84,17 +90,18 @@ const LoginScreen = ({ setCurrentUser }) => {
       <StyledLoginScreenContainer>
         <Form
           title="Log in to your account"
-          userNameInput={userNameInput}
-          passwordInput={passwordInput}
-          isNameMissing={isNameMissing}
-          isPasswordMissing={isPasswordMissing}
-          showFormInvalidErrorMessage={showFormInvalidErrorMessage}
-          formError={loginError}
-          onChangeUserName={onChangeUserName}
-          onChangePassword={onChangePassword}
+          formError={loginErrorText}
+          onChangePassword={(e) => dispatch(onChangePasswordInputValue({
+            inputValue: e.target.value,
+            isLoginComponent: true,
+          }))}
+          onChangeUsername={(e) => dispatch(onChangeUsernameInputValue({
+            inputValue: e.target.value,
+            isLoginComponent: true,
+          }))}
           onKeyDown={handleEnterKeyPressLogin} />
-        {serverError
-          ? <p className="error-message">{serverError}</p>
+        {serverErrorTextLogin
+          ? <p className="error-message">{serverErrorTextLogin}</p>
           : null
         }
         <button type="button" onClick={onClickLogin}>Log in</button>

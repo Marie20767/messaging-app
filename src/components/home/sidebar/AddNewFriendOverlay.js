@@ -1,11 +1,13 @@
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+
 import { APIPath } from '../../../constants/constants';
 import { getSocket } from '../../../utils/socket-io';
+
 import SmallFullScreenOverlay from '../../overlays-and-popups/SmallFullScreenOverlay';
 
 const AddNewFriendOverlay = ({
-  currentUser,
   nonFriendUsers,
   messageThreads,
   setMessageThreads,
@@ -21,7 +23,8 @@ const AddNewFriendOverlay = ({
   setClickedAddNewFriend,
   setNewFriendUserNameExists,
 }) => {
-  const { id } = currentUser;
+  const { currentUser } = useSelector((state) => state.user);
+  const { id: currentUserId } = currentUser;
 
   const onClickAddNewFriend = async () => {
     try {
@@ -29,7 +32,7 @@ const AddNewFriendOverlay = ({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          user_id: id,
+          user_id: currentUserId,
           friend_id: activeNewFriendId,
         }),
       });
@@ -40,7 +43,7 @@ const AddNewFriendOverlay = ({
         const newFriend = nonFriendUsers.find((user) => user.id === activeNewFriendId);
 
         // Make new friend join a new room with currentUser
-        getSocket().emit('join_room', { sending_user_id: id, recipient_user_id: newFriend.id });
+        getSocket().emit('join_room', { sending_user_id: currentUserId, recipient_user_id: newFriend.id });
 
         const newFriendEmptyMessageThread = {
           friendParticipantId: newFriendResult.friend_id,
@@ -49,7 +52,7 @@ const AddNewFriendOverlay = ({
             text: '',
             timestamp: moment().toISOString(),
             sending_user_id: newFriendResult.friend_id,
-            recipient_user_id: id,
+            recipient_user_id: currentUserId,
             read: true,
           }],
         };
@@ -63,7 +66,7 @@ const AddNewFriendOverlay = ({
           // that was added and inserted into their message threads
           message_thread: {
             ...newFriendEmptyMessageThread,
-            friendParticipantId: id,
+            friendParticipantId: currentUserId,
           },
         });
 

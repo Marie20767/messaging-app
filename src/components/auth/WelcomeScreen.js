@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
 import messageIcon from '../../images/message-icon.png';
 
 const WelcomeScreen = () => {

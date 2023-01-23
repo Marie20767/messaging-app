@@ -1,23 +1,27 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loading } from 'react-loading-dot';
-import useRedirectUser from '../../hooks/useRedirectUser';
+import { useDispatch, useSelector } from 'react-redux';
 
-const RedirectLoggedInUser = ({ children, setCurrentUser }) => {
-  const [loading, setLoading] = useState(true);
+import useRedirectUser from '../../hooks/useRedirectUser';
+import { hideLoadingSpinnerOnRedirectUser } from '../../redux/user';
+
+const RedirectLoggedInUser = ({ children }) => {
+  const { isShowingLoadingSpinnerOnRedirectUser } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   useRedirectUser({
     onUserNotLoggedIn: () => {
-      setLoading(false);
+      dispatch(hideLoadingSpinnerOnRedirectUser());
     },
     onUserLoggedIn: () => {
       navigate('/home');
     },
-    setCurrentUser,
   });
 
-  if (loading) {
+  if (isShowingLoadingSpinnerOnRedirectUser) {
     return (
       <div className="card-container">
         <Loading background="#ea738dff" margin="8px" size="18px" duration="0.6s" />

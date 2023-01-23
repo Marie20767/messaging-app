@@ -1,11 +1,13 @@
 import moment from 'moment';
 import styled from 'styled-components';
+
 import { getSortedMessages } from '../../../utils/utils';
+
 import EmptyMessagesThread from './EmptyMessagesThread';
 import Message from './Message';
 
-const Messages = ({ activeMessagesThread, currentUserId, messagesEndRef }) => {
-  const filteredActiveMessages = activeMessagesThread?.messages?.filter((message) => message.text !== '');
+const Messages = ({ activeMessagesThread, messagesEndRef }) => {
+  const filteredActiveMessages = activeMessagesThread?.messages.filter((message) => message.text !== '');
 
   if (!filteredActiveMessages?.length) {
     return <EmptyMessagesThread title1="No messages here yet..." title2="Don&apos;t be shy, send a message!" />;
@@ -40,16 +42,14 @@ const Messages = ({ activeMessagesThread, currentUserId, messagesEndRef }) => {
                 isFirstMessage
                 date={date}
                 key={message.id}
-                message={message}
-                currentUserId={currentUserId} />
+                message={message} />
             );
           }
 
           return (
             <Message
               key={message.id}
-              message={message}
-              currentUserId={currentUserId} />
+              message={message} />
           );
         });
       })}

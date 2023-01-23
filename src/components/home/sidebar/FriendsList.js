@@ -1,8 +1,10 @@
+import { useSelector } from 'react-redux';
+
 import { findFriendMessageThread, getSortedMessages, onUpdateReadMessages } from '../../../utils/utils';
+
 import FriendDisplay from './FriendDisplay';
 
 const FriendsList = ({
-  currentUser,
   messageThreads,
   setMessageThreads,
   friends,
@@ -10,7 +12,7 @@ const FriendsList = ({
   setActiveFriendId,
   updateIsActiveMessageThreadShowing,
 }) => {
-  const { id } = currentUser;
+  const { currentUser: { id: currentUserId } } = useSelector((state) => state.user);
 
   const onClickSelectFriend = (friendId, friendHasUnreadMessage) => {
     setActiveFriendId(friendId);
@@ -36,7 +38,7 @@ const FriendsList = ({
         const lastFriendMessageText = lastFriendMessage?.text;
 
         const userHasUnreadMessagesFromFriend = sanitisedFriendMessageThread?.messages?.some((message) => message.read === false);
-        const lastMessageIsSentByCurrentUser = lastFriendMessage?.sending_user_id === id;
+        const lastMessageIsSentByCurrentUser = lastFriendMessage?.sending_user_id === currentUserId;
 
         if (userHasUnreadMessagesFromFriend && !lastMessageIsSentByCurrentUser) {
           hasUnreadMessage = true;

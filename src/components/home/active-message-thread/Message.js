@@ -1,13 +1,18 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+
 import { useInterval } from '../../../hooks/useInterval';
 import { checkIfMessageSentMoreThanOneHourAgo } from '../../../utils/utils';
+
 import MessageDateContainer from './MessageDateContainer';
 import MessageTimestamp from './MessageTimestamp';
 
-const Message = ({ message, isFirstMessage, date, currentUserId }) => {
+const Message = ({ message, isFirstMessage, date }) => {
   const [timestampKey, setTimestampKey] = useState(`${Date.now()}`);
   const [isMoreThanAnHourAgo, setIsMoreThanAnHourAgo] = useState(checkIfMessageSentMoreThanOneHourAgo(message));
+
+  const { currentUser: { id: currentUserId } } = useSelector((state) => state.user);
 
   const messageFromClassName = message.sending_user_id === currentUserId ? 'from-current-user' : 'from-friend';
   const messageIdClassName = `message-container-${message.id}`;

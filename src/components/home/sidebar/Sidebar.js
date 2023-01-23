@@ -3,17 +3,19 @@ import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { debounce } from 'lodash';
+import { useSelector } from 'react-redux';
+
 import { allAvatars } from '../../../constants/constants';
+import { getSocket } from '../../../utils/socket-io';
+
 import SettingsPopUpMenu from './SettingsPopUpMenu';
 import FriendsAndSearchSidebar from './FriendsAndSearchSidebar';
 import SearchBox from './search/SearchBox';
 import AddNewFriendSidebar from './AddNewFriendSidebar';
-import { getSocket } from '../../../utils/socket-io';
 
 const Sidebar = ({
   friends,
   setFriends,
-  currentUser,
   activeFriendId,
   activeNewFriendId,
   setActiveNewFriendId,
@@ -33,7 +35,6 @@ const Sidebar = ({
   setActiveFriendId,
   isSearching,
   setIsSearching,
-  setCurrentUser,
   setShowAvatarOverlay,
   setAddNewFriendError,
   isActiveMessageThreadShowing,
@@ -48,7 +49,7 @@ const Sidebar = ({
   const [messageExists, setMessageExists] = useState(false);
   const [messageThreadsSearchResults, setMessageThreadSearchResults] = useState([]);
 
-  const { id: currentUserId, name, avatar_id } = currentUser;
+  const { currentUser: { id: currentUserId, name, avatar_id } } = useSelector((state) => state.user);
 
   useEffect(() => {
     const onReceivedAddedAsNewFriend = (data) => {
@@ -186,7 +187,6 @@ const Sidebar = ({
             ? (
               <SettingsPopUpMenu
                 setShowSettingsPopUpMenu={setShowSettingsPopUpMenu}
-                setCurrentUser={setCurrentUser}
                 setShowAvatarOverlay={setShowAvatarOverlay} />
             )
             : null
@@ -223,7 +223,6 @@ const Sidebar = ({
           ? (
             <FriendsAndSearchSidebar
               friends={friends}
-              currentUser={currentUser}
               isSearching={isSearching}
               friendSearchResult={friendSearchResult}
               friendUserNameExists={friendUserNameExists}

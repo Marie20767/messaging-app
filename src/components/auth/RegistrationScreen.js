@@ -1,32 +1,35 @@
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
 import { APIPath, avatars } from '../../constants/constants';
-import useAuthForm from '../../hooks/useAuthForm';
+import {
+  onChangePasswordInputValue,
+  onChangeUsernameInputValue,
+  onClickSelectAvatar,
+  setCurrentUser,
+  setIsAvatarMissing,
+  setIsPasswordMissing,
+  setIsUsernameMissing,
+  setRegistrationErrorText,
+  setServerErrorTextRegistration,
+  setShowFormInvalidErrorMessage,
+} from '../../redux/user';
+
 import PickAvatar from '../avatar/PickAvatar';
 import Form from './Form';
 
-const RegistrationScreen = ({ setCurrentUser }) => {
-  const [serverError, setServerError] = useState('');
-  const [registrationError, setRegistrationError] = useState(null);
-
+const RegistrationScreen = () => {
   const {
-    userNameInput,
-    passwordInput,
-    avatarId,
-    isNameMissing,
-    isPasswordMissing,
+    serverErrorTextRegistration,
+    registrationErrorText,
+    usernameInputValue,
+    passwordInputValue,
     isAvatarMissing,
-    isPasswordTooShort,
-    setIsNameMissing,
-    showFormInvalidErrorMessage,
-    setShowFormInvalidErrorMessage,
-    setIsPasswordMissing,
-    setIsAvatarMissing,
-    onChangeUserName,
-    onChangePassword,
-    onClickSelectAvatar,
-  } = useAuthForm();
+    registrationAvatarId,
+  } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -34,15 +37,15 @@ const RegistrationScreen = ({ setCurrentUser }) => {
   const firstFourAvatars = [firstAvatar, secondAvatar, thirdAvatar, fourthAvatar];
 
   const onClickCreateNewUser = async () => {
-    if (userNameInput !== '' && passwordInput !== '' && avatarId !== null) {
+    if (usernameInputValue !== '' && passwordInputValue !== '' && !!registrationAvatarId) {
       try {
         const response = await fetch(`${APIPath}/users`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name: userNameInput,
-            password: passwordInput,
-            avatar_id: avatarId,
+            name: usernameInputValue,
+            password: passwordInputValue,
+            avatar_id: registrationAvatarId,
           }),
         });
 
@@ -52,34 +55,34 @@ const RegistrationScreen = ({ setCurrentUser }) => {
         if (!result.error) {
           localStorage.setItem('current-user-id', result.id);
 
-          setCurrentUser({
+          dispatch(setCurrentUser({
             id: result.id,
-            name: userNameInput,
-            avatar_id: avatarId,
-          });
+            name: usernameInputValue,
+            avatar_id: registrationAvatarId,
+          }));
 
-          setShowFormInvalidErrorMessage(false);
+          dispatch(setShowFormInvalidErrorMessage(false));
 
           // Go to home screen here instead of using <Link> to make sure the newest current-user-id gets passed
           navigate('/home');
         } else {
-          setRegistrationError(result.error);
+          dispatch(setRegistrationErrorText(result.error));
         }
       } catch (e) {
         console.log('>>> onClickCreateNewUser error! ', e);
-        setServerError('Something went wrong with your request');
+        dispatch(setServerErrorTextRegistration('Something went wrong with your request'));
       }
     } else {
-      setShowFormInvalidErrorMessage(true);
+      dispatch(setShowFormInvalidErrorMessage(true));
 
-      if (userNameInput === '') {
-        setIsNameMissing(true);
+      if (usernameInputValue === '') {
+        dispatch(setIsUsernameMissing(true));
       }
-      if (passwordInput === '') {
-        setIsPasswordMissing(true);
+      if (passwordInputValue === '') {
+        dispatch(setIsPasswordMissing(true));
       }
-      if (avatarId === null) {
-        setIsAvatarMissing(true);
+      if (!registrationAvatarId) {
+        dispatch(setIsAvatarMissing(true));
       }
     }
   };
@@ -95,26 +98,29 @@ const RegistrationScreen = ({ setCurrentUser }) => {
       <StyledRegistrationCardContainer>
         <Form
           title="Create your account"
-          userNameInput={userNameInput}
-          passwordInput={passwordInput}
-          isNameMissing={isNameMissing}
-          isPasswordMissing={isPasswordMissing}
-          isPasswordTooShort={isPasswordTooShort}
-          formError={registrationError}
-          showFormInvalidErrorMessage={showFormInvalidErrorMessage}
-          onChangeUserName={onChangeUserName}
-          onChangePassword={onChangePassword}
+          formError={registrationErrorText}
+          onChangeUsername={(e) => dispatch(onChangeUsernameInputValue({
+            inputValue: e.target.value,
+            isLoginComponent: false,
+          }))}
+          onChangePassword={(e) => dispatch(onChangePasswordInputValue({
+            inputValue: e.target.value,
+            isLoginComponent: false,
+          }))}
           onKeyDown={handleEnterPressRegistration} />
         <PickAvatar
+          avatarId={registrationAvatarId}
           isAvatarMissing={isAvatarMissing}
-          avatarId={avatarId}
-          onClickSelectAvatar={onClickSelectAvatar}
+          onClickSelectAvatar={(id) => dispatch(onClickSelectAvatar({
+            id,
+            isLoginComponent: false,
+          }))}
           avatars1={firstFourAvatars}
           avatars2={lastFourAvatars}
           tabIndex={0}
           onKeyDown={handleEnterPressRegistration} />
-        {serverError
-          ? <p className="error-message server-error">{serverError}</p>
+        {serverErrorTextRegistration
+          ? <p className="error-message server-error">{serverErrorTextRegistration}</p>
           : null
         }
         <button type="button" onClick={onClickCreateNewUser}>Register</button>

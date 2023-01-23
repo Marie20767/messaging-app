@@ -1,4 +1,5 @@
 import { onUpdateReadMessages } from '../../../../utils/utils';
+
 import ContactSearchResults from './ContactSearchResults';
 import MessageSearchResults from './MessageSearchResults';
 import SearchResultsHeader from './SearchResultsHeader';
@@ -13,7 +14,6 @@ const SearchResults = ({
   messageThreadsSearchResults,
   activeSearchResultIds,
   setActiveSearchResultIds,
-  currentUser,
   friends,
   setActiveFriendId,
   updateIsActiveMessageThreadShowing,
@@ -45,7 +45,6 @@ const SearchResults = ({
       <MessageSearchResults
         messageExists={messageExists}
         messageThreadsSearchResults={messageThreadsSearchResults}
-        currentUser={currentUser}
         friends={friends}
         messageThreads={messageThreads}
         setMessageThreads={setMessageThreads}

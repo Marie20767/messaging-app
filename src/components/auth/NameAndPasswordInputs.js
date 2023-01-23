@@ -1,43 +1,51 @@
+import { useDispatch, useSelector } from 'react-redux';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faKey, faEye, faEyeSlash, faUser } from '@fortawesome/free-solid-svg-icons';
+
 import InputField from './InputField';
+import { toggleShowPassword } from '../../redux/user';
 
 const NameAndPasswordInputs = ({
-  userNameInput,
-  passwordInput,
-  isNameMissing,
-  isPasswordMissing,
+  onChangeUsername,
   onKeyDown,
-  showPassword,
-  setShowPassword,
-  onChangeUserName,
   onChangePassword,
 }) => {
+  const {
+    usernameInputValue,
+    passwordInputValue,
+    isShowingPassword,
+    isUsernameMissing,
+    isPasswordMissing,
+  } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
   return (
     <>
       <InputField
-        isMissing={isNameMissing}
+        isMissing={isUsernameMissing}
         icon={faUser}
         type="text"
         name="user_name"
         placeholder="Username e.g. Albus212"
-        onChange={onChangeUserName}
+        onChange={onChangeUsername}
         onKeyDown={onKeyDown}
-        value={userNameInput} />
+        value={usernameInputValue} />
       <InputField
         isMissing={isPasswordMissing}
         icon={faKey}
-        type={showPassword ? 'text' : 'password'}
+        type={isShowingPassword ? 'text' : 'password'}
         name="user_password"
         placeholder="Password"
         onChange={onChangePassword}
         onKeyDown={onKeyDown}
-        value={passwordInput}
+        value={passwordInputValue}
         RightIcon={(
           <FontAwesomeIcon
-            icon={showPassword ? faEyeSlash : faEye}
+            icon={isShowingPassword ? faEyeSlash : faEye}
             className="dark-icon clickable"
-            onClick={() => setShowPassword(!showPassword)} />
+            onClick={() => dispatch(toggleShowPassword())} />
         )} />
     </>
   );

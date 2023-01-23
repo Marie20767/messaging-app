@@ -1,12 +1,13 @@
 import styled from 'styled-components';
+
 import AvatarDisplay from './AvatarDisplay';
 
 const PickAvatar = ({
   isAvatarMissing = false,
   isOverlay = false,
+  avatarId,
   avatars1,
   avatars2,
-  avatarId,
   serverError,
   tabIndex,
   onKeyDown,
@@ -22,9 +23,9 @@ const PickAvatar = ({
         <div className="avatar-title-line" />
       </StyledAvatarTitleContainer>
       <AvatarDisplay
+        avatarId={avatarId}
         avatars1={avatars1}
         avatars2={avatars2}
-        avatarId={avatarId}
         tabIndex={tabIndex}
         onKeyDown={onKeyDown}
         onClickSelectAvatar={onClickSelectAvatar} />

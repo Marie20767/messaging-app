@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const AvatarRow = ({ avatars, avatarId, tabIndex, onKeyDown, onClickSelectAvatar }) => {
+const AvatarRow = ({ avatarId, avatars, tabIndex, onKeyDown, onClickSelectAvatar }) => {
   return (
     <StyledAvatarContainer>
       {avatars.map((avatar) => {

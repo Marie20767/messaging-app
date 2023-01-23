@@ -1,10 +1,12 @@
+import { useSelector } from 'react-redux';
+
 import { getFriendMessageSearchResult, onUpdateReadMessages } from '../../../../utils/utils';
+
 import FriendDisplay from '../FriendDisplay';
 
 const MessageSearchResults = ({
   messageExists,
   messageThreadsSearchResults,
-  currentUser,
   friends,
   searchInput,
   messageThreads,
@@ -14,6 +16,8 @@ const MessageSearchResults = ({
   setActiveSearchResultIds,
   updateIsActiveMessageThreadShowing,
 }) => {
+  const { currentUser } = useSelector((state) => state.user);
+
   const onClickSelectMessageResult = (messageId) => {
     setActiveSearchResultIds({ messageId });
     updateIsActiveMessageThreadShowing(true);

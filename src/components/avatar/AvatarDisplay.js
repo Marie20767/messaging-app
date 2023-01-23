@@ -1,18 +1,19 @@
 import styled from 'styled-components';
+
 import AvatarRow from './AvatarRow';
 
-const AvatarDisplay = ({ avatars1, avatars2, avatarId, tabIndex, onKeyDown, onClickSelectAvatar }) => {
+const AvatarDisplay = ({ avatarId, avatars1, avatars2, tabIndex, onKeyDown, onClickSelectAvatar }) => {
   return (
     <StyledAvatarContainer>
       <AvatarRow
-        avatars={avatars1}
         avatarId={avatarId}
+        avatars={avatars1}
         tabIndex={tabIndex}
         onKeyDown={onKeyDown}
         onClickSelectAvatar={onClickSelectAvatar} />
       <AvatarRow
-        avatars={avatars2}
         avatarId={avatarId}
+        avatars={avatars2}
         tabIndex={tabIndex}
         onKeyDown={onKeyDown}
         onClickSelectAvatar={onClickSelectAvatar} />

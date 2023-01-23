@@ -1,28 +1,23 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { useState } from 'react';
+
 import NameAndPasswordInputs from './NameAndPasswordInputs';
 
 const Form = ({
   title,
-  userNameInput,
-  passwordInput,
-  isNameMissing,
-  isPasswordMissing,
-  isPasswordTooShort,
-  showFormInvalidErrorMessage,
   formError,
-  onChangeUserName,
   onChangePassword,
+  onChangeUsername,
   onKeyDown,
 }) => {
-  const [showPassword, setShowPassword] = useState(false);
+  const { isShowingFormInvalidErrorMessage, isPasswordTooShort } = useSelector((state) => state.user);
 
   return (
     <>
       <h2>{title}</h2>
       <div className="error-messages-container">
         <StyledErrorMessageContainer>
-          {showFormInvalidErrorMessage
+          {isShowingFormInvalidErrorMessage
             ? <p className="error-message">Please fill in or select all required fields</p>
             : null
           }
@@ -41,14 +36,8 @@ const Form = ({
         </StyledErrorMessageContainer>
       </div>
       <NameAndPasswordInputs
-        userNameInput={userNameInput}
-        passwordInput={passwordInput}
-        isNameMissing={isNameMissing}
-        isPasswordMissing={isPasswordMissing}
+        onChangeUsername={onChangeUsername}
         onKeyDown={onKeyDown}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
-        onChangeUserName={onChangeUserName}
         onChangePassword={onChangePassword} />
     </>
   );

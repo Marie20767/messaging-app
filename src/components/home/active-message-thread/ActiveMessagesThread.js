@@ -1,15 +1,17 @@
 import styled from 'styled-components';
 import moment from 'moment';
 import { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
+
 import MessagesHeader from './ActiveMessagesHeader';
 import Messages from './Messages';
 import MessageInputField from './MessageInputField';
 import EmptyMessagesThread from './EmptyMessagesThread';
+
 import { getSocket } from '../../../utils/socket-io';
 
 const ActiveMessagesThread = ({
   friends,
-  currentUserId,
   activeFriendId,
   messageThreads,
   isSearching,
@@ -20,6 +22,8 @@ const ActiveMessagesThread = ({
   isActiveMessageThreadShowing,
   updateIsActiveMessageThreadShowing,
 }) => {
+  const { currentUser: { id: currentUserId } } = useSelector((state) => state.user);
+
   if (!messageThreads.length) {
     return <EmptyMessagesThread title1="No friends here yet..." title2="Don&apos;t be shy, add a friend first!" />;
   }
@@ -120,7 +124,6 @@ const ActiveMessagesThread = ({
         updateIsActiveMessageThreadShowing={updateIsActiveMessageThreadShowing} />
       <Messages
         activeMessagesThread={activeMessagesThread}
-        currentUserId={currentUserId}
         messagesEndRef={messagesEndRef} />
       <MessageInputField
         onClickSendMessage={onClickSendMessage}

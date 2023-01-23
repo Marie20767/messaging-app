@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Loading } from 'react-loading-dot/lib';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
+
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
 import ActiveMessagesThread from './active-message-thread/ActiveMessagesThread';
 import Sidebar from './sidebar/Sidebar';
+import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
+
 import {
   getFormattedMessageThreads,
   getFriendsSortedByMessageSent,
@@ -13,12 +17,11 @@ import {
   onUpdateReadMessages,
   sanitiseArray,
 } from '../../utils/utils';
-import AddNewFriendOverlay from './sidebar/AddNewFriendOverlay';
 import { getSocket } from '../../utils/socket-io';
 import { APIPath } from '../../constants/constants';
 import useOutsideClick from '../../hooks/useOutsideClick';
 
-const HomeScreen = ({ currentUser, setCurrentUser }) => {
+const HomeScreen = () => {
   const [friends, setFriends] = useState(null);
   const [nonFriendUsers, setNonFriendUsers] = useState([]);
   const [activeFriendId, setActiveFriendId] = useState(null);
@@ -37,7 +40,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   const [isActiveMessageThreadShowing, setIsActiveMessageThreadShowing] = useState(isLargeScreen());
   const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
 
-  const { id, avatar_id } = currentUser;
+  const { currentUser: { id: currentUserId } } = useSelector((state) => state.user);
 
   const sortedFriends = getFriendsSortedByMessageSent(messageThreads, friends);
 
@@ -56,7 +59,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       const userResults = await response.json();
 
       const usersMinusFriends = userResults.filter((userResult) => {
-        if (userResult.id === id || sanitiseArray(friendResults).some((friendResult) => friendResult.id === userResult.id)) {
+        if (userResult.id === currentUserId || sanitiseArray(friendResults).some((friendResult) => friendResult.id === userResult.id)) {
           return false;
         }
 
@@ -72,7 +75,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
   const getFriends = async (formattedMessageThreads) => {
     try {
-      const response = await fetch(`${APIPath}/friends/${id}`);
+      const response = await fetch(`${APIPath}/friends/${currentUserId}`);
       const friendResults = await response.json();
 
       setFriends(friendResults);
@@ -83,7 +86,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       } else {
         // Make each friend join a room with the currentUser
         friendResults.forEach((friend) => {
-          getSocket().emit('join_room', { sending_user_id: id, recipient_user_id: friend.id });
+          getSocket().emit('join_room', { sending_user_id: currentUserId, recipient_user_id: friend.id });
         });
 
         // Sort friends according to last message sent
@@ -103,12 +106,12 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
   const getFriendsAndMessagesData = async () => {
     try {
-      const response = await fetch(`${APIPath}/messages/${id}`);
+      const response = await fetch(`${APIPath}/messages/${currentUserId}`);
       const messageThreadsResults = await response.json();
 
       const sanitisedMessageThreads = messageThreadsResults || [];
 
-      const formattedMessageThreadsResults = getFormattedMessageThreads(sanitisedMessageThreads, id);
+      const formattedMessageThreadsResults = getFormattedMessageThreads(sanitisedMessageThreads, currentUserId);
 
       getFriends(formattedMessageThreadsResults);
 
@@ -127,7 +130,7 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
   useEffect(() => {
     // Make the current user join the add_friend_room so that when they add a friend, the friend
     // doesn't have to refresh the page and get the data from the back end to see the new chat
-    getSocket().emit('join_add_friend_room', { current_user_id: id });
+    getSocket().emit('join_add_friend_room', { current_user_id: currentUserId });
     getFriendsAndMessagesData();
   }, []);
 
@@ -199,7 +202,6 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       <Sidebar
         friends={sortedFriends}
         setFriends={setFriends}
-        currentUser={currentUser}
         nonFriendUsers={nonFriendUsers}
         activeFriendId={activeFriendId}
         activeNewFriendId={activeNewFriendId}
@@ -219,7 +221,6 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         isSearching={isSearching}
         setIsSearching={setIsSearching}
         setActiveFriendId={setActiveFriendId}
-        setCurrentUser={setCurrentUser}
         setShowAvatarOverlay={setShowAvatarOverlay}
         setAddNewFriendError={setAddNewFriendError}
         isActiveMessageThreadShowing={isActiveMessageThreadShowing}
@@ -230,7 +231,6 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
 
       <ActiveMessagesThread
         friends={friends}
-        currentUserId={id}
         activeFriendId={activeFriendId}
         messageThreads={messageThreads}
         isSearching={isSearching}
@@ -245,9 +245,6 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
         ? (
           <ChangeAvatarOverlay
             setShowAvatarOverlay={setShowAvatarOverlay}
-            avatarId={avatar_id}
-            currentUser={currentUser}
-            setCurrentUser={setCurrentUser}
             serverError={serverError}
             setServerError={setServerError} />
         )
@@ -256,7 +253,6 @@ const HomeScreen = ({ currentUser, setCurrentUser }) => {
       {activeNewFriendId !== null
         ? (
           <AddNewFriendOverlay
-            currentUser={currentUser}
             addNewFriendError={addNewFriendError}
             nonFriendUsers={nonFriendUsers}
             messageThreads={messageThreads}

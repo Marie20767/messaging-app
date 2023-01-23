@@ -1,7 +1,11 @@
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { APIPath } from '../constants/constants';
+import { setCurrentUser } from '../redux/user';
 
-const useRedirectUser = ({ onUserNotLoggedIn, onUserLoggedIn, setCurrentUser }) => {
+const useRedirectUser = ({ onUserNotLoggedIn, onUserLoggedIn }) => {
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const getUser = async () => {
       const currentUserId = localStorage.getItem('current-user-id');
@@ -17,11 +21,11 @@ const useRedirectUser = ({ onUserNotLoggedIn, onUserLoggedIn, setCurrentUser }) 
           } else {
             const userResult = await response.json();
 
-            setCurrentUser({
+            dispatch(setCurrentUser({
               id: userResult.id,
               name: userResult.name,
               avatar_id: userResult.avatar_id,
-            });
+            }));
 
             onUserLoggedIn();
           }
