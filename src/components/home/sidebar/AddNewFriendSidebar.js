@@ -1,4 +1,8 @@
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+
+import { setActiveNewFriendId } from '../../../redux/user';
+
 import ContactSearchResults from './search/ContactSearchResults';
 import SearchResultsHeader from './search/SearchResultsHeader';
 
@@ -6,14 +10,16 @@ const AddNewFriendSidebar = ({
   searchInput,
   friendSearchResult,
   friendUserNameExists,
-  activeNewFriendId,
-  setActiveNewFriendId,
   setAddNewFriendError,
 }) => {
+  const { activeNewFriendId } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
   const noSearchResultText = `User called '${searchInput}' doesn't exist or is already in your friend list.`;
 
   const onClickSelectFriend = (friendId) => {
-    setActiveNewFriendId(friendId);
+    dispatch(setActiveNewFriendId(friendId));
     setAddNewFriendError(null);
   };
 

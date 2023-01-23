@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import moment from 'moment';
 import { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import MessagesHeader from './ActiveMessagesHeader';
 import Messages from './Messages';
@@ -9,20 +9,23 @@ import MessageInputField from './MessageInputField';
 import EmptyMessagesThread from './EmptyMessagesThread';
 
 import { getSocket } from '../../../utils/socket-io';
+import { setMessageThreads } from '../../../redux/user';
 
 const ActiveMessagesThread = ({
-  friends,
-  activeFriendId,
-  messageThreads,
-  isSearching,
   activeSearchResultIds,
   newMessageInput,
   setNewMessageInput,
-  setMessageThreads,
   isActiveMessageThreadShowing,
   updateIsActiveMessageThreadShowing,
 }) => {
-  const { currentUser: { id: currentUserId } } = useSelector((state) => state.user);
+  const {
+    currentUser: { id: currentUserId },
+    activeFriendId,
+    isSearching,
+    messageThreads,
+  } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
 
   if (!messageThreads.length) {
     return <EmptyMessagesThread title1="No friends here yet..." title2="Don&apos;t be shy, add a friend first!" />;
@@ -99,7 +102,7 @@ const ActiveMessagesThread = ({
       return messageThread;
     });
 
-    setMessageThreads(updatedMessages);
+    dispatch(setMessageThreads(updatedMessages));
     setNewMessageInput('');
   };
 
@@ -119,8 +122,6 @@ const ActiveMessagesThread = ({
   return (
     <StyledMessagesThreadContainer className={isActiveMessageThreadShowing ? 'shown' : 'hidden'}>
       <MessagesHeader
-        friends={friends}
-        activeFriendId={activeFriendId}
         updateIsActiveMessageThreadShowing={updateIsActiveMessageThreadShowing} />
       <Messages
         activeMessagesThread={activeMessagesThread}

@@ -1,9 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
+
+import { useSelector } from 'react-redux';
 import { allAvatars } from '../../../constants/constants';
 
-const MessagesHeader = ({ friends, activeFriendId, updateIsActiveMessageThreadShowing }) => {
+const MessagesHeader = ({ updateIsActiveMessageThreadShowing }) => {
+  const { friends, activeFriendId } = useSelector((state) => state.user);
+
   const activeFriend = friends.find((user) => user.id === activeFriendId);
 
   const activeFriendAvatar = allAvatars.find((avatar) => avatar.id === activeFriend?.avatar_id);

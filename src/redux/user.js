@@ -19,6 +19,12 @@ const initialState = {
   registrationAvatarId: null,
   isShowingFormInvalidErrorMessage: false,
   isPasswordTooShort: false,
+  friends: null,
+  nonFriendUsers: [],
+  activeFriendId: null,
+  activeNewFriendId: null,
+  isSearching: false,
+  messageThreads: null,
 };
 
 const userSlice = createSlice({
@@ -115,6 +121,30 @@ const userSlice = createSlice({
         } : {}),
       };
     },
+
+    setFriends: (state, action) => {
+      state.friends = action.payload;
+    },
+
+    setNonFriendUsers: (state, action) => {
+      state.nonFriendUsers = action.payload;
+    },
+
+    setActiveFriendId: (state, action) => {
+      state.activeFriendId = action.payload;
+    },
+
+    setActiveNewFriendId: (state, action) => {
+      state.activeNewFriendId = action.payload;
+    },
+
+    setIsSearching: (state, action) => {
+      state.isSearching = action.payload;
+    },
+
+    setMessageThreads: (state, action) => {
+      state.messageThreads = action.payload;
+    },
   },
 });
 
@@ -134,5 +164,11 @@ export const {
   onChangeUsernameInputValue,
   onChangePasswordInputValue,
   onClickSelectAvatar,
+  setFriends,
+  setNonFriendUsers,
+  setActiveFriendId,
+  setActiveNewFriendId,
+  setIsSearching,
+  setMessageThreads,
 } = userSlice.actions;
 export default userSlice.reducer;

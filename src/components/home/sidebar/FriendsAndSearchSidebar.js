@@ -1,23 +1,22 @@
+import { useSelector } from 'react-redux';
+
 import SearchResults from './search/SearchResults';
 import FriendsList from './FriendsList';
 
 const FriendsAndSearchSidebar = ({
   friends,
-  isSearching,
   searchInput,
   friendSearchResult,
   friendUserNameExists,
   messageThreadsSearchResults,
   messageExists,
-  activeFriendId,
-  setActiveFriendId,
   activeSearchResultIds,
   setActiveSearchResultIds,
-  messageThreads,
-  setMessageThreads,
   isActiveMessageThreadShowing,
   updateIsActiveMessageThreadShowing,
 }) => {
+  const { isSearching } = useSelector((state) => state.user);
+
   if (isSearching) {
     return (
       <SearchResults
@@ -25,11 +24,8 @@ const FriendsAndSearchSidebar = ({
         friendSearchResult={friendSearchResult}
         messageExists={messageExists}
         searchInput={searchInput}
-        messageThreads={messageThreads}
-        setMessageThreads={setMessageThreads}
         messageThreadsSearchResults={messageThreadsSearchResults}
         friends={friends}
-        setActiveFriendId={setActiveFriendId}
         activeSearchResultIds={activeSearchResultIds}
         setActiveSearchResultIds={setActiveSearchResultIds}
         updateIsActiveMessageThreadShowing={updateIsActiveMessageThreadShowing} />
@@ -39,10 +35,6 @@ const FriendsAndSearchSidebar = ({
   return (
     <FriendsList
       friends={friends}
-      messageThreads={messageThreads}
-      setMessageThreads={setMessageThreads}
-      activeFriendId={activeFriendId}
-      setActiveFriendId={setActiveFriendId}
       isActiveMessageThreadShowing={isActiveMessageThreadShowing}
       updateIsActiveMessageThreadShowing={updateIsActiveMessageThreadShowing} />
   );

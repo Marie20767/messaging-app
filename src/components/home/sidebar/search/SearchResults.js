@@ -1,3 +1,6 @@
+import { useDispatch, useSelector } from 'react-redux';
+
+import { setActiveFriendId, setMessageThreads } from '../../../../redux/user';
 import { onUpdateReadMessages } from '../../../../utils/utils';
 
 import ContactSearchResults from './ContactSearchResults';
@@ -9,18 +12,19 @@ const SearchResults = ({
   friendSearchResult,
   messageExists,
   searchInput,
-  messageThreads,
-  setMessageThreads,
   messageThreadsSearchResults,
   activeSearchResultIds,
   setActiveSearchResultIds,
   friends,
-  setActiveFriendId,
   updateIsActiveMessageThreadShowing,
 }) => {
+  const { messageThreads } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
   const onClickSelectFriend = (friendId) => {
     setActiveSearchResultIds({ friendId });
-    setActiveFriendId(friendId);
+    dispatch(setActiveFriendId(friendId));
     updateIsActiveMessageThreadShowing(true);
 
     onUpdateReadMessages(friendId, messageThreads, setMessageThreads);
@@ -46,10 +50,7 @@ const SearchResults = ({
         messageExists={messageExists}
         messageThreadsSearchResults={messageThreadsSearchResults}
         friends={friends}
-        messageThreads={messageThreads}
-        setMessageThreads={setMessageThreads}
         searchInput={searchInput}
-        setActiveFriendId={setActiveFriendId}
         activeSearchResultIds={activeSearchResultIds}
         setActiveSearchResultIds={setActiveSearchResultIds}
         updateIsActiveMessageThreadShowing={updateIsActiveMessageThreadShowing} />

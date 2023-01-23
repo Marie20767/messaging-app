@@ -1,21 +1,24 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { findFriendMessageThread, getSortedMessages, onUpdateReadMessages } from '../../../utils/utils';
+import { setActiveFriendId, setMessageThreads } from '../../../redux/user';
 
 import FriendDisplay from './FriendDisplay';
 
 const FriendsList = ({
-  messageThreads,
-  setMessageThreads,
   friends,
-  activeFriendId,
-  setActiveFriendId,
   updateIsActiveMessageThreadShowing,
 }) => {
-  const { currentUser: { id: currentUserId } } = useSelector((state) => state.user);
+  const {
+    currentUser: { id: currentUserId },
+    activeFriendId,
+    messageThreads,
+  } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
 
   const onClickSelectFriend = (friendId, friendHasUnreadMessage) => {
-    setActiveFriendId(friendId);
+    dispatch(setActiveFriendId(friendId));
     if (friendHasUnreadMessage) {
       onUpdateReadMessages(friendId, messageThreads, setMessageThreads);
     }

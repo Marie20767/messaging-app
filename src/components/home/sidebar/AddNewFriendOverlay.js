@@ -1,30 +1,36 @@
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { APIPath } from '../../../constants/constants';
+import {
+  setActiveFriendId,
+  setActiveNewFriendId,
+  setFriends,
+  setMessageThreads,
+} from '../../../redux/user';
 import { getSocket } from '../../../utils/socket-io';
 
 import SmallFullScreenOverlay from '../../overlays-and-popups/SmallFullScreenOverlay';
 
 const AddNewFriendOverlay = ({
-  nonFriendUsers,
-  messageThreads,
-  setMessageThreads,
-  friends,
-  setFriends,
-  activeNewFriendId,
   addNewFriendError,
-  setActiveNewFriendId,
   setAddNewFriendError,
-  setActiveFriendId,
   setAddNewFriendSearchInput,
   setNewFriendSearchResult,
   setClickedAddNewFriend,
   setNewFriendUserNameExists,
 }) => {
-  const { currentUser } = useSelector((state) => state.user);
+  const {
+    currentUser,
+    friends,
+    nonFriendUsers,
+    activeNewFriendId,
+    messageThreads,
+  } = useSelector((state) => state.user);
   const { id: currentUserId } = currentUser;
+
+  const dispatch = useDispatch();
 
   const onClickAddNewFriend = async () => {
     try {
@@ -75,19 +81,19 @@ const AddNewFriendOverlay = ({
           ...friends,
         ];
 
-        setFriends(newFriends);
+        dispatch(setFriends(newFriends));
         setAddNewFriendError(null);
-        setActiveFriendId(activeNewFriendId);
-        setActiveNewFriendId(null);
+        dispatch(setActiveFriendId(activeNewFriendId));
+        dispatch(setActiveNewFriendId(null));
         setAddNewFriendSearchInput('');
         setNewFriendSearchResult([]);
         setClickedAddNewFriend(false);
         setNewFriendUserNameExists(false);
 
-        setMessageThreads([
+        dispatch(setMessageThreads([
           ...messageThreads,
           newFriendEmptyMessageThread,
-        ]);
+        ]));
       } else {
         setAddNewFriendError(newFriendResult.error);
       }
@@ -98,14 +104,14 @@ const AddNewFriendOverlay = ({
   };
 
   return (
-    <SmallFullScreenOverlay onClick={() => setActiveNewFriendId(null)}>
+    <SmallFullScreenOverlay onClick={() => dispatch(setActiveNewFriendId(null))}>
       <h3 className="add-friend-overlay-title">Would you like to add this friend to your contact list?</h3>
       {addNewFriendError !== null
         ? <p className="error-message">{addNewFriendError}</p>
         : null
       }
       <StyledButtonsContainer>
-        <button type="button" onClick={() => setActiveNewFriendId(null)} className="no-button">Cancel</button>
+        <button type="button" onClick={() => dispatch(setActiveNewFriendId(null))} className="no-button">Cancel</button>
         <button type="button" onClick={onClickAddNewFriend}>Confirm</button>
       </StyledButtonsContainer>
     </SmallFullScreenOverlay>

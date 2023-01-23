@@ -3,10 +3,17 @@ import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { debounce } from 'lodash';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { allAvatars } from '../../../constants/constants';
 import { getSocket } from '../../../utils/socket-io';
+import {
+  setActiveFriendId,
+  setActiveNewFriendId,
+  setFriends,
+  setIsSearching,
+  setMessageThreads,
+} from '../../../redux/user';
 
 import SettingsPopUpMenu from './SettingsPopUpMenu';
 import FriendsAndSearchSidebar from './FriendsAndSearchSidebar';
@@ -15,10 +22,6 @@ import AddNewFriendSidebar from './AddNewFriendSidebar';
 
 const Sidebar = ({
   friends,
-  setFriends,
-  activeFriendId,
-  activeNewFriendId,
-  setActiveNewFriendId,
   addNewFriendSearchInput,
   setAddNewFriendSearchInput,
   newFriendSearchResult,
@@ -29,12 +32,6 @@ const Sidebar = ({
   setNewFriendUserNameExists,
   activeSearchResultIds,
   setActiveSearchResultIds,
-  nonFriendUsers,
-  messageThreads,
-  setMessageThreads,
-  setActiveFriendId,
-  isSearching,
-  setIsSearching,
   setShowAvatarOverlay,
   setAddNewFriendError,
   isActiveMessageThreadShowing,
@@ -49,7 +46,14 @@ const Sidebar = ({
   const [messageExists, setMessageExists] = useState(false);
   const [messageThreadsSearchResults, setMessageThreadSearchResults] = useState([]);
 
-  const { currentUser: { id: currentUserId, name, avatar_id } } = useSelector((state) => state.user);
+  const {
+    currentUser: { id: currentUserId, name, avatar_id },
+    nonFriendUsers,
+    activeFriendId,
+    messageThreads,
+  } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const onReceivedAddedAsNewFriend = (data) => {
@@ -63,14 +67,14 @@ const Sidebar = ({
           ...friends,
         ];
 
-        setFriends(updatedFriends);
-        setMessageThreads([
+        dispatch(setFriends(updatedFriends));
+        dispatch(setMessageThreads([
           ...messageThreads,
           data.message_thread,
-        ]);
+        ]));
 
         if (!activeFriendId) {
-          setActiveFriendId(data.current_user.id);
+          dispatch(setActiveFriendId(data.current_user.id));
         }
 
         // Join the chat room with the user that just added us
@@ -89,10 +93,10 @@ const Sidebar = ({
 
   const onHandleDebouncedSearchResults = (inputValue) => {
     if (inputValue === '') {
-      setIsSearching(false);
+      dispatch(setIsSearching(false));
       setFriendUserNameExists(false);
     } else {
-      setIsSearching(true);
+      dispatch(setIsSearching(true));
 
       const friendsMatchingSearchInput = friends.filter((user) => {
         return user.name.toLowerCase().includes(inputValue.toLowerCase());
@@ -141,16 +145,16 @@ const Sidebar = ({
   const onClickCloseSearch = () => {
     setSearchInput('');
     setFriendSearchResult([]);
-    setIsSearching(false);
-    setActiveFriendId(activeFriendId);
+    dispatch(setIsSearching(false));
+    dispatch(setActiveFriendId(activeFriendId));
     setActiveSearchResultIds(null);
   };
 
   const onClickCloseNewFriendSearch = () => {
     setAddNewFriendSearchInput('');
     setNewFriendSearchResult([]);
-    setActiveFriendId(activeFriendId);
-    setActiveNewFriendId(null);
+    dispatch(setActiveFriendId(activeFriendId));
+    dispatch(setActiveNewFriendId(null));
     setClickedAddNewFriend(false);
     setNewFriendUserNameExists(false);
   };
@@ -223,18 +227,13 @@ const Sidebar = ({
           ? (
             <FriendsAndSearchSidebar
               friends={friends}
-              isSearching={isSearching}
               friendSearchResult={friendSearchResult}
               friendUserNameExists={friendUserNameExists}
               messageExists={messageExists}
               messageThreadsSearchResults={messageThreadsSearchResults}
               searchInput={searchInput}
-              activeFriendId={activeFriendId}
-              setActiveFriendId={setActiveFriendId}
               activeSearchResultIds={activeSearchResultIds}
               setActiveSearchResultIds={setActiveSearchResultIds}
-              messageThreads={messageThreads}
-              setMessageThreads={setMessageThreads}
               isActiveMessageThreadShowing={isActiveMessageThreadShowing}
               updateIsActiveMessageThreadShowing={updateIsActiveMessageThreadShowing} />
           )
@@ -243,8 +242,6 @@ const Sidebar = ({
               searchInput={addNewFriendSearchInput}
               friendSearchResult={newFriendSearchResult}
               friendUserNameExists={newFriendUserNameExists}
-              activeNewFriendId={activeNewFriendId}
-              setActiveNewFriendId={setActiveNewFriendId}
               setAddNewFriendError={setAddNewFriendError} />
           )
         }

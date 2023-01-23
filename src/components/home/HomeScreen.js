@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Loading } from 'react-loading-dot/lib';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ChangeAvatarOverlay from './sidebar/ChangeAvatarOverlay';
 import ActiveMessagesThread from './active-message-thread/ActiveMessagesThread';
@@ -20,15 +20,15 @@ import {
 import { getSocket } from '../../utils/socket-io';
 import { APIPath } from '../../constants/constants';
 import useOutsideClick from '../../hooks/useOutsideClick';
+import {
+  setActiveFriendId,
+  setFriends,
+  setMessageThreads,
+  setNonFriendUsers,
+} from '../../redux/user';
 
 const HomeScreen = () => {
-  const [friends, setFriends] = useState(null);
-  const [nonFriendUsers, setNonFriendUsers] = useState([]);
-  const [activeFriendId, setActiveFriendId] = useState(null);
-  const [activeNewFriendId, setActiveNewFriendId] = useState(null);
   const [showAvatarOverlay, setShowAvatarOverlay] = useState(false);
-  const [isSearching, setIsSearching] = useState(false);
-  const [messageThreads, setMessageThreads] = useState(null);
   const [addNewFriendSearchInput, setAddNewFriendSearchInput] = useState('');
   const [newFriendSearchResult, setNewFriendSearchResult] = useState([]);
   const [clickedAddNewFriend, setClickedAddNewFriend] = useState(false);
@@ -40,7 +40,15 @@ const HomeScreen = () => {
   const [isActiveMessageThreadShowing, setIsActiveMessageThreadShowing] = useState(isLargeScreen());
   const [showSettingsPopUpMenu, setShowSettingsPopUpMenu] = useState(false);
 
-  const { currentUser: { id: currentUserId } } = useSelector((state) => state.user);
+  const {
+    currentUser: { id: currentUserId },
+    friends,
+    activeFriendId,
+    activeNewFriendId,
+    messageThreads,
+  } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
 
   const sortedFriends = getFriendsSortedByMessageSent(messageThreads, friends);
 
@@ -66,7 +74,7 @@ const HomeScreen = () => {
         return true;
       });
 
-      setNonFriendUsers(usersMinusFriends);
+      dispatch(setNonFriendUsers(usersMinusFriends));
     } catch (e) {
       console.log('>>> getNonFriends error: ', e);
       setServerError('Something went wrong with your request');
@@ -78,11 +86,11 @@ const HomeScreen = () => {
       const response = await fetch(`${APIPath}/friends/${currentUserId}`);
       const friendResults = await response.json();
 
-      setFriends(friendResults);
+      dispatch(setFriends(friendResults));
       getNonFriendUsers(friendResults);
 
       if (!friendResults.length) {
-        setActiveFriendId(null);
+        dispatch(setActiveFriendId(null));
       } else {
         // Make each friend join a room with the currentUser
         friendResults.forEach((friend) => {
@@ -92,7 +100,7 @@ const HomeScreen = () => {
         // Sort friends according to last message sent
         const sortedFriendsResults = getFriendsSortedByMessageSent(formattedMessageThreads, friendResults);
 
-        setActiveFriendId(sortedFriendsResults[0].id);
+        dispatch(setActiveFriendId(sortedFriendsResults[0].id));
 
         if (isActiveMessageThreadShowing) {
           onUpdateReadMessages(sortedFriendsResults[0].id, formattedMessageThreads, setMessageThreads);
@@ -115,7 +123,7 @@ const HomeScreen = () => {
 
       getFriends(formattedMessageThreadsResults);
 
-      setMessageThreads(formattedMessageThreadsResults);
+      dispatch(setMessageThreads(formattedMessageThreadsResults));
     } catch (e) {
       console.log('>>> getMessageThreadsAndFriends error: ', e);
       setServerError('Something went wrong with your request');
@@ -149,7 +157,7 @@ const HomeScreen = () => {
         return messageThread;
       });
 
-      setMessageThreads(updatedMessageThreads);
+      dispatch(setMessageThreads(updatedMessageThreads));
 
       if (data.sending_user_id === activeFriendId) {
         try {
@@ -201,11 +209,6 @@ const HomeScreen = () => {
     <StyledHomeScreenContainer>
       <Sidebar
         friends={sortedFriends}
-        setFriends={setFriends}
-        nonFriendUsers={nonFriendUsers}
-        activeFriendId={activeFriendId}
-        activeNewFriendId={activeNewFriendId}
-        setActiveNewFriendId={setActiveNewFriendId}
         activeSearchResultIds={activeSearchResultIds}
         setActiveSearchResultIds={setActiveSearchResultIds}
         addNewFriendSearchInput={addNewFriendSearchInput}
@@ -216,11 +219,6 @@ const HomeScreen = () => {
         setClickedAddNewFriend={setClickedAddNewFriend}
         newFriendUserNameExists={newFriendUserNameExists}
         setNewFriendUserNameExists={setNewFriendUserNameExists}
-        messageThreads={messageThreads}
-        setMessageThreads={setMessageThreads}
-        isSearching={isSearching}
-        setIsSearching={setIsSearching}
-        setActiveFriendId={setActiveFriendId}
         setShowAvatarOverlay={setShowAvatarOverlay}
         setAddNewFriendError={setAddNewFriendError}
         isActiveMessageThreadShowing={isActiveMessageThreadShowing}
@@ -230,14 +228,9 @@ const HomeScreen = () => {
         getNonFriendUsers={getNonFriendUsers} />
 
       <ActiveMessagesThread
-        friends={friends}
-        activeFriendId={activeFriendId}
-        messageThreads={messageThreads}
-        isSearching={isSearching}
         activeSearchResultIds={activeSearchResultIds}
         newMessageInput={newMessageInput}
         setNewMessageInput={setNewMessageInput}
-        setMessageThreads={setMessageThreads}
         isActiveMessageThreadShowing={isActiveMessageThreadShowing}
         updateIsActiveMessageThreadShowing={updateIsActiveMessageThreadShowing} />
 
@@ -254,15 +247,7 @@ const HomeScreen = () => {
         ? (
           <AddNewFriendOverlay
             addNewFriendError={addNewFriendError}
-            nonFriendUsers={nonFriendUsers}
-            messageThreads={messageThreads}
-            setMessageThreads={setMessageThreads}
-            friends={friends}
-            setFriends={setFriends}
-            activeNewFriendId={activeNewFriendId}
-            setActiveNewFriendId={setActiveNewFriendId}
             setAddNewFriendError={setAddNewFriendError}
-            setActiveFriendId={setActiveFriendId}
             setAddNewFriendSearchInput={setAddNewFriendSearchInput}
             setNewFriendSearchResult={setNewFriendSearchResult}
             setClickedAddNewFriend={setClickedAddNewFriend}
