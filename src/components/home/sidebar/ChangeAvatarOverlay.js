@@ -54,7 +54,7 @@ const ChangeAvatarOverlay = ({
         serverError={serverError}
         isOverlay
         onClickSelectAvatar={onClickSelectNewAvatar} />
-      <button type="button" onClick={() => onClickSaveNewAvatar(newSelectedAvatarId)}>Save</button>
+      <button type="button" onClick={onClickSaveNewAvatar}>Save</button>
     </LargeFullScreenOverlay>
   );
 };
