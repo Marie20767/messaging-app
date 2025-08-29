@@ -100,8 +100,8 @@ const allAvatars = [
   ...demoUsersAvatars,
 ];
 
-const APIDomain = 'https://www.word-monkey-api.xyz';
-const APIPath = 'https://www.word-monkey-api.xyz/messageoh';
+const APIDomain = 'https://api.supanova-rp.co.uk';
+const APIPath = `${APIDomain}/messageoh`;
 // To test against local backend:
 // const APIPath = 'http://localhost:3001';
 
